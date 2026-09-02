@@ -332,8 +332,8 @@
   @media(max-width:860px){.mkt-g{grid-template-columns:1fr;gap:40px}}
 
   /* ---- world map ---- */
-  .world-map{margin:44px 0 0;width:100%; display:flex; justify-content:center; overflow:hidden;}
-  .world-map svg{width:112%; max-width:112%; height:auto; display:block; flex:none;}
+  .world-map{margin:44px 0 0;max-width:100%}
+  .world-map svg{width:100%;height:auto;display:block}
   .world-map text{font-family:'Plus Jakarta Sans',sans-serif}
   .wm-arc{stroke-dasharray:1;stroke-dashoffset:1;animation:drawArc 8s ease-in-out infinite}
   .wm-arc:nth-child(2){animation-delay:.5s}
@@ -478,8 +478,8 @@
   @media(max-width:900px){
     /* world map: full-bleed and larger */
     .mkt-g{gap:24px}
-    .world-map{margin:8px -20px 0;width:calc(100% + 40px);max-width:none;display:flex;justify-content:center}
-    .world-map svg{width:125%;max-width:125%;flex:none;}
+    .world-map{margin:8px -20px 0;width:calc(100% + 40px);max-width:none}
+    .world-map svg{width:100%}
     .world-map text{font-size:13px}
     .world-map text[font-size="11"]{font-size:15px}
   }
