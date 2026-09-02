@@ -1399,22 +1399,27 @@
       track.addEventListener('touchcancel', function(){ paused = false; }, { passive: true });
     }
 
-    var speed = reduce ? 0.25 : 0.7;
+    var speedPerSec = reduce ? 15 : 75; // pixels per second
     var floatScroll = track.scrollLeft;
-    (function tick(){
+    var lastTime = performance.now();
+    (function tick(now){
+      var dt = Math.min(now - lastTime, 100); // cap dt at 100ms to prevent huge jumps
+      lastTime = now;
+      
       if (!down && !paused) {
         if (Math.abs(floatScroll - track.scrollLeft) > 2) floatScroll = track.scrollLeft;
-        floatScroll += speed;
+        floatScroll += (speedPerSec * dt) / 1000;
         track.scrollLeft = floatScroll;
       } else {
         floatScroll = track.scrollLeft;
       }
+      
       if (loopW > 0){
         if (track.scrollLeft >= loopW) { track.scrollLeft -= loopW; floatScroll -= loopW; }
         else if (track.scrollLeft < 0) { track.scrollLeft += loopW; floatScroll += loopW; }
       }
       requestAnimationFrame(tick);
-    })();
+    })(performance.now());
   }
 })();
 </script>
