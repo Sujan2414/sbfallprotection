@@ -1,0 +1,33 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<style>body{margin:0;font:12px monospace;background:#fff;color:#000}
+iframe{width:390px;height:20000px;border:2px solid red}
+pre{white-space:pre-wrap;padding:8px;background:#eef}</style></head>
+<body>
+<iframe id="f" src="/index.html"></iframe>
+<pre id="out">loading...</pre>
+<script>
+document.getElementById('f').addEventListener('load', function(){
+  setTimeout(function(){
+    try{
+      var doc = document.getElementById('f').contentDocument;
+      var win = document.getElementById('f').contentWindow;
+      var vw = win.innerWidth;
+      var results = [];
+      doc.querySelectorAll('*').forEach(function(el){
+        var r = el.getBoundingClientRect();
+        if (r.right > vw + 2 || r.left < -2) {
+          results.push({tag: el.tagName, cls: (el.className+'').toString().slice(0,50), left: Math.round(r.left), right: Math.round(r.right), w: Math.round(r.width)});
+        }
+      });
+      results.sort(function(a,b){ return b.right - a.right; });
+      var out = 'vw=' + vw + ' scrollWidth=' + doc.documentElement.scrollWidth + '\n\n';
+      results.slice(0, 30).forEach(function(o){
+        out += o.tag + '.' + o.cls + '  left=' + o.left + ' right=' + o.right + ' w=' + o.w + '\n';
+      });
+      document.getElementById('out').textContent = out;
+    }catch(e){ document.getElementById('out').textContent = 'ERR: ' + e; }
+  }, 1500);
+});
+</script>
+</body></html>
