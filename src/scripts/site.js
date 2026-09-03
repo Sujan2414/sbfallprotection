@@ -250,4 +250,27 @@
       requestAnimationFrame(tick);
     })(performance.now());
   }
+
+  /* reels strip: load + play each clip only while it is on screen, so four
+     videos never download at once (matters most on mobile data) */
+  var reels = document.querySelectorAll('.reel video');
+  if (reels.length && 'IntersectionObserver' in window) {
+    var reelObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        var v = en.target;
+        if (en.isIntersecting) {
+          if (v.preload === 'none') { v.preload = 'auto'; v.load(); }
+          if (!reduce) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+        } else {
+          v.pause();
+        }
+      });
+    }, { threshold: 0.35 });
+    reels.forEach(function (v) {
+      v.muted = true;
+      v.playsInline = true;
+      reelObs.observe(v);
+    });
+  }
+
 })();

@@ -4,14 +4,29 @@ import Base from '../layouts/Base.astro';
 <Base title="SB Fall Protection — Certified Fall Protection Manufacturer, Kanpur India" home={true}>
 <!-- ============ HERO ============ -->
 <header class="hero" id="top">
-  <img class="hero-img" src="/assets/hero-harness.jpg" alt="Worker wearing SB full body harness on a construction site at sunrise">
+  <picture>
+    <source
+      type="image/webp"
+      srcset="/assets/hero-harness-900.webp 900w, /assets/hero-harness-1600.webp 1600w, /assets/hero-harness-2400.webp 2400w"
+      sizes="100vw">
+    <img class="hero-img"
+      src="/assets/hero-harness-1600.jpg"
+      srcset="/assets/hero-harness-900.jpg 900w, /assets/hero-harness-1600.jpg 1600w, /assets/hero-harness-2400.jpg 2400w"
+      sizes="100vw"
+      width="2400" height="1669" fetchpriority="high" decoding="async"
+      alt="Worker wearing an SB full body harness with energy-absorbing lanyard on a construction site at sunrise">
+  </picture>
   <div class="hero-shade"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-vig"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-grain"></div>
   <div class="wrap hero-in">
     <span class="hero-badge">ISO 9001:2015 Certified Manufacturer</span>
     <h1>Certified Fall Protection Gear You Can Trust</h1>
     <p class="hero-desc">From full body harnesses to complete rescue kits, we manufacture and export certified height-safety equipment — engineered, tested and packed in our 145,000 sq ft facility in Kanpur, India.</p>
     <div class="hero-btns">
-      <a class="btn btn-orange" href="#contact">Get Your Free Quote</a>
+      <a class="btn btn-orange" href="/contact">Get Your Free Quote</a>
       <a class="btn btn-white" href="tel:+915122406728">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg>
         Call Now</a>
@@ -486,6 +501,56 @@ import Base from '../layouts/Base.astro';
         <p class="a">Email sales@sbfallprotection.com or submit the quote form and the team will send the latest edition with current specifications.</p></details>
     </div>
     </div>
+  </div>
+</section>
+
+<!-- ============ AS SEEN ON REELS ============ -->
+<section class="sec reels" id="reels">
+  <div class="wrap">
+    <div class="reels-head">
+      <div class="sec-head left reveal">
+        <span class="label">As Seen On Reels</span>
+        <h2>Our Gear, <em>On the Job</em></h2>
+        <p>Short clips from the field and the factory floor — follow along on Instagram for new drops, site footage and behind-the-scenes from Kanpur.</p>
+      </div>
+      <a class="ig-btn reveal" href="https://www.instagram.com/sbfallprotection/" target="_blank" rel="noopener noreferrer">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">
+          <rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><circle cx="12" cy="12" r="4"/>
+          <circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+        Follow @sbfallprotection
+      </a>
+    </div>
+
+    <!-- PLACEHOLDER CLIPS: licensed stock stand-ins. Replace with SB's own
+         reels once the Instagram Graph API feed is connected. -->
+    <div class="reel-row reveal" id="reelRow">
+      <article class="reel">
+        <video src="/assets/reel-1.mp4" poster="/assets/reel-1.jpg" muted loop playsinline preload="none"
+               aria-label="Harness hardware close-up"></video>
+        <span class="reel-tag"><span class="reel-live"></span> Reel</span>
+        <span class="reel-cap">Harness &amp; connector detail</span>
+      </article>
+      <article class="reel">
+        <video src="/assets/reel-2.mp4" poster="/assets/reel-2.jpg" muted loop playsinline preload="none"
+               aria-label="Working at height on a rope system"></video>
+        <span class="reel-tag"><span class="reel-live"></span> Reel</span>
+        <span class="reel-cap">Rope access &amp; controlled descent</span>
+      </article>
+      <article class="reel">
+        <video src="/assets/reel-3.mp4" poster="/assets/reel-3.jpg" muted loop playsinline preload="none"
+               aria-label="Crew climbing with fall protection equipment"></video>
+        <span class="reel-tag"><span class="reel-live"></span> Reel</span>
+        <span class="reel-cap">Fall protection in training</span>
+      </article>
+      <article class="reel">
+        <video src="/assets/showreel.mp4" poster="/assets/video-poster.jpg" muted loop playsinline preload="none"
+               aria-label="Fall protection equipment in use"></video>
+        <span class="reel-tag"><span class="reel-live"></span> Reel</span>
+        <span class="reel-cap">Working at height, protected</span>
+      </article>
+    </div>
+    <p class="reels-note">Swipe for more · clips play muted and loop automatically</p>
   </div>
 </section>
 
