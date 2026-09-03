@@ -273,4 +273,36 @@
     });
   }
 
+
+  /* inner-page hero: scroll-driven drift + a slow fade of the copy, matching
+     the homepage hero treatment. Scroll-linked only, no mouse dependency. */
+  var pHero = document.querySelector('.page-hero');
+  var pImg = document.querySelector('.page-hero-media img');
+  var pIn = document.querySelector('.page-hero-in');
+  if (pHero && pImg) {
+    var pDrift = reduce ? 0.10 : 0.26;
+    var pVisible = true;
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) { pVisible = en[0].isIntersecting; }).observe(pHero);
+    }
+    var lastY = -1;
+    (function pLoop() {
+      if (pVisible) {
+        var y = window.scrollY;
+        if (y !== lastY) {
+          lastY = y;
+          var h = pHero.offsetHeight || 1;
+          var t = Math.min(y, h);
+          pImg.style.transform = 'scale(1.1) translate3d(0,' + (t * pDrift).toFixed(2) + 'px,0)';
+          if (pIn && !reduce) {
+            var k = Math.max(0, 1 - (y / h) * 1.15);
+            pIn.style.opacity = k.toFixed(3);
+            pIn.style.transform = 'translate3d(0,' + (y * 0.06).toFixed(2) + 'px,0)';
+          }
+        }
+      }
+      requestAnimationFrame(pLoop);
+    })();
+  }
+
 })();

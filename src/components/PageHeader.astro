@@ -6,14 +6,39 @@ interface Props {
   accent?: string;
   lead?: string;
   crumbs?: Crumb[];
+  /** asset slug: /assets/hero-<image>.jpg + -sm + .webp variants */
+  image?: string;
+  imageAlt?: string;
+  /** compact variant for product detail pages */
+  compact?: boolean;
 }
-const { eyebrow, title, accent, lead, crumbs = [] } = Astro.props;
+const {
+  eyebrow, title, accent, lead, crumbs = [],
+  image = 'products', imageAlt = '', compact = false,
+} = Astro.props;
 ---
-<header class="page-head">
-  <div class="wrap">
+<header class:list={['page-hero', compact && 'is-compact']}>
+  <div class="page-hero-media">
+    <picture>
+      <source type="image/webp"
+        srcset={`/assets/hero-${image}-sm.webp 1100w, /assets/hero-${image}.webp 1800w`}
+        sizes="100vw">
+      <img
+        src={`/assets/hero-${image}.jpg`}
+        srcset={`/assets/hero-${image}-sm.jpg 1100w, /assets/hero-${image}.jpg 1800w`}
+        sizes="100vw" width="1800" height="720"
+        fetchpriority="high" decoding="async" alt={imageAlt}>
+    </picture>
+  </div>
+  <div class="page-hero-shade"></div>
+  <div class="page-hero-glow"></div>
+  <div class="page-hero-grid"></div>
+  <div class="page-hero-grain"></div>
+
+  <div class="wrap page-hero-in">
     {crumbs.length > 0 && (
-      /* a <div role="navigation"> not a <nav>: the global stylesheet pins the
-         site header with a bare `nav` selector, which would fix this to the top */
+      /* a div, not a <nav>: the global stylesheet pins the site header with a
+         bare `nav` selector, which would fix this to the top of the viewport */
       <div class="crumb" role="navigation" aria-label="Breadcrumb">
         <a href="/">Home</a>
         {crumbs.map((c) => (
@@ -24,7 +49,7 @@ const { eyebrow, title, accent, lead, crumbs = [] } = Astro.props;
         ))}
       </div>
     )}
-    {eyebrow && <span class="label" style="display:block;margin-top:22px">{eyebrow}</span>}
+    {eyebrow && <span class="label page-hero-eyebrow">{eyebrow}</span>}
     <h1>{title}{accent && <> <em>{accent}</em></>}</h1>
     {lead && <p>{lead}</p>}
   </div>
