@@ -5,3 +5,5 @@ debug-*.html
 node_modules
 dist
 .astro
+.env
+.env.local

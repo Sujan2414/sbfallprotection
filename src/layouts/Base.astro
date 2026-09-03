@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import FloatingActions from '../components/FloatingActions.astro';
 
 interface Props {
   title: string;
@@ -45,6 +46,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
   <Nav home={home} />
   <slot />
   <Footer home={home} />
+  <FloatingActions />
   <script src="../scripts/site.js"></script>
 </body>
 </html>

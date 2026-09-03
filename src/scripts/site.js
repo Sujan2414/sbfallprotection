@@ -46,12 +46,18 @@
     if ('IntersectionObserver' in window){
       new IntersectionObserver(function(en){ heroVisible = en[0].isIntersecting; }).observe(hero);
     }
+    /* The hero is pinned and the page slides over it, so translating the image
+       on scroll would drag it out of the frame. Scroll instead drives a slow
+       zoom + dim, which reads as depth behind the incoming content. */
     (function loop(){
       if (heroVisible){
         tx += (mx - tx) * 0.06;
         ty += (my - ty) * 0.06;
-        var sy = Math.min(window.scrollY, hero.offsetHeight) * drift;
-        hImg.style.transform = 'translate3d(' + tx.toFixed(2) + 'px,' + (sy + ty).toFixed(2) + 'px,0) scale(1.12)';
+        var k = Math.min(window.scrollY / (hero.offsetHeight || 1), 1);
+        var zoom = 1.12 + k * 0.06;
+        hImg.style.transform =
+          'translate3d(' + tx.toFixed(2) + 'px,' + ty.toFixed(2) + 'px,0) scale(' + zoom.toFixed(4) + ')';
+        hImg.style.filter = 'brightness(' + (1 - k * 0.28).toFixed(3) + ')';
       }
       requestAnimationFrame(loop);
     })();
@@ -280,7 +286,6 @@
   var pImg = document.querySelector('.page-hero-media img');
   var pIn = document.querySelector('.page-hero-in');
   if (pHero && pImg) {
-    var pDrift = reduce ? 0.10 : 0.26;
     var pVisible = true;
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (en) { pVisible = en[0].isIntersecting; }).observe(pHero);
@@ -292,17 +297,36 @@
         if (y !== lastY) {
           lastY = y;
           var h = pHero.offsetHeight || 1;
-          var t = Math.min(y, h);
-          pImg.style.transform = 'scale(1.1) translate3d(0,' + (t * pDrift).toFixed(2) + 'px,0)';
+          var k = Math.min(y / h, 1);
+          /* pinned hero: zoom + dim rather than translate, so the image never
+             slides out from behind the content sheet riding over it */
+          pImg.style.transform = 'scale(' + (1.1 + k * 0.07).toFixed(4) + ')';
+          pImg.style.filter = 'brightness(' + (1 - k * 0.30).toFixed(3) + ')';
           if (pIn && !reduce) {
-            var k = Math.max(0, 1 - (y / h) * 1.15);
-            pIn.style.opacity = k.toFixed(3);
-            pIn.style.transform = 'translate3d(0,' + (y * 0.06).toFixed(2) + 'px,0)';
+            pIn.style.opacity = Math.max(0, 1 - k * 1.25).toFixed(3);
+            pIn.style.transform = 'translate3d(0,' + (y * 0.05).toFixed(2) + 'px,0)';
           }
         }
       }
       requestAnimationFrame(pLoop);
     })();
+  }
+
+
+  /* back-to-top FAB: appears past one viewport, smooth unless reduced-motion */
+  var fabTop = document.getElementById('fabTop');
+  if (fabTop) {
+    var showAt = Math.max(400, window.innerHeight * 0.8);
+    function fabState() { fabTop.classList.toggle('show', window.scrollY > showAt); }
+    window.addEventListener('scroll', fabState, { passive: true });
+    window.addEventListener('resize', function () {
+      showAt = Math.max(400, window.innerHeight * 0.8);
+      fabState();
+    });
+    fabTop.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+    });
+    fabState();
   }
 
 })();

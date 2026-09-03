@@ -7,12 +7,15 @@
  * working untouched because it only ever talks to these functions.
  */
 import raw from '../data/catalog.json';
+import { fetchCatalog } from './supabase';
 
 export interface Category {
   slug: string;
   name: string;
   intro: string;
   families: string[];
+  blurb?: string;
+  icon?: string;
 }
 
 export interface Family {
@@ -35,11 +38,53 @@ export interface Product {
   attachment: string | null;
 }
 
-const data = raw as unknown as {
+type Snapshot = {
   categories: Category[];
   families: Family[];
   products: Product[];
 };
+
+const snapshot = raw as unknown as Snapshot;
+
+/**
+ * Resolved once per build. Supabase is the source of truth when configured;
+ * the committed JSON snapshot is the fallback so builds never break on a
+ * missing key or a network blip.
+ */
+const data: Snapshot = await (async (): Promise<Snapshot> => {
+  const live = await fetchCatalog();
+  if (!live) return snapshot;
+
+  const famName = new Map(live.families.map((f) => [f.slug, f.name]));
+  return {
+    categories: live.categories.map((c) => ({
+      slug: c.slug,
+      name: c.name,
+      intro: c.intro ?? '',
+      families: live.families.filter((f) => f.category === c.slug).map((f) => f.slug),
+      blurb: c.blurb ?? undefined,
+      icon: c.icon ?? undefined,
+    })) as Category[],
+    families: live.families.map((f) => ({
+      slug: f.slug,
+      name: f.name,
+      category: f.category,
+      intro: f.intro ?? '',
+      bullets: f.bullets ?? [],
+      layout: f.layout,
+      source_url: '',
+    })),
+    products: live.products.map((p) => ({
+      sku: p.sku,
+      category: p.category,
+      family: p.family ?? '',
+      family_name: famName.get(p.family ?? '') ?? '',
+      image: p.image,
+      specs: p.specs ?? {},
+      attachment: p.attachment,
+    })),
+  };
+})();
 
 /** Short marketing blurbs + icon keys per category (editorial, not scraped). */
 const CATEGORY_META: Record<string, { blurb: string; icon: string }> = {
@@ -88,8 +133,8 @@ const CATEGORY_META: Record<string, { blurb: string; icon: string }> = {
 export function getCategories(): (Category & { blurb: string; icon: string; count: number })[] {
   return data.categories.map((c) => ({
     ...c,
-    blurb: CATEGORY_META[c.slug]?.blurb ?? c.intro,
-    icon: CATEGORY_META[c.slug]?.icon ?? 'harness',
+    blurb: (c as any).blurb || CATEGORY_META[c.slug]?.blurb || c.intro,
+    icon: (c as any).icon || CATEGORY_META[c.slug]?.icon || 'harness',
     count: data.products.filter((p) => p.category === c.slug).length,
   }));
 }
@@ -99,8 +144,8 @@ export function getCategory(slug: string) {
   if (!cat) return null;
   return {
     ...cat,
-    blurb: CATEGORY_META[slug]?.blurb ?? cat.intro,
-    icon: CATEGORY_META[slug]?.icon ?? 'harness',
+    blurb: (cat as any).blurb || CATEGORY_META[slug]?.blurb || cat.intro,
+    icon: (cat as any).icon || CATEGORY_META[slug]?.icon || 'harness',
   };
 }
 

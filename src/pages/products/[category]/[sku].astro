@@ -1,6 +1,7 @@
 ---
 import Base from '../../../layouts/Base.astro';
 import PageHeader from '../../../components/PageHeader.astro';
+import QuoteFlow from '../../../components/QuoteFlow.astro';
 import {
   allProducts, getCategory, getFamily, getProducts,
   productUrl, imageUrl, categoryUrl,
@@ -77,14 +78,25 @@ const mailto = `mailto:sales@sbfallprotection.com?subject=${encodeURIComponent(m
         )}
 
         <div class="pd-cta">
-          <a class="btn btn-orange" href={mailto}>Request a Quote <span class="arr">→</span></a>
-          <a class="btn btn-ink" href="/contact">Contact Sales</a>
+          <a class="btn btn-orange" href="#enquire">Request a Quote <span class="arr">→</span></a>
+          <a class="btn btn-line" href={mailto}>Email instead</a>
         </div>
         <p class="pd-note">
           Certificates and test documentation are supplied with every quotation.
           Custom and private-label builds of this product are available — MOQs apply.
         </p>
       </div>
+    </div>
+  </section>
+
+  <section class="sec" id="enquire" style="padding-top:0">
+    <div class="wrap" style="max-width:760px">
+      <div class="sec-head reveal" style="margin-bottom:26px">
+        <span class="label">Enquire</span>
+        <h2>Get a quote on <em>{product.sku}</em></h2>
+        <p>A few quick questions and our sales team comes back with MOQ, lead time and pricing.</p>
+      </div>
+      <div class="reveal"><QuoteFlow sku={product.sku} category={cat.name} /></div>
     </div>
   </section>
 

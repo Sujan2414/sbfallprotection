@@ -1,0 +1,38 @@
+---
+import { getCategories } from '../lib/catalog';
+const categories = getCategories();
+/** Optional: pre-selects the category and mentions a SKU (product pages). */
+const { sku = '', category = '' } = Astro.props;
+
+// The anon key is designed to be public: RLS lets it insert enquiries and read
+// the catalogue, nothing else (verified). Absent it, the flow falls back to email.
+const sbUrl = import.meta.env.SUPABASE_URL ?? process.env.SUPABASE_URL ?? '';
+const sbKey = import.meta.env.SUPABASE_ANON_KEY ?? process.env.SUPABASE_ANON_KEY ?? '';
+---
+<div class="flow" id="quoteFlow" data-sku={sku} data-category={category}
+     data-sb-url={sbUrl} data-sb-key={sbKey}>
+  <div class="flow-top">
+    <span class="flow-avatar">SB</span>
+    <div>
+      <b>SB Sales Team</b>
+      <span><i class="dot"></i>Typically replies within one business day</span>
+    </div>
+  </div>
+  <div class="flow-bar"><i id="flowBar"></i></div>
+
+  <div class="flow-body" id="flowBody" aria-live="polite"></div>
+
+  <div class="flow-foot" id="flowFoot"></div>
+
+  <!-- category list for the chips; a <template> would be inert to querySelectorAll -->
+  <script type="application/json" id="flowCats" set:html={JSON.stringify(categories.map((c) => c.name))}></script>
+</div>
+
+<noscript>
+  <p style="margin-top:16px;font-size:14.5px;color:var(--gray)">
+    Email <a href="mailto:sales@sbfallprotection.com" style="color:var(--orange);font-weight:600">sales@sbfallprotection.com</a>
+    or call <a href="tel:+915122406728" style="color:var(--orange);font-weight:600">+91 512 240 6728</a> for a quotation.
+  </p>
+</noscript>
+
+<script src="../scripts/quote-flow.js"></script>
