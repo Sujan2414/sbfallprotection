@@ -1,0 +1,90 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Long-cache the fingerprinted bundles Astro emits.
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Preserve inbound links from the current WordPress site.
+[[redirects]]
+  from = "/product-catagories"
+  to = "/products"
+  status = 301
+
+[[redirects]]
+  from = "/harnesses"
+  to = "/products/harnesses"
+  status = 301
+
+[[redirects]]
+  from = "/lanyards"
+  to = "/products/lanyards"
+  status = 301
+
+[[redirects]]
+  from = "/hooks-connectors"
+  to = "/products/hooks-connectors"
+  status = 301
+
+[[redirects]]
+  from = "/anchorages"
+  to = "/products/anchorages"
+  status = 301
+
+[[redirects]]
+  from = "/anchorages-2"
+  to = "/products/anchorages"
+  status = 301
+
+[[redirects]]
+  from = "/work-positioning-system"
+  to = "/products/work-positioning"
+  status = 301
+
+[[redirects]]
+  from = "/safety-garments"
+  to = "/products/safety-garments"
+  status = 301
+
+[[redirects]]
+  from = "/rope-access-rescue"
+  to = "/products/rope-access-rescue"
+  status = 301
+
+[[redirects]]
+  from = "/material-handling"
+  to = "/products/material-handling"
+  status = 301
+
+[[redirects]]
+  from = "/retractable-block"
+  to = "/products/retractable-blocks"
+  status = 301
+
+[[redirects]]
+  from = "/temporary-horizontal-lifeline"
+  to = "/products/horizontal-lifeline"
+  status = 301
+
+[[redirects]]
+  from = "/company-catalogue"
+  to = "/contact"
+  status = 301

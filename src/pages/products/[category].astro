@@ -1,0 +1,98 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import {
+  getCategories, getCategory, getFamilies, getProducts,
+  productUrl, imageUrl, categoryUrl,
+} from '../../lib/catalog';
+
+export function getStaticPaths() {
+  return getCategories().map((c) => ({ params: { category: c.slug } }));
+}
+
+const { category } = Astro.params;
+const cat = getCategory(category!)!;
+const families = getFamilies(category!);
+const products = getProducts(category!);
+
+/** The most common standard in a family, used as the card badge. */
+function stdOf(specs: Record<string, string>): string | null {
+  const key = Object.keys(specs).find((k) => /standard|conformity/i.test(k));
+  if (!key) return null;
+  const v = specs[key];
+  const m = v.match(/(EN|ANSI|IS)\s?[\d.:\-\s]+/i);
+  return (m ? m[0] : v).trim().slice(0, 22) || null;
+}
+---
+<Base
+  title={`${cat.name} — SB Fall Protection`}
+  description={`${cat.name} manufactured by SB Fall Protection, Kanpur India. ${cat.blurb} ${products.length} product codes available with full specifications.`}
+>
+  <PageHeader
+    eyebrow="Product Range"
+    title={cat.name}
+    lead={cat.blurb}
+    crumbs={[{ label: 'Products', href: '/products' }, { label: cat.name }]}
+  />
+
+  <section class="sec">
+    <div class="wrap">
+      {families.map((f) => {
+        const items = getProducts(category!, f.slug);
+        if (items.length === 0) return null;
+        return (
+          <div class="family">
+            <div class="family-head">
+              <div>
+                <h2>{f.name}</h2>
+                {f.intro && <p>{f.intro}</p>}
+              </div>
+              <span class="family-tag">{items.length} {items.length === 1 ? 'code' : 'codes'}</span>
+            </div>
+
+            {f.bullets.length > 0 && (
+              <div class="fam-notes">
+                <ul>
+                  {f.bullets.slice(0, 5).map((b) => <li>{b}</li>)}
+                </ul>
+              </div>
+            )}
+
+            <div class="sku-grid">
+              {items.map((p) => (
+                <a class="sku-card" href={productUrl(p)}>
+                  <span class="sku-ph">
+                    <img src={imageUrl(p.image)} alt={`${p.sku} — ${f.name}`} loading="lazy" width="300" height="300">
+                  </span>
+                  <span class="sku-body">
+                    <span class="sku-code">{p.sku}</span>
+                    {(p.attachment || p.specs['Usage']) && (
+                      <span class="sku-desc">{p.attachment || p.specs['Usage']}</span>
+                    )}
+                    {stdOf(p.specs) && <span class="sku-std">{stdOf(p.specs)}</span>}
+                  </span>
+                </a>
+              ))}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </section>
+
+  <section class="sec" style="padding-top:0">
+    <div class="wrap">
+      <div class="cta-card reveal">
+        <img class="cta-bg" src="/assets/cta-abstract.jpg" alt="">
+        <div class="cta-inner">
+          <h2>Need a quote on {cat.name}?</h2>
+          <p>Send us the product codes and quantities you need — we reply with specifications, MOQs and pricing within one business day.</p>
+          <div class="btns">
+            <a class="btn btn-orange" href="/contact">Request a Quote</a>
+            <a class="btn btn-white" href="tel:+915122406728">Call Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

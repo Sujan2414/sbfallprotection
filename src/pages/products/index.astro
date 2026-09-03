@@ -1,0 +1,57 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import CatIcon from '../../components/CatIcon.astro';
+import { getCategories, categoryUrl, allProducts } from '../../lib/catalog';
+
+const categories = getCategories();
+const total = allProducts().length;
+---
+<Base
+  title="Products — Fall Protection Equipment Catalogue | SB Fall Protection"
+  description="Browse the full SB Fall Protection catalogue: harnesses, lanyards, anchorages, hooks and connectors, retractable blocks, rope access and rescue gear, and safety garments — manufactured to EN, ANSI and Indian standards."
+>
+  <PageHeader
+    eyebrow="Our Products"
+    title="Every Link in the"
+    accent="Fall-Arrest Chain"
+    lead={`Anchor, body support, connection and rescue — ${total}+ product codes across ${categories.length} categories, designed, stitched, assembled and tested under one roof in Kanpur, India.`}
+    crumbs={[{ label: 'Products' }]}
+  />
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="cat-grid">
+        {categories.map((c) => (
+          <a class="cat-card" href={categoryUrl(c.slug)}>
+            <span class="cat-ic"><CatIcon name={c.icon} /></span>
+            <h3>{c.name}</h3>
+            <p>{c.blurb}</p>
+            <span class="cat-foot">
+              <span class="cat-count">{c.count} product {c.count === 1 ? 'code' : 'codes'}</span>
+              <span class="cat-go">View range
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>
+              </span>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" style="padding-top:0">
+    <div class="wrap">
+      <div class="urgent reveal">
+        <span class="u-dots ud-tr" aria-hidden="true"></span>
+        <span class="u-dots ud-bl" aria-hidden="true"></span>
+        <div class="urgent-copy">
+          <span class="u-badge">Custom Manufacturing</span>
+          <h2>Need It Built to Your Own Spec?</h2>
+          <p class="sub">Our in-house design team develops custom and private-label gear to your drawings.</p>
+          <a class="btn btn-white" href="/contact">Talk to our team <span class="arr">→</span></a>
+        </div>
+        <div class="urgent-photo"><div class="u-circle"><img src="/assets/urgent-worker.jpg" alt="SB worker wearing hi-visibility safety gear" width="600" height="600"></div></div>
+      </div>
+    </div>
+  </section>
+</Base>

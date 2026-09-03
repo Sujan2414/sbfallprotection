@@ -2,3 +2,6 @@
 _probe.html
 _mobile.html
 debug-*.html
+node_modules
+dist
+.astro

@@ -1,0 +1,3096 @@
+{
+  "categories": [
+    {
+      "slug": "harnesses",
+      "name": "Harnesses",
+      "intro": "Our Shoulder, Chest Strap, and Thigh Straps offer complete adjustability, providing a comfortable and secure fit for users of various body types. This versatility ensures that our safety harnesses and body belts can be customized to meet individual needs, enhancing safety and ease of use in various applications.",
+      "families": [
+        "full-body-harness-en-standard",
+        "full-body-harness-indian-standard",
+        "ansi-standard",
+        "sit-harness",
+        "rescue-harness"
+      ]
+    },
+    {
+      "slug": "lanyards",
+      "name": "Lanyards & Energy Absorbers",
+      "intro": "SB. FALL PROTECTION provides you with an option to customize your restraint as per your own job specific needs.",
+      "families": [
+        "energy-absorbing-webbing-44mm-lanyards",
+        "energy-absorbing-expendable-webbing-44mm-lanyards",
+        "energy-absorbing-kernmantle-rope-lanyards",
+        "energy-absorbing-kernmantle-rope-lanyards-2",
+        "energy-absorbing-twisted-rope-lanyards",
+        "expendable-webbing-44mm-lanyards",
+        "webbing-44mm-restraint-lanyards",
+        "twisted-rope-restraint-lanyards",
+        "forked-lanyards-with-energy-absorber",
+        "restraint-forked-lanyards",
+        "ansi-lanyards"
+      ]
+    },
+    {
+      "slug": "work-positioning",
+      "name": "Work Positioning",
+      "intro": "SB FALL PROTECTION has a comprehensive and customized series of Work Positioning System. Work Positioning Lanyards can be connected to the Lateral D-Rings on the Work Positioning Belts or Combination Harnesses and easily adjusted for their lengths to suit the application.",
+      "families": [
+        "work-positioning-system"
+      ]
+    },
+    {
+      "slug": "hooks-connectors",
+      "name": "Hooks & Connectors",
+      "intro": "The SB FALL PROTECTION range of Hooks and Connectors comes with the following.",
+      "families": [
+        "hooks-connectors"
+      ]
+    },
+    {
+      "slug": "anchorages",
+      "name": "Anchorages",
+      "intro": "S. B. FALL PROTECTION Fall Arrester & Temporary Anchorage Line Systems have a wide application of usage in fall arrest while climbing, and in restraint while working on roof tops, platforms and inclined planes.",
+      "families": [
+        "anchorages",
+        "anchorages-2"
+      ]
+    },
+    {
+      "slug": "horizontal-lifeline",
+      "name": "Horizontal Lifeline",
+      "intro": "",
+      "families": [
+        "temporary-horizontal-lifeline"
+      ]
+    },
+    {
+      "slug": "retractable-blocks",
+      "name": "Retractable Blocks",
+      "intro": "SB. FALL PROTECTION Self Retractable Lifelines are special devices equipped with extendable G.I. wire rope which have an inbuilt braking system to arrest potential falls",
+      "families": [
+        "retractable-block"
+      ]
+    },
+    {
+      "slug": "material-handling",
+      "name": "Material Handling",
+      "intro": "S.B. FALL PROTECTION understands the importance of durability and reliability in material handling bags. That’s why they go above and beyond to ensure that their products are made with the highest quality materials and craftsmanship. Each bag is designed to withstand heavy loads, harsh environments, and frequent use, providing long-lasting performance that you can rely on.",
+      "families": [
+        "material-handling"
+      ]
+    },
+    {
+      "slug": "rope-access-rescue",
+      "name": "Rope Access & Rescue",
+      "intro": "Rope Access technique of movement on a rope should only be used when traditional access systems cannot be installed. The basic rope access equipment should be used with a fall protection system. Rescue technique is used in an emergency hence it is naturally the most sensitive. This intervention can be performed by the user him/herself, if he/she is conscious and has the necessary equipment for selfextraction, or by a helper. In this situation it is necessary to be able to reach the victim, release him/her in complete safety and move the person upwards or downwards.",
+      "families": [
+        "rope-access-rescue",
+        "confined-space"
+      ]
+    },
+    {
+      "slug": "safety-garments",
+      "name": "Safety Garments & PPE",
+      "intro": "has dedicated its most valuable resources to the development and innovation of Safety Garments, and in-turn we have won the confidence and trust of our customers. We supply to some of the most prestigious international names in bulk buying and we have a strong equity with domestic consumers as well.",
+      "families": [
+        "safety-garments",
+        "reflective-vests",
+        "head-protection",
+        "eye-protection",
+        "ear-protection",
+        "face-protection",
+        "hand-protection"
+      ]
+    }
+  ],
+  "families": [
+    {
+      "slug": "full-body-harness-en-standard",
+      "name": "Full Body Harness (EN Standard)",
+      "category": "harnesses",
+      "intro": "Our Shoulder, Chest Strap, and Thigh Straps offer complete adjustability, providing a comfortable and secure fit for users of various body types. This versatility ensures that our safety harnesses and body belts can be customized to meet individual needs, enhancing safety and ease of use in various applications.",
+      "bullets": [],
+      "layout": "spec",
+      "source_url": "https://www.sbfallprotection.com/full-body-harness-en-standard/"
+    },
+    {
+      "slug": "full-body-harness-indian-standard",
+      "name": "Full Body Harness (Indian Standard)",
+      "category": "harnesses",
+      "intro": "Our Shoulder, Chest Strap, and Thigh Straps offer complete adjustability, providing a comfortable and secure fit for users of various body types. This versatility ensures that our safety harnesses and body belts can be customized to meet individual needs, enhancing safety and ease of use in various applications.",
+      "bullets": [],
+      "layout": "spec",
+      "source_url": "https://www.sbfallprotection.com/full-body-harness-indian-standard/"
+    },
+    {
+      "slug": "ansi-standard",
+      "name": "ANSI Standard",
+      "category": "harnesses",
+      "intro": "",
+      "bullets": [],
+      "layout": "spec",
+      "source_url": "https://www.sbfallprotection.com/ansi-standard/"
+    },
+    {
+      "slug": "sit-harness",
+      "name": "Sit Harness",
+      "category": "harnesses",
+      "intro": "Our Shoulder, Chest Strap, and Thigh Straps offer complete adjustability, providing a comfortable and secure fit for users of various body types. This versatility ensures that our safety harnesses and body belts can be customized to meet individual needs, enhancing safety and ease of use in various applications.",
+      "bullets": [],
+      "layout": "spec",
+      "source_url": "https://www.sbfallprotection.com/sit-harness/"
+    },
+    {
+      "slug": "rescue-harness",
+      "name": "Rescue Harness",
+      "category": "harnesses",
+      "intro": "The Extension Rescue Strap incorporated on the shoulder strap of the Harness has a D-ring which can be used to connect to the Rescue Equipment, when in need. It allows easy rescue of the worker and minimizes his discomfort while being rescued. The Extension Rescue Strap otherwise lies attached to the shoulder strap with the help of velcro binding, when not in use.",
+      "bullets": [],
+      "layout": "spec",
+      "source_url": "https://www.sbfallprotection.com/rescue-harness/"
+    },
+    {
+      "slug": "energy-absorbing-webbing-44mm-lanyards",
+      "name": "Energy Absorbing Webbing (44mm) Lanyards",
+      "category": "lanyards",
+      "intro": "SB. FALL PROTECTION provides you with an option to customize your restraint as per your own job specific needs.",
+      "bullets": [
+        "The Webbing Lanyards are available in lengths 1.0m, 1.5m, 1.8m, and 2.0m.",
+        "The Webbing Lanyards in this section are made of 44mm wide high tenacity polyester webbing.",
+        "The loops at the ends are protected by an abrasion resistant covering. This prevents the webbing from getting damaged by the metallic contact of the connector.",
+        "Variety of hooks and connectors are available for connection of both anchorage and termination end.",
+        "Shock Absorber reduces blow of jerk and maintains it below 6kN as per standard.",
+        "All Lanyards with different combinations of connectors mentioned below are individually certified as per"
+      ],
+      "layout": "variant",
+      "source_url": "https://www.sbfallprotection.com/energy-absorbing-webbing-44mm-lanyards/"
+    },
+    {
+      "slug": "energy-absorbing-expendable-webbing-44mm-lanyards",
+      "name": "Energy Absorbing Expendable Webbing (44MM) Lanyards",
+      "category": "lanyards",
+      "intro": "SB. FALL PROTECTION provides you with an option to customize your restraint as per your own job specific needs.",
+      "bullets": [
+        "The Expendable Lanyards are available in lengths 1.0m, 1.5m, 1.8m, and 2.0m.",
+        "The Expendable Lanyards in this section are made of 44mm wide polyester webbing.",
+        "The Expendable Lanyards have Relaxed lengths of 1.5m, Expanded Length 2.0m.",
+        "The Elastic nature of the Lanyard reduces it’s actual effective length there by reducing trip hazards.",
+        "Variety of hooks and connectors are available for connection of both anchorage and termination end.",
+        "Shock Absorber reduces blow of jerk and maintains it below 6kN as per standard.",
+        "All Lanyards with different combinations of connectors mentioned below are individually certified as per"
+      ],
+      "layout": "variant",
+      "source_url": "https://www.sbfallprotection.com/energy-absorbing-expendable-webbing-44mm-lanyards/"
+    },
+    {
+      "slug": "energy-absorbing-kernmantle-rope-lanyards",
+      "name": "Kernmantle Rope Restraint Lanyards",
+      "category": "lanyards",
+      "intro": "SB FALL PROTECTION provides you a diverse range of customize Kernmantle restraint lanyards as per your own job specific needs",
+      "bullets": [
+        "Kernmantle Rope Lanyards are available in lengths 1.0m, 1.5m, 1.8m, and 2.0m.",
+        "Made of 10.5mm and 12mm dia Polyamide Kernmantle Rope.",
+        "The stitched end is protected with a strong transparent protective covering sleeve, which not only protects the stitched, but also makes the stitching visible for easy inspection prior to use.",
+        "The loops at the end are protected by an abrasion resistant thimble, which prevents the rope from being damaged by the metallic contact of the connector.",
+        "The rope also has a coloured tracer strand (age indicator) which loses its colour in due course of time, to manifest that the Lanyard is now unfit for further usages.",
+        "Variety of hooks and connectors are available for connection of both anchorage and termination end.",
+        "All Lanyards with different combinations of connectors mentioned below are individually certified as per EN 354:2010."
+      ],
+      "layout": "variant",
+      "source_url": "https://www.sbfallprotection.com/energy-absorbing-kernmantle-rope-lanyards/"
+    },
+    {
+      "slug": "energy-absorbing-kernmantle-rope-lanyards-2",
+      "name": "Energy Absorbing Kernmantle Rope Lanyards",
+      "category": "lanyards",
+      "intro": "SB. FALL PROTECTION provides you with an option to customize your restraint as per your own job specific needs.",
+      "bullets": [
+        "Kernmantle Rope Lanyards are available in lengths 1.0m, 1.5m, 1.8m, and 2.0m.",
+        "Made of 10.5mm and 12mm dia Polyamide Kernmantle Rope.",
+        "The loops at the end are protected by an abrasion resistant thimble, which prevents the rope from getting damaged by the metallic contact of the connector.",
+        "The rope also has a coloured tracer strand (age indicator) which loses its colour in due course of time, to manifest that the Lanyard is now unfit for further usages.",
+        "Variety of hooks and connectors are available for connection of both anchorage and termination end.",
+        "Shock Absorber reduces blow of jerk and maintains it below 6kN as per standards.",
+        "All Lanyards with different combinations of connectors mentioned below are individually certified as per EN 355:2002."
+      ],
+      "layout": "variant",
+      "source_url": "https://www.sbfallprotection.com/energy-absorbing-kernmantle-rope-lanyards-2/"
+    },
+    {
+      "slug": "energy-absorbing-twisted-rope-lanyards",
+      "name": "Energy Absorbing Twisted Rope Lanyards",
+      "category": "lanyards",
+      "intro": "SB. FALL PROTECTION has a variety of twisted rope lanyards which comes with shock absorbing device and can be customized as per specific job requirements.",
+      "bullets": [
+        "Twisted Rope Lanyards are available in lengths 1.0m, 1.5m, 1.8m, and 2.0m.",
+        "Made of 12mm and 14mm dia Polyamide Twisted Rope.",
+        "The spliced end is protected with a strong transparent protective covering sleeve, which not only protects the splicing, but also makes the splicing visible for easy inspection prior to use.",
+        "The loops at the end are protected by an abrasion resistant thimble, which prevents the rope from getting damaged by the metallic contact of the connector.",
+        "The rope also has a coloured tracer strand (age indicator) which loses its colour in due course of time, to",
+        "manifest that the Lanyard is now unfit for further usages.",
+        "Variety of hooks and connectors are available for connection of both anchorage and termination end.",
+        "Shock Absorber reduces blow of jerk and maintains it below 6kN as per standard.",
+        "All Lanyards with different combinations of connectors mentioned below are individually certified as per EN 355:2002."
+      ],
+      "layout": "variant",
+      "source_url": "https://www.sbfallprotection.com/energy-absorbing-twisted-rope-lanyards/"
+    },
+    {
+      "slug": "expendable-webbing-44mm-lanyards",
+      "name": "Expendable Webbing (44mm) Lanyards",
+      "category": "lanyards",
+      "intro": "SB. FALL PROTECTION provides you with an option to customize your restraint as per your own job specific needs.",
+      "bullets": [
+        "The Expendable Lanyards are available in lengths 1.0m, 1.5m, 1.8m, and 2.0m.",
+        "The Expendable Lanyards in this section are made of 44mm wide polyester webbing.",
+        "The Expendable Lanyards have Relaxed lengths of 1.5m, Expanded Length 2.0m.",
+        "The Elastic nature of the Lanyards reduces it’s actual effective length thereby reducing trip hazards.",
+        "Variety of hooks and connectors are available for connection of both anchorage and termination end.",
+        "All Lanyards with different combinations of connectors mentioned below are individually certified as per EN 354:2010."
+      ],
+      "layout": "variant",
+      "source_url": "https://www.sbfallprotection.com/expendable-webbing-44mm-lanyards/"
+    },
+    {
+      "slug": "webbing-44mm-restraint-lanyards",
+      "name": "Webbing (44mm) Restraint Lanyards",
+      "category": "lanyards",
+      "intro": "As far as webbing lanyards are concerned, SB. Fall Protection has a vast range of lanyards with a facility to customize as per specific requirements too.",
+      "bullets": [
+        "The Webbing Lanyards are available in lengths 1.0m, 1.5m, 1.8m, and 2.0m.",
+        "The Webbing Lanyards in this section are made of 44mm wide high tenacity polyester webbing.",
+        "The loops at the ends are protected by an abrasion resistant covering. This prevents the webbing from being damaged by the metallic contact of the connector.",
+        "Variety of hooks and connectors are available for connection of both anchorage and termination end.",
+        "All Lanyards with different combinations of connectors mentioned below are individually certified as per EN 354:2010."
+      ],
+      "layout": "variant",
+      "source_url": "https://www.sbfallprotection.com/webbing-44mm-restraint-lanyards/"
+    },
+    {
+      "slug": "twisted-rope-restraint-lanyards",
+      "name": "Twisted Rope Restraint Lanyards",
+      "category": "lanyards",
+      "intro": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
+      "bullets": [
+        "SB FALL PROTECTION provides you with an option to customize your restraint as per your own job specific needs.",
+        "Twisted Rope Lanyards are available in lengths 1.0m, 1.5m, 1.8m, and 2.0m.",
+        "Made of 12mm and 14mm dia Polyamide Twisted Rope.",
+        "The spliced end is protected with a strong transparent protective covering sleeve, which not only protects",
+        "the splicing, but also makes the splicing visible for easy inspection prior to use.",
+        "The loops at the end are protected by an abrasion resistant thimble, which prevents the rope from being",
+        "damaged by the metallic contact of the connector.",
+        "The rope also has a coloured tracer strand (age indicator) which loses its colour in due course of time, to",
+        "manifest that the Lanyard is now unfit for further usages.",
+        "Variety of hooks and connectors are available for connection of both anchorage and termination end.",
+        "All Lanyards with different combinations of connectors mentioned below are individually certified as per"
+      ],
+      "layout": "variant",
+      "source_url": "https://www.sbfallprotection.com/twisted-rope-restraint-lanyards/"
+    },
+    {
+      "slug": "forked-lanyards-with-energy-absorber",
+      "name": "Forked Lanyards with Energy Absorber",
+      "category": "lanyards",
+      "intro": "Forked Lanyards allow the user easy movability at height, staying tied-off at all times for 100% fall protection. The Forked Lanyards are offered with a Shock Absorber to reduce the impact of jurk whenever any fall occurs. Forked Lanyards are made up of either Twisted Ropes, Kernmantle Ropes or 44mm wide high tenacity Polyester Webbing & Expandable Lanyards. Conforms to EN 355:2002.",
+      "bullets": [],
+      "layout": "variant",
+      "source_url": "https://www.sbfallprotection.com/forked-lanyards-with-energy-absorber/"
+    },
+    {
+      "slug": "restraint-forked-lanyards",
+      "name": "Restraint Forked Lanyards",
+      "category": "lanyards",
+      "intro": "Forked Restraint Lanyards (Twin Leg) come in Twisted Rope, Kernmantle Rope, 44mm wide polyester webbing & also available in Expandable Lanyard thereby offering the facility to move in all directions while remaining safely anchored at all times. The Lanyards are suited only for purpose of restraint, and should note be used for Fall protection since they do not have any Energy Absorber. Conforms to EN 354:2010",
+      "bullets": [],
+      "layout": "variant",
+      "source_url": "https://www.sbfallprotection.com/restraint-forked-lanyards/"
+    },
+    {
+      "slug": "ansi-lanyards",
+      "name": "ANSI LANYARDS",
+      "category": "lanyards",
+      "intro": "SB. FALL PROTECTION has a broad range of lanyards that provides top quality compliance and are trusted by workers to keep them safe. The lanyards are available in different lengths with different combinations of hooks and connectors as per the requirement of the users.",
+      "bullets": [
+        "SB FALL PROTECTION provides you with an option to customize your restraint as per your own job specific needs."
+      ],
+      "layout": "spec",
+      "source_url": "https://www.sbfallprotection.com/ansi-lanyards/"
+    },
+    {
+      "slug": "work-positioning-system",
+      "name": "Work Positioning System",
+      "category": "work-positioning",
+      "intro": "SB FALL PROTECTION has a comprehensive and customized series of Work Positioning System. Work Positioning Lanyards can be connected to the Lateral D-Rings on the Work Positioning Belts or Combination Harnesses and easily adjusted for their lengths to suit the application.",
+      "bullets": [
+        "All Work Positioning Lanyards and Belts are tested and CE certified as per EN 358:2018."
+      ],
+      "layout": "variant",
+      "source_url": "https://www.sbfallprotection.com/work-positioning-system/"
+    },
+    {
+      "slug": "hooks-connectors",
+      "name": "Hooks & Connectors",
+      "category": "hooks-connectors",
+      "intro": "The SB FALL PROTECTION range of Hooks and Connectors comes with the following.",
+      "bullets": [
+        "Are openable by minimum 2 deliberate consecutive manual actions.",
+        "A range of Manual and Automatic Locking Hooks and Connectors.",
+        "Tested for both Gate Functions and Gate Resistance.",
+        "Tested for corrosion resistance for minimum 96 hours of salt spray testing."
+      ],
+      "layout": "variant",
+      "source_url": "https://www.sbfallprotection.com/hooks-connectors/"
+    },
+    {
+      "slug": "anchorages",
+      "name": "Temporary Anchorage Line Systems",
+      "category": "anchorages",
+      "intro": "S. B. FALL PROTECTION Fall Arrester & Temporary Anchorage Line Systems have a wide application of usage in fall arrest while climbing, and in restraint while working on roof tops, platforms and inclined planes.",
+      "bullets": [
+        "In the event of a fall, they are designed to “grab” on to the Anchorage Line on which they move, thus arresting the fall immediately.",
+        "The Anchorage line, in conjunction with the given Rope Grab provides the necessary Shock Absorption."
+      ],
+      "layout": "variant",
+      "source_url": "https://www.sbfallprotection.com/anchorages/"
+    },
+    {
+      "slug": "anchorages-2",
+      "name": "Anchorages",
+      "category": "anchorages",
+      "intro": "The Anchorage Point is commonly referred to as a secure tie off point. It is the place where a worker anchors himself so that he can easily move around that point, and also holds on safely, incase he experiences a fall.",
+      "bullets": [
+        "According to EN 795:2012, Anchor Devices have been classified into various types, names Type A, B, C, D and E. SB FALL PROTECTION offers a range of anchor devices which fall under various such types."
+      ],
+      "layout": "spec",
+      "source_url": "https://www.sbfallprotection.com/anchorages-2/"
+    },
+    {
+      "slug": "temporary-horizontal-lifeline",
+      "name": "Temporary Horizontal Lifeline",
+      "category": "horizontal-lifeline",
+      "intro": "",
+      "bullets": [],
+      "layout": "spec",
+      "source_url": "https://www.sbfallprotection.com/temporary-horizontal-lifeline/"
+    },
+    {
+      "slug": "retractable-block",
+      "name": "Retractable Block",
+      "category": "retractable-blocks",
+      "intro": "SB. FALL PROTECTION Self Retractable Lifelines are special devices equipped with extendable G.I. wire rope which have an inbuilt braking system to arrest potential falls",
+      "bullets": [],
+      "layout": "variant",
+      "source_url": "https://www.sbfallprotection.com/retractable-block/"
+    },
+    {
+      "slug": "material-handling",
+      "name": "Material Handling",
+      "category": "material-handling",
+      "intro": "S.B. FALL PROTECTION understands the importance of durability and reliability in material handling bags. That’s why they go above and beyond to ensure that their products are made with the highest quality materials and craftsmanship. Each bag is designed to withstand heavy loads, harsh environments, and frequent use, providing long-lasting performance that you can rely on.",
+      "bullets": [],
+      "layout": "variant",
+      "source_url": "https://www.sbfallprotection.com/material-handling/"
+    },
+    {
+      "slug": "rope-access-rescue",
+      "name": "Rope Access & Rescue",
+      "category": "rope-access-rescue",
+      "intro": "Rope Access technique of movement on a rope should only be used when traditional access systems cannot be installed. The basic rope access equipment should be used with a fall protection system. Rescue technique is used in an emergency hence it is naturally the most sensitive. This intervention can be performed by the user him/herself, if he/she is conscious and has the necessary equipment for selfextraction, or by a helper. In this situation it is necessary to be able to reach the victim, release him/her in complete safety and move the person upwards or downwards.",
+      "bullets": [],
+      "layout": "variant",
+      "source_url": "https://www.sbfallprotection.com/rope-access-rescue/"
+    },
+    {
+      "slug": "confined-space",
+      "name": "Confined Space",
+      "category": "rope-access-rescue",
+      "intro": "A particularly challenging area of activity where the worker is required to move into confined space. S. B. FALL PROTECTION provides equipment that allows easy overhead access into and retrieval of personnel and material from such confined space areas.",
+      "bullets": [],
+      "layout": "spec",
+      "source_url": "https://www.sbfallprotection.com/confined-space/"
+    },
+    {
+      "slug": "safety-garments",
+      "name": "Safety Garments",
+      "category": "safety-garments",
+      "intro": "has dedicated its most valuable resources to the development and innovation of Safety Garments, and in-turn we have won the confidence and trust of our customers. We supply to some of the most prestigious international names in bulk buying and we have a strong equity with domestic consumers as well.",
+      "bullets": [
+        "Our stalwart values are consistent quality, competitive pricing, and punctually meeting the deadlines of our customers."
+      ],
+      "layout": "variant",
+      "source_url": "https://www.sbfallprotection.com/safety-garments/"
+    },
+    {
+      "slug": "reflective-vests",
+      "name": "Reflective Vests",
+      "category": "safety-garments",
+      "intro": "Material : 100% Polyester, 100% Cotton, & Poly Cotton blended.",
+      "bullets": [
+        "GSM : 45 - 120 GSM / all other GSMs based on requirements.",
+        "Color : Green / Orange / Royal Blue / all other colors based on requirement.",
+        "Reflective Tape Type: PVC / Grey Fiber / Highly Reflective Grey Fabric (EN Certified)"
+      ],
+      "layout": "variant",
+      "source_url": "https://www.sbfallprotection.com/reflective-vests/"
+    },
+    {
+      "slug": "head-protection",
+      "name": "Head Protection",
+      "category": "safety-garments",
+      "intro": "Head Protection is required in almost every industry where there is a risk of being injured by falling objects or when working in areas of restricted head space.",
+      "bullets": [
+        "SB. FALL PROTECTION offers the range of Safety Helmets, combination of exceptional comfort, simple integration of additional personal protective equipment, and modern stylish design."
+      ],
+      "layout": "spec",
+      "source_url": "https://www.sbfallprotection.com/head-protection/"
+    },
+    {
+      "slug": "eye-protection",
+      "name": "Eye Protection",
+      "category": "safety-garments",
+      "intro": "SB. FALL PROTECTION brings to you a complete range of Eye Protection that is perfect combination of comfort and safety. S. B. FALL PROTECTION has introduced a revolutionary range of Eye Protection which is self adjustable to individual head sizes, delivering noticeable higher levels of personal comfort particularly at Industrial and Welding works.",
+      "bullets": [
+        "SB. FALL PROTECTION range of Eye Protection is certified and conforms to the standard laid down in EN 166:2002."
+      ],
+      "layout": "variant",
+      "source_url": "https://www.sbfallprotection.com/eye-protection/"
+    },
+    {
+      "slug": "ear-protection",
+      "name": "Ear Protection",
+      "category": "safety-garments",
+      "intro": "SB. FALL PROTECTION offers a range of Ear-Protection equipment which provides appropriate attenuation of noise in various Industrial settings.",
+      "bullets": [
+        "The SB. FALL PROTECTION Ear-Plugs are an ideal choice for Ear-Protection during long hours of exposure to high decibel sound.",
+        "The SB. FALL PROTECTION Ear-Muffs are versatile, apt for usages during shorter duration of exposure, and come with different features, like- helmet-mountable, foldable, etc."
+      ],
+      "layout": "variant",
+      "source_url": "https://www.sbfallprotection.com/ear-protection/"
+    },
+    {
+      "slug": "face-protection",
+      "name": "Face Protection",
+      "category": "safety-garments",
+      "intro": "SB. FALL PROTECTION offers an exhaustive range of Welding Shields & Face Shield that are specifically designed to help protect the wearer eyes from the harmful radiation including visible light, UV/ IR radiation resulting from welding processes.",
+      "bullets": [
+        "A wide range of Visors, Face Shield, and Welding Shield are available for many forestry and industrial applications.",
+        "The features include a Polypropylene Impact Resistant Shell with a high strength nylon Ratchet headgear.",
+        "This Welding Shield is extremely light in weight, providing comfort as well as protection during welding operations.",
+        "Headband is broad enough to suit most head sizes.",
+        "Face Shields and Welding Shields are especially designed to adjust and fit the wearer’s head in both circumferences, without causing undue pressure."
+      ],
+      "layout": "variant",
+      "source_url": "https://www.sbfallprotection.com/face-protection/"
+    },
+    {
+      "slug": "hand-protection",
+      "name": "Hand Protection",
+      "category": "safety-garments",
+      "intro": "We offer a wide range of hand gloves which are especially designed to meet the exact requirements of our clients.",
+      "bullets": [
+        "gloves are available in various sizes, designs and styles for different applications.",
+        "General Application Gloves - Cotton Seamless Knitted Gloves, Cut-and-Sewn Gloves, Nylon Gloves, Leather Gloves, Dipped Gloves etc.",
+        "Cut, Heat and Cold Resistant Gloves - Kevlar® Gloves, Basofil® Gloves, Esteron Gloves, Leather Gloves etc.",
+        "Chemical Application Gloves - PVC gloves, Nitrile Gloves, Neoprene Gloves, Latex Gloves.",
+        "Hand protection range includes construction, chemical handling, mining, mechanics, working with glass, welding",
+        "and hot applications among others. Our comprehensive selection of products is ideal for businesses, working",
+        "directly in industrial markets. Our safety work gloves are suitable for multiple industries:",
+        "Manufactured to the highest standards, our safety gloves keep workers comfortable, compliant, and protected."
+      ],
+      "layout": "variant",
+      "source_url": "https://www.sbfallprotection.com/hand-protection/"
+    }
+  ],
+  "products": [
+    {
+      "sku": "SBH021",
+      "category": "harnesses",
+      "family": "full-body-harness-en-standard",
+      "family_name": "Full Body Harness (EN Standard)",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBH022.jpg",
+      "specs": {
+        "Usage": "Fall Arrest",
+        "Breaking Strength": "25 KN",
+        "D-ring Position": "Back Side",
+        "Adjustability": "Shoulder, Chest, & Thigh",
+        "Webbing Properties": "Polyester",
+        "Fall Indicator": "Yes",
+        "Buckle Type": "Alloy Steel with Zinc Plating",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Weight": "1150 gms (approx.)",
+        "Standards": "EN 361:2002"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBH022",
+      "category": "harnesses",
+      "family": "full-body-harness-en-standard",
+      "family_name": "Full Body Harness (EN Standard)",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBH023.jpg",
+      "specs": {
+        "Usage": "Fall Arrest, Tower or Ladder Climbing",
+        "Breaking Strength": "25 KN",
+        "D-ring Position": "Back Side",
+        "Textile Loops": "Yes (Front)",
+        "Adjustability": "Shoulder, Chest, & Thigh",
+        "Webbing Properties": "Polyester",
+        "Fall Indicator": "Yes",
+        "Buckle Type": "Alloy Steel with Zinc Plating",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Weight": "1200 gms (approx.)",
+        "Standards": "EN 361:2002"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBH023",
+      "category": "harnesses",
+      "family": "full-body-harness-en-standard",
+      "family_name": "Full Body Harness (EN Standard)",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBH024.jpg",
+      "specs": {
+        "Usage": "Fall Arrest, Tower or Ladder Climbing",
+        "Breaking Strength": "25 KN",
+        "D-ring Position": "Back Side, Front Chest",
+        "Textile Loops": "Not applicable",
+        "Adjustability": "Shoulder, Chest, & Thigh",
+        "Webbing Properties": "Polyester",
+        "Fall Indicator": "Yes",
+        "Buckle Type": "Alloy Steel with Zinc Plating",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Weight": "1270 gms (approx.)",
+        "Standards": "EN 361:2002"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBH024",
+      "category": "harnesses",
+      "family": "full-body-harness-en-standard",
+      "family_name": "Full Body Harness (EN Standard)",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBH025.jpg",
+      "specs": {
+        "Usage": "Fall Arrest, Tower or Ladder Climbing",
+        "Breaking Strength": "25 KN",
+        "D-ring Position": "Back Side, Front Chest",
+        "Strap Adjustability": "Shoulder, Chest, & Thigh",
+        "Webbing Properties": "Polyester",
+        "Fall Indicator": "Yes",
+        "Buckle Type": "Alloy Steel with Zinc Plating",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Weight": "1270 gms (approx.)",
+        "Standards": "EN 361:2002"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBH025",
+      "category": "harnesses",
+      "family": "full-body-harness-en-standard",
+      "family_name": "Full Body Harness (EN Standard)",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBH041.jpg",
+      "specs": {
+        "Usage": "Fall Arrest, Confined Space, Tower or Ladder Climbing",
+        "Breaking Strength": "25 KN",
+        "D-ring Position": "Back Side, Front Chest & Rescue Strap D-ring",
+        "Strap Adjustability": "Shoulder, Chest, & Thigh",
+        "Webbing Properties": "Polyester",
+        "Fall Indicator": "Yes",
+        "Buckle Type": "Alloy Steel with Zinc Plating",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Weight": "1270 gms (approx.)",
+        "Standards": "EN 361:2002, EN 1497:2007"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBH041",
+      "category": "harnesses",
+      "family": "full-body-harness-en-standard",
+      "family_name": "Full Body Harness (EN Standard)",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBH042.jpg",
+      "specs": {
+        "Usage": "Fall Arrest, Work Positioning",
+        "Breaking Strength": "25 KN",
+        "D-ring Position": "Back Side, Waist",
+        "Textile Loops": "Not applicable",
+        "Adjustability": "Shoulder, Chest, Waist, & Thigh",
+        "Webbing Properties": "Polyester",
+        "Fall Indicator": "Yes",
+        "Buckle Type": "Alloy Steel with Zinc Plating",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Weight": "1920 gms (approx.)",
+        "Standards": "EN 361:2002, EN 358:2018"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBH042",
+      "category": "harnesses",
+      "family": "full-body-harness-en-standard",
+      "family_name": "Full Body Harness (EN Standard)",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBH043.jpg",
+      "specs": {
+        "Usage": "Fall Arrest, Work Positioning, Tower or Ladder Climbing",
+        "Breaking Strength": "25 KN",
+        "D-ring Position": "Back Side, Waist",
+        "Textile Loops": "Yes (Front)",
+        "Adjustability": "Shoulder, Chest, Waist, & Thigh",
+        "Webbing Properties": "Polyester",
+        "Fall Indicator": "Yes",
+        "Buckle Type": "Alloy Steel with Zinc Plating",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Weight": "1970 gms (approx.)",
+        "Standards": "EN 361:2002, EN 358:2018"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBH043",
+      "category": "harnesses",
+      "family": "full-body-harness-en-standard",
+      "family_name": "Full Body Harness (EN Standard)",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBH044.jpg",
+      "specs": {
+        "Usage": "Fall Arrest, Work Positioning, Tower or Ladder Climbing",
+        "Breaking Strength": "25 KN",
+        "D-ring Position": "Back Side, Chest, & Wais",
+        "Strap Adjustability": "Shoulder, Waist, Chest & Thigh",
+        "Webbing Properties": "Polyester",
+        "Fall Indicator": "Yes",
+        "Buckle Type": "Alloy Steel with Zinc Plating",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Weight": "1970 gms (approx.)",
+        "Standards": "EN 361:2002, EN 358:2018"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBH044",
+      "category": "harnesses",
+      "family": "full-body-harness-en-standard",
+      "family_name": "Full Body Harness (EN Standard)",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/03/SBH056.jpg",
+      "specs": {
+        "Usage": "Fall Arrest, Work Positioning, Tower or Ladder Climbing",
+        "Breaking Strength": "25 KN",
+        "D-ring Position": "Back Side, Chest, & Wais",
+        "Strap Adjustability": "Shoulder, Waist, Chest & Thigh",
+        "Webbing Properties": "Polyester",
+        "Fall Indicator": "Yes",
+        "Buckle Type": "Alloy Steel with Zinc Plating",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Weight": "1970 gms (approx.)",
+        "Standards": "EN 361:2002, EN 358:2018"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBH056",
+      "category": "harnesses",
+      "family": "full-body-harness-en-standard",
+      "family_name": "Full Body Harness (EN Standard)",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/03/SBH057.jpg",
+      "specs": {
+        "Usage": "Fall Arrest, Work Positioning, Ladder,Climbing, Suspension/ Rigging",
+        "Breaking Strength": "25 KN",
+        "D-ring Position": "Back Side, Chest and Waist",
+        "Adjustability": "Shoulder, Chest, Waist, & Thigh",
+        "Webbing Properties": "Polyester",
+        "Fall Indicator": "Yes",
+        "Buckle Type": "Alloy Steel with Zinc Plating",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Weight": "1150 gms (approx.)",
+        "Standards": "EN 361:2002, EN 358:2018, EN 813:2008"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBH057",
+      "category": "harnesses",
+      "family": "full-body-harness-en-standard",
+      "family_name": "Full Body Harness (EN Standard)",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/03/SBH058.jpg",
+      "specs": {
+        "Usage": "Fall Arrest, Work Positioning, Ladder,Climbing, Suspension/ Rigging",
+        "Breaking Strength": "25 KN",
+        "D-ring Position": "Back Side, Chest and Waist",
+        "Adjustability": "Shoulder, Chest, Waist, & Thigh",
+        "Webbing Properties": "Polyester",
+        "Fall Indicator": "Yes",
+        "Buckle Type": "Alloy Steel with Zinc Plating",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Weight": "1150 gms (approx.)",
+        "Standards": "EN 361:2002, EN 358:2018, EN 813:2008"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBH058",
+      "category": "harnesses",
+      "family": "full-body-harness-en-standard",
+      "family_name": "Full Body Harness (EN Standard)",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBH121.jpg",
+      "specs": {
+        "Usage": "Fall Arrest, Work Positioning, Ladder,Climbing, Suspension/ Rigging",
+        "Breaking Strength": "25 KN",
+        "D-ring Position": "Back Side, Chest and Waist",
+        "Adjustability": "Shoulder, Chest, Waist, & Thigh",
+        "Webbing Properties": "Polyester",
+        "Fall Indicator": "Yes",
+        "Buckle Type": "Alloy Steel with Zinc Plating",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Weight": "1150 gms (approx.)",
+        "Standards": "EN 361:2002, EN 358:2018, EN 813:2008"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBH121",
+      "category": "harnesses",
+      "family": "full-body-harness-en-standard",
+      "family_name": "Full Body Harness (EN Standard)",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBH156.jpg",
+      "specs": {
+        "Equipped with light weight Aluminum D-ring.": "Fully adjustable Shoulder, Chest & Thigh-straps."
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBH156",
+      "category": "harnesses",
+      "family": "full-body-harness-en-standard",
+      "family_name": "Full Body Harness (EN Standard)",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBH156.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBH014",
+      "category": "harnesses",
+      "family": "full-body-harness-indian-standard",
+      "family_name": "Full Body Harness (Indian Standard)",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBH015.jpg",
+      "specs": {
+        "Usage": "Fall Arrest, Tower or Ladder Climbing.",
+        "Breaking Strength": "20 KN",
+        "D-ring Position": "Back Side, Front",
+        "Adjustability": "Thigh",
+        "Webbing Properties": "Polyester",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Standards": "IS 3521:1999 CLASS D"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBH015",
+      "category": "harnesses",
+      "family": "full-body-harness-indian-standard",
+      "family_name": "Full Body Harness (Indian Standard)",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBH016.jpg",
+      "specs": {
+        "Usage": "Fall Arrest",
+        "Breaking Strength": "20 KN",
+        "D-ring Position": "Back Side",
+        "Adjustability": "Chest & Thigh",
+        "Webbing Properties": "Polyester",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Standards": "IS 3521:1999 CLASS A"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBH016",
+      "category": "harnesses",
+      "family": "full-body-harness-indian-standard",
+      "family_name": "Full Body Harness (Indian Standard)",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBH017.jpg",
+      "specs": {
+        "Usage": "Fall Arrest",
+        "Breaking Strength": "20 KN",
+        "D-ring Position": "Back Side",
+        "Adjustability": "Chest & Thigh",
+        "Webbing Properties": "Polyester",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Standards": "IS 3521:1999 CLASS A"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBH017",
+      "category": "harnesses",
+      "family": "full-body-harness-indian-standard",
+      "family_name": "Full Body Harness (Indian Standard)",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBH018.jpg",
+      "specs": {
+        "Usage": "Fall Arrest, Work Positioning",
+        "Breaking Strength": "20 KN",
+        "D-ring Position": "Back Side, Waist",
+        "Adjustability": "Chest, Waist, & Thigh",
+        "Webbing Properties": "Polyester",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Standards": "IS 3521:1999 CLASS P"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBH018",
+      "category": "harnesses",
+      "family": "full-body-harness-indian-standard",
+      "family_name": "Full Body Harness (Indian Standard)",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBH019.jpg",
+      "specs": {
+        "Usage": "Fall Arrest, Tower or Ladder Climbing",
+        "Breaking Strength": "20 KN",
+        "D-ring Position": "Back Side, Front",
+        "Adjustability": "Chest & Thigh",
+        "Webbing Properties": "Polyester",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Standards": "IS 3521:1999 CLASS L"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBH019",
+      "category": "harnesses",
+      "family": "full-body-harness-indian-standard",
+      "family_name": "Full Body Harness (Indian Standard)",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBH019.jpg",
+      "specs": {
+        "Usage": "Fall Arrest, Confined Space",
+        "Breaking Strength": "20 KN",
+        "D-ring Position": "Back Side, Shoulder",
+        "Adjustability": "Chest & Thigh",
+        "Webbing Properties": "Polyester",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Standards": "IS 3521:1999 CLASS E",
+        "CONTACT INFO": "Phone :",
+        "Phone :": "Mail :",
+        "sales@sbfallprotection.com": "Address :"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBHA511",
+      "category": "harnesses",
+      "family": "ansi-standard",
+      "family_name": "ANSI Standard",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/02/SB37000.jpg",
+      "specs": {
+        "Usage": "Fall Arrest",
+        "Breaking Strength": "25 KN",
+        "D-ring Position": "Back Side",
+        "Adjustability": "Shoulder, Chest, & Thigh",
+        "Webbing Properties": "High Tenacity Polyester",
+        "Fall Indicator": "Yes",
+        "Buckle Type": "Alloy Steel with Yellow Passivation",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Weight": "1300 gms (approx.)",
+        "Standards": "ANSI Z359.11-2014"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBHA521",
+      "category": "harnesses",
+      "family": "ansi-standard",
+      "family_name": "ANSI Standard",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/02/DSC_3090-1.jpg",
+      "specs": {
+        "Usage": "Fall Arrest",
+        "Breaking Strength": "25 KN",
+        "D-ring Position": "Back Side",
+        "Textile Loops": "Yes (Front)",
+        "Adjustability": "Shoulder, Chest, & Thigh",
+        "Webbing Properties": "High Tenacity Polyester",
+        "Fall Indicator": "Yes",
+        "Buckle Type": "Alloy Steel with Yellow Passivation",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Weight": "1200 gms (approx.)",
+        "Standards": "ANSI Z359.11-2014"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBHA522",
+      "category": "harnesses",
+      "family": "ansi-standard",
+      "family_name": "ANSI Standard",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/02/Untitled-design.png",
+      "specs": {
+        "Usage": "Fall Arrest & Work Positioning",
+        "Breaking Strength": "25 KN",
+        "D-ring Position": "Dorsal & Waist",
+        "Textile Loops": "Not applicable",
+        "Adjustability": "Shoulder, Chest, Thigh, & Waist",
+        "Webbing Properties": "High Tenacity Polyester",
+        "Fall Indicator": "Yes",
+        "Buckle Type": "Alloy Steel Powder Coated",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Weight": "1500 gms (approx.)",
+        "Standards": "ANSI Z359.11"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBHA311",
+      "category": "harnesses",
+      "family": "ansi-standard",
+      "family_name": "ANSI Standard",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/02/DSC_3085-1.jpg",
+      "specs": {
+        "Usage": "Fall Arrest",
+        "Breaking Strength": "25 KN",
+        "D-ring Position": "Back Side",
+        "Adjustability": "Chest, & Thigh",
+        "Webbing Properties": "High Tenacity Polyester",
+        "Fall Indicator": "Yes",
+        "Buckle Type": "Alloy Steel with Yellow Passivation",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Weight": "1150 gms (approx.)",
+        "Standards": "ANSI Z359.11-2014"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBHA321",
+      "category": "harnesses",
+      "family": "ansi-standard",
+      "family_name": "ANSI Standard",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/02/SBDH521.jpg",
+      "specs": {
+        "Usage": "Fall Arrest & Work Positioning",
+        "Breaking Strength": "25 KN",
+        "D-ring Position": "Dorsal & Waist",
+        "Textile Loops": "Not applicable",
+        "Adjustability": "Chest, & Thigh",
+        "Webbing Properties": "High Tenacity Polyester",
+        "Fall Indicator": "Yes",
+        "Buckle Type": "Alloy Steel with Yellow Passivation",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Weight": "1270 gms (approx.)",
+        "Standards": "ANSI Z359.11-2014"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBHA211021",
+      "category": "harnesses",
+      "family": "ansi-standard",
+      "family_name": "ANSI Standard",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/02/SB211.png",
+      "specs": {
+        "Usage": "Fall Arrest",
+        "Breaking Strength": "25 KN",
+        "D-ring Position": "Back Side",
+        "Adjustability": "Shoulder, Chest, & Thigh",
+        "Webbing Properties": "High Tenacity Polyester",
+        "Fall Indicator": "Yes",
+        "Buckle Type": "Alloy Steel with Black Coating",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Weight": "1300 gms (approx.)",
+        "Standards": "ANSI Z359.11"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBHA211121",
+      "category": "harnesses",
+      "family": "ansi-standard",
+      "family_name": "ANSI Standard",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/02/H2111212.jpg",
+      "specs": {
+        "Usage": "Fall Arrest",
+        "Breaking Strength": "25 KN",
+        "D-ring Position": "Back Side",
+        "Textile Loops": "Yes (Front)",
+        "Adjustability": "Shoulder, Chest, & Thigh",
+        "Webbing Properties": "High Tenacity Polyester",
+        "Fall Indicator": "Yes",
+        "Buckle Type": "Alloy Steel with Yellow Passivation",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Weight": "1200 gms (approx.)",
+        "Standards": "ANSI Z359.11"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBHA2111212",
+      "category": "harnesses",
+      "family": "ansi-standard",
+      "family_name": "ANSI Standard",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/02/H2111212.jpg",
+      "specs": {
+        "Usage": "Fall Arrest",
+        "Breaking Strength": "25 KN",
+        "D-ring Position": "Back Side",
+        "Textile Loops": "Yes (Front)",
+        "Adjustability": "Shoulder, Chest, & Thigh",
+        "Webbing Properties": "High Tenacity Polyester",
+        "Fall Indicator": "Yes",
+        "Buckle Type": "Alloy Steel with Yellow Passivation",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Weight": "1200 gms (approx.)",
+        "Standards": "ANSI Z359.11",
+        "CONTACT INFO": "Phone :",
+        "Phone :": "Mail :",
+        "sales@sbfallprotection.com": "Address :"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBH051",
+      "category": "harnesses",
+      "family": "sit-harness",
+      "family_name": "Sit Harness",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/56.png",
+      "specs": {
+        "Usage": "Work Positioning, Climbing, Suspension/ Rigging",
+        "Breaking Strength": "25 KN",
+        "D-ring Position": "Waist",
+        "Adjustability": "Waist & Thigh",
+        "Webbing Properties": "Polyester",
+        "Fall Indicator": "No",
+        "Buckle Type": "Alloy Steel with Zinc Plating",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Weight": "1600 gms (approx.)",
+        "Standards": "EN 358:2018, EN 813:2008"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBH056",
+      "category": "harnesses",
+      "family": "sit-harness",
+      "family_name": "Sit Harness",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/57.png",
+      "specs": {
+        "Usage": "Fall Arrest, Work Positioning, Ladder Climbing, Suspension/ Rigging",
+        "Breaking Strength": "25 KN",
+        "D-ring Position": "Back Side, Chest and Waist",
+        "Adjustability": "Shoulder, Chest, Waist, & Thigh",
+        "Webbing Properties": "Polyester",
+        "Fall Indicator": "Yes",
+        "Buckle Type": "Alloy Steel with Zinc Plating",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Weight": "2500 gms (approx.)",
+        "Standards": "EN 361:2002, EN 358:2018, EN 813:2008"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBH057",
+      "category": "harnesses",
+      "family": "sit-harness",
+      "family_name": "Sit Harness",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/58.png",
+      "specs": {
+        "Usage": "Fall Arrest, Work Positioning, Ladder Climbing, Suspension/ Rigging",
+        "Breaking Strength": "25 KN",
+        "D-ring Position": "Back Side, Chest and Waist",
+        "Adjustability": "Shoulder, Chest, Waist, & Thigh",
+        "Webbing Properties": "Polyester",
+        "Fall Indicator": "Yes",
+        "Buckle Type": "Alloy Steel with Zinc Plating",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Weight": "2500 gms (approx.)",
+        "Standards": "EN 361:2002, EN 358:2018, EN 813:2008"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBH058",
+      "category": "harnesses",
+      "family": "sit-harness",
+      "family_name": "Sit Harness",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/58.png",
+      "specs": {
+        "Usage": "Fall Arrest, Work Positioning, Ladder Climbing, Suspension/ Rigging",
+        "Breaking Strength": "25 KN",
+        "D-ring Position": "Back Side, Chest and Waist",
+        "Adjustability": "Shoulder, Chest, Waist, & Thigh",
+        "Webbing Properties": "Polyester",
+        "Fall Indicator": "Yes",
+        "Buckle Type": "Alloy Steel with Zinc Plating",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Weight": "2500 gms (approx.)",
+        "Standards": "EN 361:2002, EN 358:2018, EN 813:2008",
+        "CONTACT INFO": "Phone :",
+        "Phone :": "Mail :",
+        "sales@sbfallprotection.com": "Address :"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBH025",
+      "category": "harnesses",
+      "family": "rescue-harness",
+      "family_name": "Rescue Harness",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/25-1.png",
+      "specs": {
+        "Usage": "Fall Arrest, Confined Space, Tower or Ladder Climbing",
+        "Breaking Strength": "25 KN",
+        "D-ring Position": "Back Side, Front Chest & Rescue Strap D-ring",
+        "Strap Adjustability": "Shoulder, Chest, & Thigh",
+        "Webbing Properties": "Polyester",
+        "Fall Indicator": "Yes",
+        "Buckle Type": "Alloy Steel with Zinc Plating",
+        "Stitching Thread": "Polyester",
+        "Webbing Width": "44mm",
+        "Size": "Universal",
+        "Weight": "1270 gms (approx.)",
+        "Standards": "EN 361:2002, EN 1497:2007",
+        "CONTACT INFO": "Phone :",
+        "Phone :": "Mail :",
+        "sales@sbfallprotection.com": "Address :"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBL321WLEA",
+      "category": "lanyards",
+      "family": "energy-absorbing-webbing-44mm-lanyards",
+      "family_name": "Energy Absorbing Webbing (44mm) Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/321.png",
+      "specs": {},
+      "attachment": "Both Side Loop"
+    },
+    {
+      "sku": "SBL322WLEA",
+      "category": "lanyards",
+      "family": "energy-absorbing-webbing-44mm-lanyards",
+      "family_name": "Energy Absorbing Webbing (44mm) Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/322-removebg-preview.png",
+      "specs": {},
+      "attachment": "One Side Loop Other Side Karabiner"
+    },
+    {
+      "sku": "SBL323WLEA",
+      "category": "lanyards",
+      "family": "energy-absorbing-webbing-44mm-lanyards",
+      "family_name": "Energy Absorbing Webbing (44mm) Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/323.png",
+      "specs": {},
+      "attachment": "Both Side Karabiner"
+    },
+    {
+      "sku": "SBL324WLEA",
+      "category": "lanyards",
+      "family": "energy-absorbing-webbing-44mm-lanyards",
+      "family_name": "Energy Absorbing Webbing (44mm) Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/324-removebg-preview.png",
+      "specs": {},
+      "attachment": "One Side Loop Other Side Snap Hook"
+    },
+    {
+      "sku": "SBL325WLEA",
+      "category": "lanyards",
+      "family": "energy-absorbing-webbing-44mm-lanyards",
+      "family_name": "Energy Absorbing Webbing (44mm) Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/325.png",
+      "specs": {},
+      "attachment": "Both Side Snap Hook"
+    },
+    {
+      "sku": "SBL326WLEA",
+      "category": "lanyards",
+      "family": "energy-absorbing-webbing-44mm-lanyards",
+      "family_name": "Energy Absorbing Webbing (44mm) Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/326-removebg-preview.png",
+      "specs": {},
+      "attachment": "One Side Loop Other Side Scaffold Hook"
+    },
+    {
+      "sku": "SBL327WLEA",
+      "category": "lanyards",
+      "family": "energy-absorbing-webbing-44mm-lanyards",
+      "family_name": "Energy Absorbing Webbing (44mm) Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/327.png",
+      "specs": {},
+      "attachment": "One Side Karabiner Other Side Snap Hook"
+    },
+    {
+      "sku": "SBL328WLEA",
+      "category": "lanyards",
+      "family": "energy-absorbing-webbing-44mm-lanyards",
+      "family_name": "Energy Absorbing Webbing (44mm) Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/328-removebg-preview.png",
+      "specs": {},
+      "attachment": "One Side Karabiner Other Side Scaffold Hook"
+    },
+    {
+      "sku": "SBL329WLEA",
+      "category": "lanyards",
+      "family": "energy-absorbing-webbing-44mm-lanyards",
+      "family_name": "Energy Absorbing Webbing (44mm) Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/329.png",
+      "specs": {},
+      "attachment": "One Side Snap Hook Other Side Scaffold Hook"
+    },
+    {
+      "sku": "SBL391ELEA",
+      "category": "lanyards",
+      "family": "energy-absorbing-expendable-webbing-44mm-lanyards",
+      "family_name": "Energy Absorbing Expendable Webbing (44MM) Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/391.png",
+      "specs": {},
+      "attachment": "Both Side Loop"
+    },
+    {
+      "sku": "SBL392ELEA",
+      "category": "lanyards",
+      "family": "energy-absorbing-expendable-webbing-44mm-lanyards",
+      "family_name": "Energy Absorbing Expendable Webbing (44MM) Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/392-removebg-preview.png",
+      "specs": {},
+      "attachment": "One Side Loop Other Side Karabiner"
+    },
+    {
+      "sku": "SBL393ELEA",
+      "category": "lanyards",
+      "family": "energy-absorbing-expendable-webbing-44mm-lanyards",
+      "family_name": "Energy Absorbing Expendable Webbing (44MM) Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/393.png",
+      "specs": {},
+      "attachment": "Both Side Karabiner"
+    },
+    {
+      "sku": "SBL394ELEA",
+      "category": "lanyards",
+      "family": "energy-absorbing-expendable-webbing-44mm-lanyards",
+      "family_name": "Energy Absorbing Expendable Webbing (44MM) Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/394-removebg-preview.png",
+      "specs": {},
+      "attachment": "One Side Loop Other Side Snap Hook"
+    },
+    {
+      "sku": "SBL395ELEA",
+      "category": "lanyards",
+      "family": "energy-absorbing-expendable-webbing-44mm-lanyards",
+      "family_name": "Energy Absorbing Expendable Webbing (44MM) Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/395.png",
+      "specs": {},
+      "attachment": "Both Side Snap Hook"
+    },
+    {
+      "sku": "SBL396ELEA",
+      "category": "lanyards",
+      "family": "energy-absorbing-expendable-webbing-44mm-lanyards",
+      "family_name": "Energy Absorbing Expendable Webbing (44MM) Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/396-removebg-preview.png",
+      "specs": {},
+      "attachment": "One Side Loop Other Side Scaffold Hook"
+    },
+    {
+      "sku": "SBL397ELEA",
+      "category": "lanyards",
+      "family": "energy-absorbing-expendable-webbing-44mm-lanyards",
+      "family_name": "Energy Absorbing Expendable Webbing (44MM) Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/397.png",
+      "specs": {},
+      "attachment": "One Side Karabiner Other Side Snap Hook"
+    },
+    {
+      "sku": "SBL398ELEA",
+      "category": "lanyards",
+      "family": "energy-absorbing-expendable-webbing-44mm-lanyards",
+      "family_name": "Energy Absorbing Expendable Webbing (44MM) Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/398-removebg-preview.png",
+      "specs": {},
+      "attachment": "One Side Karabiner Other Side Scaffold Hook"
+    },
+    {
+      "sku": "SBL399ELEA",
+      "category": "lanyards",
+      "family": "energy-absorbing-expendable-webbing-44mm-lanyards",
+      "family_name": "Energy Absorbing Expendable Webbing (44MM) Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/399.png",
+      "specs": {},
+      "attachment": "One Side Snap Hook Other Side Scaffold Hook"
+    },
+    {
+      "sku": "SBL281KR",
+      "category": "lanyards",
+      "family": "energy-absorbing-kernmantle-rope-lanyards",
+      "family_name": "Kernmantle Rope Restraint Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/281.png",
+      "specs": {},
+      "attachment": "Both Side Loop"
+    },
+    {
+      "sku": "SBL282KR",
+      "category": "lanyards",
+      "family": "energy-absorbing-kernmantle-rope-lanyards",
+      "family_name": "Kernmantle Rope Restraint Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/282-removebg-preview.png",
+      "specs": {},
+      "attachment": "One Side Loop Other Side Karabiner"
+    },
+    {
+      "sku": "SBL283KR",
+      "category": "lanyards",
+      "family": "energy-absorbing-kernmantle-rope-lanyards",
+      "family_name": "Kernmantle Rope Restraint Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/283.png",
+      "specs": {},
+      "attachment": "Both Side Karabiner"
+    },
+    {
+      "sku": "SBL284KR",
+      "category": "lanyards",
+      "family": "energy-absorbing-kernmantle-rope-lanyards",
+      "family_name": "Kernmantle Rope Restraint Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/284-removebg-preview.png",
+      "specs": {},
+      "attachment": "One Side Loop Other Side Snap Hook"
+    },
+    {
+      "sku": "SBL285KR",
+      "category": "lanyards",
+      "family": "energy-absorbing-kernmantle-rope-lanyards",
+      "family_name": "Kernmantle Rope Restraint Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/285.png",
+      "specs": {},
+      "attachment": "Both Side Snap Hook"
+    },
+    {
+      "sku": "SBL286KR",
+      "category": "lanyards",
+      "family": "energy-absorbing-kernmantle-rope-lanyards",
+      "family_name": "Kernmantle Rope Restraint Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/286-removebg-preview.png",
+      "specs": {},
+      "attachment": "One Side Loop Other Side Scaffold Hook"
+    },
+    {
+      "sku": "SBL287KR",
+      "category": "lanyards",
+      "family": "energy-absorbing-kernmantle-rope-lanyards",
+      "family_name": "Kernmantle Rope Restraint Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/287.png",
+      "specs": {},
+      "attachment": "One Side Karabiner Other Side Snap Hook"
+    },
+    {
+      "sku": "SBL288KR",
+      "category": "lanyards",
+      "family": "energy-absorbing-kernmantle-rope-lanyards",
+      "family_name": "Kernmantle Rope Restraint Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/288-removebg-preview.png",
+      "specs": {},
+      "attachment": "One Side Karabiner Other Side Scaffold Hook"
+    },
+    {
+      "sku": "SBL289KR",
+      "category": "lanyards",
+      "family": "energy-absorbing-kernmantle-rope-lanyards",
+      "family_name": "Kernmantle Rope Restraint Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/289.png",
+      "specs": {},
+      "attachment": "One Side Snap Hook Other Side Scaffold Hook"
+    },
+    {
+      "sku": "SBL381KREA",
+      "category": "lanyards",
+      "family": "energy-absorbing-kernmantle-rope-lanyards-2",
+      "family_name": "Energy Absorbing Kernmantle Rope Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/381.png",
+      "specs": {},
+      "attachment": "Both Side Loop"
+    },
+    {
+      "sku": "SBL382KREA",
+      "category": "lanyards",
+      "family": "energy-absorbing-kernmantle-rope-lanyards-2",
+      "family_name": "Energy Absorbing Kernmantle Rope Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/382-removebg-preview.png",
+      "specs": {},
+      "attachment": "One Side Loop Other Side Karabiner"
+    },
+    {
+      "sku": "SBL383KREA",
+      "category": "lanyards",
+      "family": "energy-absorbing-kernmantle-rope-lanyards-2",
+      "family_name": "Energy Absorbing Kernmantle Rope Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/383.png",
+      "specs": {},
+      "attachment": "Both Side Karabiner"
+    },
+    {
+      "sku": "SBL384KREA",
+      "category": "lanyards",
+      "family": "energy-absorbing-kernmantle-rope-lanyards-2",
+      "family_name": "Energy Absorbing Kernmantle Rope Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/384-removebg-preview-1.png",
+      "specs": {},
+      "attachment": "One Side Loop Other Side Snap Hook"
+    },
+    {
+      "sku": "SBL385KREA",
+      "category": "lanyards",
+      "family": "energy-absorbing-kernmantle-rope-lanyards-2",
+      "family_name": "Energy Absorbing Kernmantle Rope Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/385.png",
+      "specs": {},
+      "attachment": "Both Side Snap Hook"
+    },
+    {
+      "sku": "SBL386KREA",
+      "category": "lanyards",
+      "family": "energy-absorbing-kernmantle-rope-lanyards-2",
+      "family_name": "Energy Absorbing Kernmantle Rope Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/386-removebg-preview.png",
+      "specs": {},
+      "attachment": "One Side Loop Other Side Scaffold Hook"
+    },
+    {
+      "sku": "SBL387KREA",
+      "category": "lanyards",
+      "family": "energy-absorbing-kernmantle-rope-lanyards-2",
+      "family_name": "Energy Absorbing Kernmantle Rope Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/387.png",
+      "specs": {},
+      "attachment": "One Side Karabiner Other Side Snap Hook"
+    },
+    {
+      "sku": "SBL388KREA",
+      "category": "lanyards",
+      "family": "energy-absorbing-kernmantle-rope-lanyards-2",
+      "family_name": "Energy Absorbing Kernmantle Rope Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/388-removebg-preview.png",
+      "specs": {},
+      "attachment": "One Side Karabiner Other Side Scaffold Hook"
+    },
+    {
+      "sku": "SBL389KREA",
+      "category": "lanyards",
+      "family": "energy-absorbing-kernmantle-rope-lanyards-2",
+      "family_name": "Energy Absorbing Kernmantle Rope Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/389.png",
+      "specs": {},
+      "attachment": "One Side Snap Hook Other Side Scaffold Hook"
+    },
+    {
+      "sku": "SBL301TREA",
+      "category": "lanyards",
+      "family": "energy-absorbing-twisted-rope-lanyards",
+      "family_name": "Energy Absorbing Twisted Rope Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/301.png",
+      "specs": {},
+      "attachment": "Both Side Loop"
+    },
+    {
+      "sku": "SBL302TREA",
+      "category": "lanyards",
+      "family": "energy-absorbing-twisted-rope-lanyards",
+      "family_name": "Energy Absorbing Twisted Rope Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/302-removebg-preview.png",
+      "specs": {},
+      "attachment": "One Side Loop Other Side Karabiner"
+    },
+    {
+      "sku": "SBL303TREA",
+      "category": "lanyards",
+      "family": "energy-absorbing-twisted-rope-lanyards",
+      "family_name": "Energy Absorbing Twisted Rope Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/303.png",
+      "specs": {},
+      "attachment": "Both Side Karabiner"
+    },
+    {
+      "sku": "SBL304TREA",
+      "category": "lanyards",
+      "family": "energy-absorbing-twisted-rope-lanyards",
+      "family_name": "Energy Absorbing Twisted Rope Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/304-removebg-preview.png",
+      "specs": {},
+      "attachment": "One Side Loop Other Side Snap Hook"
+    },
+    {
+      "sku": "SBL305TREA",
+      "category": "lanyards",
+      "family": "energy-absorbing-twisted-rope-lanyards",
+      "family_name": "Energy Absorbing Twisted Rope Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/305.png",
+      "specs": {},
+      "attachment": "Both Side Snap Hook"
+    },
+    {
+      "sku": "SBL306TREA",
+      "category": "lanyards",
+      "family": "energy-absorbing-twisted-rope-lanyards",
+      "family_name": "Energy Absorbing Twisted Rope Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/306-removebg-preview.png",
+      "specs": {},
+      "attachment": "One Side Loop Other Side Scaffold Hook"
+    },
+    {
+      "sku": "SBL307TREA",
+      "category": "lanyards",
+      "family": "energy-absorbing-twisted-rope-lanyards",
+      "family_name": "Energy Absorbing Twisted Rope Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/307.png",
+      "specs": {},
+      "attachment": "One Side Karabiner Other Side Snap Hook"
+    },
+    {
+      "sku": "SBL308TREA",
+      "category": "lanyards",
+      "family": "energy-absorbing-twisted-rope-lanyards",
+      "family_name": "Energy Absorbing Twisted Rope Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/308-removebg-preview.png",
+      "specs": {},
+      "attachment": "One Side Karabiner Other Side Scaffold Hook"
+    },
+    {
+      "sku": "SBL309TREA",
+      "category": "lanyards",
+      "family": "energy-absorbing-twisted-rope-lanyards",
+      "family_name": "Energy Absorbing Twisted Rope Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/309.png",
+      "specs": {},
+      "attachment": "One Side Snap Hook Other Side Scaffold Hook"
+    },
+    {
+      "sku": "SBL291EL",
+      "category": "lanyards",
+      "family": "expendable-webbing-44mm-lanyards",
+      "family_name": "Expendable Webbing (44mm) Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/291.png",
+      "specs": {},
+      "attachment": "Both Side Loop"
+    },
+    {
+      "sku": "SBL292EL",
+      "category": "lanyards",
+      "family": "expendable-webbing-44mm-lanyards",
+      "family_name": "Expendable Webbing (44mm) Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/292-removebg-preview.png",
+      "specs": {},
+      "attachment": "One Side Loop Other Side Karabiner"
+    },
+    {
+      "sku": "SBL293EL",
+      "category": "lanyards",
+      "family": "expendable-webbing-44mm-lanyards",
+      "family_name": "Expendable Webbing (44mm) Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/293.png",
+      "specs": {},
+      "attachment": "Both Side Karabiner"
+    },
+    {
+      "sku": "SBL294EL",
+      "category": "lanyards",
+      "family": "expendable-webbing-44mm-lanyards",
+      "family_name": "Expendable Webbing (44mm) Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/294-removebg-preview.png",
+      "specs": {},
+      "attachment": "One Side Loop Other Side Snap Hook"
+    },
+    {
+      "sku": "SBL295EL",
+      "category": "lanyards",
+      "family": "expendable-webbing-44mm-lanyards",
+      "family_name": "Expendable Webbing (44mm) Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/295.png",
+      "specs": {},
+      "attachment": "Both Side Snap Hook"
+    },
+    {
+      "sku": "SBL296EL",
+      "category": "lanyards",
+      "family": "expendable-webbing-44mm-lanyards",
+      "family_name": "Expendable Webbing (44mm) Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/296-removebg-preview.png",
+      "specs": {},
+      "attachment": "One Side Loop Other Side Scaffold Hook"
+    },
+    {
+      "sku": "SBL297EL",
+      "category": "lanyards",
+      "family": "expendable-webbing-44mm-lanyards",
+      "family_name": "Expendable Webbing (44mm) Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/297.png",
+      "specs": {},
+      "attachment": "One Side Karabiner Other Side Snap Hook"
+    },
+    {
+      "sku": "SBL298EL",
+      "category": "lanyards",
+      "family": "expendable-webbing-44mm-lanyards",
+      "family_name": "Expendable Webbing (44mm) Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/298-removebg-preview.png",
+      "specs": {},
+      "attachment": "One Side Karabiner Other Side Scaffold Hook"
+    },
+    {
+      "sku": "SBL299EL",
+      "category": "lanyards",
+      "family": "expendable-webbing-44mm-lanyards",
+      "family_name": "Expendable Webbing (44mm) Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/299.png",
+      "specs": {},
+      "attachment": "One Side Snap Hook Other Side Scaffold Hook"
+    },
+    {
+      "sku": "SBL221WL",
+      "category": "lanyards",
+      "family": "webbing-44mm-restraint-lanyards",
+      "family_name": "Webbing (44mm) Restraint Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/221.png",
+      "specs": {},
+      "attachment": "Both Side Loop"
+    },
+    {
+      "sku": "SBL222WL",
+      "category": "lanyards",
+      "family": "webbing-44mm-restraint-lanyards",
+      "family_name": "Webbing (44mm) Restraint Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/222-removebg-preview.png",
+      "specs": {},
+      "attachment": "One Side Loop Other Side Karabiner"
+    },
+    {
+      "sku": "SBL223WL",
+      "category": "lanyards",
+      "family": "webbing-44mm-restraint-lanyards",
+      "family_name": "Webbing (44mm) Restraint Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/223.png",
+      "specs": {},
+      "attachment": "Both Side Karabiner"
+    },
+    {
+      "sku": "SBL224WL",
+      "category": "lanyards",
+      "family": "webbing-44mm-restraint-lanyards",
+      "family_name": "Webbing (44mm) Restraint Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/224-removebg-preview.png",
+      "specs": {},
+      "attachment": "One Side Loop Other Side Snap Hook"
+    },
+    {
+      "sku": "SBL225WL",
+      "category": "lanyards",
+      "family": "webbing-44mm-restraint-lanyards",
+      "family_name": "Webbing (44mm) Restraint Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/225.png",
+      "specs": {},
+      "attachment": "Both Side Snap Hook"
+    },
+    {
+      "sku": "SBL226WL",
+      "category": "lanyards",
+      "family": "webbing-44mm-restraint-lanyards",
+      "family_name": "Webbing (44mm) Restraint Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/226-removebg-preview.png",
+      "specs": {},
+      "attachment": "One Side Loop Other Side Scaffold Hook"
+    },
+    {
+      "sku": "SBL227WL",
+      "category": "lanyards",
+      "family": "webbing-44mm-restraint-lanyards",
+      "family_name": "Webbing (44mm) Restraint Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/227.png",
+      "specs": {},
+      "attachment": "One Side Karabiner Other Side Snap Hook"
+    },
+    {
+      "sku": "SBL228WL",
+      "category": "lanyards",
+      "family": "webbing-44mm-restraint-lanyards",
+      "family_name": "Webbing (44mm) Restraint Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/228-removebg-preview.png",
+      "specs": {},
+      "attachment": "One Side Karabiner Other Side Scaffold Hook"
+    },
+    {
+      "sku": "SBL229WL",
+      "category": "lanyards",
+      "family": "webbing-44mm-restraint-lanyards",
+      "family_name": "Webbing (44mm) Restraint Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/229.png",
+      "specs": {},
+      "attachment": "One Side Snap Hook Other Side Scaffold Hook"
+    },
+    {
+      "sku": "SBL201TR",
+      "category": "lanyards",
+      "family": "twisted-rope-restraint-lanyards",
+      "family_name": "Twisted Rope Restraint Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/02/SBL201TR.png",
+      "specs": {},
+      "attachment": "Both Side Loop"
+    },
+    {
+      "sku": "SBL202TR",
+      "category": "lanyards",
+      "family": "twisted-rope-restraint-lanyards",
+      "family_name": "Twisted Rope Restraint Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/02/SBL202TR.png",
+      "specs": {},
+      "attachment": "One Side Loop Other Side Karabiner"
+    },
+    {
+      "sku": "SBL203TR",
+      "category": "lanyards",
+      "family": "twisted-rope-restraint-lanyards",
+      "family_name": "Twisted Rope Restraint Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/02/SBL203TR.png",
+      "specs": {},
+      "attachment": "Both Side Karabiner"
+    },
+    {
+      "sku": "SBL204TR",
+      "category": "lanyards",
+      "family": "twisted-rope-restraint-lanyards",
+      "family_name": "Twisted Rope Restraint Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/02/SBL204TR.png",
+      "specs": {},
+      "attachment": "One Side Loop Other Side Snap Hook"
+    },
+    {
+      "sku": "SBL205TR",
+      "category": "lanyards",
+      "family": "twisted-rope-restraint-lanyards",
+      "family_name": "Twisted Rope Restraint Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/02/SBL205TR.png",
+      "specs": {},
+      "attachment": "Both Side Snap Hook"
+    },
+    {
+      "sku": "SBL206TR",
+      "category": "lanyards",
+      "family": "twisted-rope-restraint-lanyards",
+      "family_name": "Twisted Rope Restraint Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/02/SBL206TR.png",
+      "specs": {},
+      "attachment": "One Side Loop Other Side Scaffold Hook"
+    },
+    {
+      "sku": "SBL207TR",
+      "category": "lanyards",
+      "family": "twisted-rope-restraint-lanyards",
+      "family_name": "Twisted Rope Restraint Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/02/SBL207TR.png",
+      "specs": {},
+      "attachment": "One Side Karabiner Other Side Snap Hook"
+    },
+    {
+      "sku": "SBL208TR",
+      "category": "lanyards",
+      "family": "twisted-rope-restraint-lanyards",
+      "family_name": "Twisted Rope Restraint Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/02/SBL208TR.png",
+      "specs": {},
+      "attachment": "One Side Karabiner Other Side Scaffold Hook"
+    },
+    {
+      "sku": "SBL209TR",
+      "category": "lanyards",
+      "family": "twisted-rope-restraint-lanyards",
+      "family_name": "Twisted Rope Restraint Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/02/SBL209TR.png",
+      "specs": {},
+      "attachment": "One Side Snap Hook Other Side Scaffold Hook"
+    },
+    {
+      "sku": "SBL341KRF",
+      "category": "lanyards",
+      "family": "forked-lanyards-with-energy-absorber",
+      "family_name": "Forked Lanyards with Energy Absorber",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBL351TRF.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBL351TRF",
+      "category": "lanyards",
+      "family": "forked-lanyards-with-energy-absorber",
+      "family_name": "Forked Lanyards with Energy Absorber",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBL361WLF.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBL361WLF",
+      "category": "lanyards",
+      "family": "forked-lanyards-with-energy-absorber",
+      "family_name": "Forked Lanyards with Energy Absorber",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBL371ELF.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBL371ELF",
+      "category": "lanyards",
+      "family": "forked-lanyards-with-energy-absorber",
+      "family_name": "Forked Lanyards with Energy Absorber",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBL371ELF.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBL342KRF",
+      "category": "lanyards",
+      "family": "restraint-forked-lanyards",
+      "family_name": "Restraint Forked Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBL352TRF.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBL352TRF",
+      "category": "lanyards",
+      "family": "restraint-forked-lanyards",
+      "family_name": "Restraint Forked Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBL362WLF.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBL362WLF",
+      "category": "lanyards",
+      "family": "restraint-forked-lanyards",
+      "family_name": "Restraint Forked Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBL372ELF.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBL372ELF",
+      "category": "lanyards",
+      "family": "restraint-forked-lanyards",
+      "family_name": "Restraint Forked Lanyards",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBL372ELF.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBLA122",
+      "category": "lanyards",
+      "family": "ansi-lanyards",
+      "family_name": "ANSI LANYARDS",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/02/SB0221.jpg",
+      "specs": {
+        "Usage": "Fall Arrest",
+        "Breaking Strength": "25 KN",
+        "Webbing": "High Tenacity Polyester",
+        "Webbing Width": "44mm",
+        "Stitching Thread": "Polyester",
+        "Size": "6ft",
+        "Standard": "ANSI Z359.13",
+        "Comes With": "Single Lanyard with Shock Absorber & Both side Snap Hook."
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBLA123",
+      "category": "lanyards",
+      "family": "ansi-lanyards",
+      "family_name": "ANSI LANYARDS",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/02/SB0217.jpg",
+      "specs": {
+        "Usage": "Fall Arrest",
+        "Breaking Strength": "25 KN",
+        "Webbing": "High Tenacity Polyester",
+        "Webbing Width": "44mm",
+        "Stitching Thread": "Polyester",
+        "Size": "6ft",
+        "Standard": "ANSI Z359.13",
+        "Comes With": "Single Lanyard with Shock Absorber & One side Snap Hook, Other side Rebar Hook"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBLA222",
+      "category": "lanyards",
+      "family": "ansi-lanyards",
+      "family_name": "ANSI LANYARDS",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/02/SB0217.jpg",
+      "specs": {
+        "Usage": "Fall Arrest",
+        "Breaking Strength": "25 KN",
+        "Webbing": "High Tenacity Polyester",
+        "Webbing Width": "44mm",
+        "Stitching Thread": "Polyester",
+        "Size": "6ft",
+        "Standard": "ANSI Z359.13",
+        "Comes With": "Double Lanyard with Shock Absorber & Both side Snap Hook",
+        "CONTACT INFO": "Phone :",
+        "Phone :": "Mail :",
+        "sales@sbfallprotection.com": "Address :"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBH101WPB",
+      "category": "work-positioning",
+      "family": "work-positioning-system",
+      "family_name": "Work Positioning System",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/SBH101WPB.png",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBH102WPB",
+      "category": "work-positioning",
+      "family": "work-positioning-system",
+      "family_name": "Work Positioning System",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/SBH102WPB.png",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBH103WPB",
+      "category": "work-positioning",
+      "family": "work-positioning-system",
+      "family_name": "Work Positioning System",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/SBH103WPB.png",
+      "specs": {},
+      "attachment": "Special Features"
+    },
+    {
+      "sku": "SBL241WPL",
+      "category": "work-positioning",
+      "family": "work-positioning-system",
+      "family_name": "Work Positioning System",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/SBL241WPL.png",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBL242WPL",
+      "category": "work-positioning",
+      "family": "work-positioning-system",
+      "family_name": "Work Positioning System",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/SBL242WPL.png",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBL243WPL",
+      "category": "work-positioning",
+      "family": "work-positioning-system",
+      "family_name": "Work Positioning System",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/SBL243WPL.png",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBL244WPL",
+      "category": "work-positioning",
+      "family": "work-positioning-system",
+      "family_name": "Work Positioning System",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/SBL244WPL.png",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBM101SLC",
+      "category": "hooks-connectors",
+      "family": "hooks-connectors",
+      "family_name": "Hooks & Connectors",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM102DLC.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBM102DLC",
+      "category": "hooks-connectors",
+      "family": "hooks-connectors",
+      "family_name": "Hooks & Connectors",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM104TLC.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBM104TLC",
+      "category": "hooks-connectors",
+      "family": "hooks-connectors",
+      "family_name": "Hooks & Connectors",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM105QLC.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBM105QLC",
+      "category": "hooks-connectors",
+      "family": "hooks-connectors",
+      "family_name": "Hooks & Connectors",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM106TLC.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBM106TLC",
+      "category": "hooks-connectors",
+      "family": "hooks-connectors",
+      "family_name": "Hooks & Connectors",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM107TSC.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBM107TSC",
+      "category": "hooks-connectors",
+      "family": "hooks-connectors",
+      "family_name": "Hooks & Connectors",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM107TSC.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBM102TLC",
+      "category": "hooks-connectors",
+      "family": "hooks-connectors",
+      "family_name": "Hooks & Connectors",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM107TSC.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBM108TSC",
+      "category": "hooks-connectors",
+      "family": "hooks-connectors",
+      "family_name": "Hooks & Connectors",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM201SNH.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBM201SNH",
+      "category": "hooks-connectors",
+      "family": "hooks-connectors",
+      "family_name": "Hooks & Connectors",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM202SNH.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBM202SNH",
+      "category": "hooks-connectors",
+      "family": "hooks-connectors",
+      "family_name": "Hooks & Connectors",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM203SNH.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBM203SNH",
+      "category": "hooks-connectors",
+      "family": "hooks-connectors",
+      "family_name": "Hooks & Connectors",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM204SNH.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBM204SNH",
+      "category": "hooks-connectors",
+      "family": "hooks-connectors",
+      "family_name": "Hooks & Connectors",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM205SBH.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBM205SPH",
+      "category": "hooks-connectors",
+      "family": "hooks-connectors",
+      "family_name": "Hooks & Connectors",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM205SBH.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBM202SBH",
+      "category": "hooks-connectors",
+      "family": "hooks-connectors",
+      "family_name": "Hooks & Connectors",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM205SBH.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBM206SCH",
+      "category": "hooks-connectors",
+      "family": "hooks-connectors",
+      "family_name": "Hooks & Connectors",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM207FRH.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBM207FRH",
+      "category": "hooks-connectors",
+      "family": "hooks-connectors",
+      "family_name": "Hooks & Connectors",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM208SRH.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBM208SRH",
+      "category": "hooks-connectors",
+      "family": "hooks-connectors",
+      "family_name": "Hooks & Connectors",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM209SRH.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBM209SRH",
+      "category": "hooks-connectors",
+      "family": "hooks-connectors",
+      "family_name": "Hooks & Connectors",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/V.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBM210TH",
+      "category": "hooks-connectors",
+      "family": "hooks-connectors",
+      "family_name": "Hooks & Connectors",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM211AH.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBM211AH",
+      "category": "hooks-connectors",
+      "family": "hooks-connectors",
+      "family_name": "Hooks & Connectors",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM211AH.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBA12100KRR3",
+      "category": "anchorages",
+      "family": "anchorages",
+      "family_name": "Temporary Anchorage Line Systems",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA12100TRR4.jpg",
+      "specs": {},
+      "attachment": "The Anchorage Line has one side connector and other side a stop knot."
+    },
+    {
+      "sku": "SBA12100TRR4",
+      "category": "anchorages",
+      "family": "anchorages",
+      "family_name": "Temporary Anchorage Line Systems",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA12100KR.jpg",
+      "specs": {},
+      "attachment": "The Anchorage Line has one side connector and other side a stop knot."
+    },
+    {
+      "sku": "SBA12100KR",
+      "category": "anchorages",
+      "family": "anchorages",
+      "family_name": "Temporary Anchorage Line Systems",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA12100TR.jpg",
+      "specs": {},
+      "attachment": "10.5mm and 12mm dia Kernmantle Polyamide Rope."
+    },
+    {
+      "sku": "SBA12100TR",
+      "category": "anchorages",
+      "family": "anchorages",
+      "family_name": "Temporary Anchorage Line Systems",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA203RA.jpg",
+      "specs": {},
+      "attachment": "3-Strand-14mm and 16mm dia Twisted Polyamide Rope"
+    },
+    {
+      "sku": "SBA203RA",
+      "category": "anchorages",
+      "family": "anchorages",
+      "family_name": "Temporary Anchorage Line Systems",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA201R4.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBA201R4",
+      "category": "anchorages",
+      "family": "anchorages",
+      "family_name": "Temporary Anchorage Line Systems",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA202R4.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBA202R4",
+      "category": "anchorages",
+      "family": "anchorages",
+      "family_name": "Temporary Anchorage Line Systems",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA202R4.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBAA111",
+      "category": "anchorages",
+      "family": "anchorages-2",
+      "family_name": "Anchorages",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/02/SB0641.jpg",
+      "specs": {
+        "Usage": "Extension",
+        "Breaking Strength": "25 KN",
+        "Webbing": "High Tenacity Polyester",
+        "Webbing Width": "44mm",
+        "Stitching Thread": "Polyester",
+        "Size": "Customized",
+        "Standard": "ANSI Z359.1",
+        "Comes With": "Anchor Strap & One side D-ring, Other side Loop"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBAA211",
+      "category": "anchorages",
+      "family": "anchorages-2",
+      "family_name": "Anchorages",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/03/10720.jpg",
+      "specs": {
+        "Usage": "Extension",
+        "Breaking Strength": "25 KN",
+        "Webbing": "High Tenacity Polyester",
+        "Webbing Width": "44mm",
+        "Stitching Thread": "Polyester",
+        "Size": "Customized",
+        "Standard": "ANSI Z359.1",
+        "Comes With": "Scaffoldhook Choker & One side D-ring"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBAA122",
+      "category": "anchorages",
+      "family": "anchorages-2",
+      "family_name": "Anchorages",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/03/10787.jpg",
+      "specs": {
+        "Usage": "Extension",
+        "Breaking Strength": "25 KN",
+        "Webbing": "High Tenacity Polyester",
+        "Webbing Width": "44mm",
+        "Stitching Thread": "Polyester",
+        "Size": "Customized",
+        "Standard": "ANSI Z359.1",
+        "Comes With": "Anchor Strap & Both Side Loop"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBA222",
+      "category": "anchorages",
+      "family": "anchorages-2",
+      "family_name": "Anchorages",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/03/10717.jpg",
+      "specs": {
+        "Usage": "Extension",
+        "Breaking Strength": "25 KN",
+        "Webbing": "High Tenacity Polyester",
+        "Webbing Width": "80mm",
+        "Stitching Thread": "Polyester",
+        "Size": "Customized",
+        "Standard": "ANSI Z359.1",
+        "Comes With": "Cross Arm Strap & Both side D-ring"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBA223",
+      "category": "anchorages",
+      "family": "anchorages-2",
+      "family_name": "Anchorages",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA35100EAS.jpg",
+      "specs": {
+        "Usage": "Extension",
+        "Breaking Strength": "25 KN",
+        "Webbing": "High Tenacity Polyester",
+        "Webbing Width": "44mm",
+        "Stitching Thread": "Polyester",
+        "Size": "Customized",
+        "Standard": "ANSI Z359.1",
+        "Comes With": "Anchor Strap & One side D-ring, Another side Loop"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBA35100EAS",
+      "category": "anchorages",
+      "family": "anchorages-2",
+      "family_name": "Anchorages",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA34100ES.jpg",
+      "specs": {
+        "Made of 25mm wide Polyester Webbing": "Length : 0.6mtr., 1.0mtr. & 1.5mtr. or as requested",
+        "Strength : Min 18 kN for 3 minutes": "Conforms to EN 795 : 2012 Type B"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBA34100ES",
+      "category": "anchorages",
+      "family": "anchorages-2",
+      "family_name": "Anchorages",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA36100WR.jpg",
+      "specs": {
+        "Made of 44mm wide Polyester Webbing.": "Length : 1.07mtr. or as requested."
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBA36100WR",
+      "category": "anchorages",
+      "family": "anchorages-2",
+      "family_name": "Anchorages",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA400RA.jpg",
+      "specs": {
+        "Made of PVC coated 8.0mm G. I. Wire Rope.": "The PVC coating allows protection of anchorage surfaces."
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBA400RA",
+      "category": "anchorages",
+      "family": "anchorages-2",
+      "family_name": "Anchorages",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA31100ASSBA31100AS.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBA31100AS",
+      "category": "anchorages",
+      "family": "anchorages-2",
+      "family_name": "Anchorages",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA33100CAS.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBA33100CAS",
+      "category": "anchorages",
+      "family": "anchorages-2",
+      "family_name": "Anchorages",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA32100AS.jpg",
+      "specs": {
+        "— it is a 3\" wide cross arm strap.": "It comes with a large D-ring on one side and a small Dring on other side.",
+        "It comes with orange and blue combination.": "Other colours are also available on requirement."
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBA32100AS",
+      "category": "anchorages",
+      "family": "anchorages-2",
+      "family_name": "Anchorages",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA32100AS.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBA520HL",
+      "category": "horizontal-lifeline",
+      "family": "temporary-horizontal-lifeline",
+      "family_name": "Temporary Horizontal Lifeline",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA520HL.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SB600SRL",
+      "category": "retractable-blocks",
+      "family": "retractable-block",
+      "family_name": "Retractable Block",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SB600SRL.jpg",
+      "specs": {},
+      "attachment": "Comes with Galvanized Steel Wire Rope of Dia"
+    },
+    {
+      "sku": "SB1000RL",
+      "category": "retractable-blocks",
+      "family": "retractable-block",
+      "family_name": "Retractable Block",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SB600SRL.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SB1200RL",
+      "category": "retractable-blocks",
+      "family": "retractable-block",
+      "family_name": "Retractable Block",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SB600SRL.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SB1500RL",
+      "category": "retractable-blocks",
+      "family": "retractable-block",
+      "family_name": "Retractable Block",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SB600SRL.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SB2000RL",
+      "category": "retractable-blocks",
+      "family": "retractable-block",
+      "family_name": "Retractable Block",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SB600SRL.jpg",
+      "specs": {},
+      "attachment": "Length"
+    },
+    {
+      "sku": "SB1060LBHL",
+      "category": "material-handling",
+      "family": "material-handling",
+      "family_name": "Material Handling",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SB1045LBWL.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SB1045LBWL",
+      "category": "material-handling",
+      "family": "material-handling",
+      "family_name": "Material Handling",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SB1050LBHL.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SB1050LBHL",
+      "category": "material-handling",
+      "family": "material-handling",
+      "family_name": "Material Handling",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SB1045LBFL.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SB1045LBFL",
+      "category": "material-handling",
+      "family": "material-handling",
+      "family_name": "Material Handling",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/V-1.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SB1050LBFL",
+      "category": "material-handling",
+      "family": "material-handling",
+      "family_name": "Material Handling",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SB1040LBWL.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SB1040LBWL",
+      "category": "material-handling",
+      "family": "material-handling",
+      "family_name": "Material Handling",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SB1040LBWL.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SB270ET",
+      "category": "rope-access-rescue",
+      "family": "rope-access-rescue",
+      "family_name": "Rope Access & Rescue",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SB280ES.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SB280ES",
+      "category": "rope-access-rescue",
+      "family": "rope-access-rescue",
+      "family_name": "Rope Access & Rescue",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SB260PC.jpg",
+      "specs": {},
+      "attachment": "The evacuation triangle with shoulder straps is easily worn and adjusted."
+    },
+    {
+      "sku": "SB260PC",
+      "category": "rope-access-rescue",
+      "family": "rope-access-rescue",
+      "family_name": "Rope Access & Rescue",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SB244EB.jpg",
+      "specs": {},
+      "attachment": "Ergonomic and comfortable working chair for vertical ascent and descent."
+    },
+    {
+      "sku": "SB244EB",
+      "category": "rope-access-rescue",
+      "family": "rope-access-rescue",
+      "family_name": "Rope Access & Rescue",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SB250RS.jpg",
+      "specs": {},
+      "attachment": "Made of high tenacity polyester webbing."
+    },
+    {
+      "sku": "SB250RS",
+      "category": "rope-access-rescue",
+      "family": "rope-access-rescue",
+      "family_name": "Rope Access & Rescue",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SB210GDS.jpg",
+      "specs": {},
+      "attachment": "Inert to all conditions, body fluids & blood."
+    },
+    {
+      "sku": "SB210GDS",
+      "category": "rope-access-rescue",
+      "family": "rope-access-rescue",
+      "family_name": "Rope Access & Rescue",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SB220LAS.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SB220LAS",
+      "category": "rope-access-rescue",
+      "family": "rope-access-rescue",
+      "family_name": "Rope Access & Rescue",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SB220RAS.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SB220RAS",
+      "category": "rope-access-rescue",
+      "family": "rope-access-rescue",
+      "family_name": "Rope Access & Rescue",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SB220RAS.jpg",
+      "specs": {},
+      "attachment": "Grip Descender"
+    },
+    {
+      "sku": "SB700KIT",
+      "category": "rope-access-rescue",
+      "family": "confined-space",
+      "family_name": "Confined Space",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SB720WN.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SB720WN",
+      "category": "rope-access-rescue",
+      "family": "confined-space",
+      "family_name": "Confined Space",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SB720WN.jpg",
+      "specs": {
+        "Lifting Load Capacity : 135 Kgs (330 lbs).": "Wire Length: 20 m, 25m.",
+        "Conforms to EN 1496:2006 Class A": "It is used for uplifting or pulling down of personnel or material into confined spaces."
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SB725WN",
+      "category": "rope-access-rescue",
+      "family": "confined-space",
+      "family_name": "Confined Space",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SB710TP.jpg",
+      "specs": {
+        "25 Mtr.": "8.520 kg."
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SB710TP",
+      "category": "rope-access-rescue",
+      "family": "confined-space",
+      "family_name": "Confined Space",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SB710TP.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBSG901",
+      "category": "safety-garments",
+      "family": "safety-garments",
+      "family_name": "Safety Garments",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBSG902.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBSG902",
+      "category": "safety-garments",
+      "family": "safety-garments",
+      "family_name": "Safety Garments",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBSG903.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBSG903",
+      "category": "safety-garments",
+      "family": "safety-garments",
+      "family_name": "Safety Garments",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBSG904.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBSG904",
+      "category": "safety-garments",
+      "family": "safety-garments",
+      "family_name": "Safety Garments",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBSG905.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBSG905",
+      "category": "safety-garments",
+      "family": "safety-garments",
+      "family_name": "Safety Garments",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBSG906.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBSG906",
+      "category": "safety-garments",
+      "family": "safety-garments",
+      "family_name": "Safety Garments",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBSG907.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBSG907",
+      "category": "safety-garments",
+      "family": "safety-garments",
+      "family_name": "Safety Garments",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBSG908.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBSG908",
+      "category": "safety-garments",
+      "family": "safety-garments",
+      "family_name": "Safety Garments",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBSG909.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBSG909",
+      "category": "safety-garments",
+      "family": "safety-garments",
+      "family_name": "Safety Garments",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBSG909.jpg",
+      "specs": {},
+      "attachment": "CONTACT INFO"
+    },
+    {
+      "sku": "SBRV801",
+      "category": "safety-garments",
+      "family": "reflective-vests",
+      "family_name": "Reflective Vests",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBRV802.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBRV802",
+      "category": "safety-garments",
+      "family": "reflective-vests",
+      "family_name": "Reflective Vests",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBRV803.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBRV803",
+      "category": "safety-garments",
+      "family": "reflective-vests",
+      "family_name": "Reflective Vests",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBRV804.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBRV804",
+      "category": "safety-garments",
+      "family": "reflective-vests",
+      "family_name": "Reflective Vests",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBRV805.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBRV805",
+      "category": "safety-garments",
+      "family": "reflective-vests",
+      "family_name": "Reflective Vests",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBRV806.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBRV806",
+      "category": "safety-garments",
+      "family": "reflective-vests",
+      "family_name": "Reflective Vests",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBRV807.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBRV807",
+      "category": "safety-garments",
+      "family": "reflective-vests",
+      "family_name": "Reflective Vests",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBRV808.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBRV808",
+      "category": "safety-garments",
+      "family": "reflective-vests",
+      "family_name": "Reflective Vests",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBRV808.jpg",
+      "specs": {},
+      "attachment": "CONTACT INFO"
+    },
+    {
+      "sku": "SBHP301NS",
+      "category": "safety-garments",
+      "family": "head-protection",
+      "family_name": "Head Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/Untitled-design-10.png",
+      "specs": {
+        "Weather resistant HDPE shell.": "Robust and Durable outer shell.",
+        "Inner harness made of LDPE or Textile.": "Ratchet made up of Nylon.",
+        "Ratchet washer made of ABS.": "Smooth edges with comfortable finish."
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBSG401",
+      "category": "safety-garments",
+      "family": "eye-protection",
+      "family_name": "Eye Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBSG402.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBSG402",
+      "category": "safety-garments",
+      "family": "eye-protection",
+      "family_name": "Eye Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBSG403.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBSG403",
+      "category": "safety-garments",
+      "family": "eye-protection",
+      "family_name": "Eye Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBSG404.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBSG404",
+      "category": "safety-garments",
+      "family": "eye-protection",
+      "family_name": "Eye Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBSG405.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBSG405",
+      "category": "safety-garments",
+      "family": "eye-protection",
+      "family_name": "Eye Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBSG406.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBSG406",
+      "category": "safety-garments",
+      "family": "eye-protection",
+      "family_name": "Eye Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBSG407.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBSG407",
+      "category": "safety-garments",
+      "family": "eye-protection",
+      "family_name": "Eye Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBSG408.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBSG408",
+      "category": "safety-garments",
+      "family": "eye-protection",
+      "family_name": "Eye Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBSG408.jpg",
+      "specs": {},
+      "attachment": "AREA OF USE :"
+    },
+    {
+      "sku": "SBEM501",
+      "category": "safety-garments",
+      "family": "ear-protection",
+      "family_name": "Ear Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBEM502.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBEM502",
+      "category": "safety-garments",
+      "family": "ear-protection",
+      "family_name": "Ear Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBEM503.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBEM503",
+      "category": "safety-garments",
+      "family": "ear-protection",
+      "family_name": "Ear Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBEM504.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBEM504",
+      "category": "safety-garments",
+      "family": "ear-protection",
+      "family_name": "Ear Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBEM505.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBEM505",
+      "category": "safety-garments",
+      "family": "ear-protection",
+      "family_name": "Ear Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBEM506.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBEM506",
+      "category": "safety-garments",
+      "family": "ear-protection",
+      "family_name": "Ear Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBEM507.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBEM507",
+      "category": "safety-garments",
+      "family": "ear-protection",
+      "family_name": "Ear Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBEM508.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBEM508",
+      "category": "safety-garments",
+      "family": "ear-protection",
+      "family_name": "Ear Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBEM508.jpg",
+      "specs": {},
+      "attachment": "SPECIAL FEATURES :"
+    },
+    {
+      "sku": "SBFP601",
+      "category": "safety-garments",
+      "family": "face-protection",
+      "family_name": "Face Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBDC602.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBFP602",
+      "category": "safety-garments",
+      "family": "face-protection",
+      "family_name": "Face Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBDC603.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBFP603",
+      "category": "safety-garments",
+      "family": "face-protection",
+      "family_name": "Face Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBDC604.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBFP604",
+      "category": "safety-garments",
+      "family": "face-protection",
+      "family_name": "Face Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBDC605.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBFP605",
+      "category": "safety-garments",
+      "family": "face-protection",
+      "family_name": "Face Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBDC606.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBFP606",
+      "category": "safety-garments",
+      "family": "face-protection",
+      "family_name": "Face Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBDC606.jpg",
+      "specs": {},
+      "attachment": "CONTACT INFO"
+    },
+    {
+      "sku": "SBSG701",
+      "category": "safety-garments",
+      "family": "hand-protection",
+      "family_name": "Hand Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBSG702.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBSG702",
+      "category": "safety-garments",
+      "family": "hand-protection",
+      "family_name": "Hand Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBSG703.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBSG703",
+      "category": "safety-garments",
+      "family": "hand-protection",
+      "family_name": "Hand Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBSG704.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBSG704",
+      "category": "safety-garments",
+      "family": "hand-protection",
+      "family_name": "Hand Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBSG705.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBSG705",
+      "category": "safety-garments",
+      "family": "hand-protection",
+      "family_name": "Hand Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBSG706.jpg",
+      "specs": {},
+      "attachment": null
+    },
+    {
+      "sku": "SBSG706",
+      "category": "safety-garments",
+      "family": "hand-protection",
+      "family_name": "Hand Protection",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBSG706.jpg",
+      "specs": {},
+      "attachment": "CONTACT INFO"
+    }
+  ]
+}

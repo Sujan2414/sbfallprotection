@@ -1,0 +1,70 @@
+---
+const { home = false } = Astro.props;
+const a = (hash: string) => (home ? hash : `/${hash}`);
+---
+<footer>
+  <div class="wrap">
+    <div class="f-tools" aria-hidden="true">
+      <img src="/assets/deco-lanyard-v.png" alt="">
+      <img src="/assets/deco-sling1-v.png" alt="">
+      <img src="/assets/deco-sling2-v.png" alt="">
+    </div>
+    <div class="foot-grid">
+      <div class="f-col">
+        <h4>Quick Links</h4>
+        <a href="/about">About us</a>
+        <a href={a('#markets')}>Export Markets</a>
+        <a href={a('#works')}>How it Works</a>
+        <a href={a('#testimonials')}>Testimonials</a>
+        <a href="/contact">Contact Us</a>
+        <a href={a('#faqs')}>FAQs</a>
+      </div>
+      <div class="f-col">
+        <h4>Products</h4>
+        <a href="/products/harnesses">Full Body Harnesses</a>
+        <a href="/products/lanyards">Lanyards</a>
+        <a href="/products/anchorages">Anchorages</a>
+        <a href="/products/hooks-connectors">Hooks &amp; Connectors</a>
+        <a href="/products/work-positioning">Work Positioning</a>
+        <a href="/products/safety-garments">Safety Garments</a>
+      </div>
+      <div class="f-col">
+        <h4>Company</h4>
+        <a href="/about">About SB</a>
+        <a href="https://www.sbfallprotection.com/company-catalogue/">Catalogue</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+      <div>
+        <div class="fc-item"><span class="fc-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg></span><div><b>Phone Number</b><span>+91 512 240 6728<br>+91 512 240 6947</span></div></div>
+        <div class="fc-item"><span class="fc-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><div><b>Email Address</b><span>sales@sbfallprotection.com</span></div></div>
+      </div>
+      <div>
+        <div class="fc-item"><span class="fc-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 21s-7-5.6-7-11a7 7 0 0 1 14 0c0 5.4-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg></span><div><b>Physical Address</b><span>Plot C-17 to C-19, UPSIDC Industrial Area, Rooma, Kanpur — 208008, UP, India</span></div></div>
+        <div class="f-socials">
+          <a href="https://www.facebook.com/sbfallprotection" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7h2.4l.4-3h-2.8V9.1c0-.9.3-1.5 1.6-1.5h1.3V4.9c-.3 0-1.1-.1-2-.1-2 0-3.4 1.2-3.4 3.5V11H8.5v3H11v7h2.5Z"/></svg></a>
+          <a href="https://www.instagram.com/sbfallprotection/" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="https://www.linkedin.com/company/sb-leathers-pvt-ltd/" aria-label="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6.5 8.8H3.6V21h2.9V8.8ZM5 7.4a1.7 1.7 0 1 0 0-3.4 1.7 1.7 0 0 0 0 3.4ZM12 14.6c0-1.3.6-2.1 1.8-2.1 1.1 0 1.6.8 1.6 2.1V21h2.9v-7.1c0-2.9-1.6-4.3-3.8-4.3-1.8 0-2.6 1-3 1.7h-.1V8.8H8.6V21H12v-6.4Z"/></svg></a>
+          <a href="https://www.youtube.com/channel/UCUAbt8J6R7xN4kCow3r2L_g" aria-label="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="6" width="19" height="12" rx="3.5"/><path d="m10.5 9.5 4.5 2.5-4.5 2.5v-5Z" fill="currentColor" stroke="none"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <div class="f-bar">
+      <span>© 2026 SB International. All rights reserved.</span>
+      <span>ISO 9001:2015 · SEDEX Certified · Made in India</span>
+    </div>
+    <div class="f-mark-wrap">
+      <svg class="f-mark" viewBox="0 0 1000 124" role="img" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="fMarkFade" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="10%" stop-color="#ffffff" stop-opacity="0.95"/>
+            <stop offset="72%" stop-color="#ffffff" stop-opacity="0.34"/>
+            <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <text x="500" y="101" text-anchor="middle" textLength="984" lengthAdjust="spacingAndGlyphs"
+              font-size="112" letter-spacing="-2" fill="url(#fMarkFade)">SB Fall Protection</text>
+      </svg>
+    </div>
+  </div>
+</footer>

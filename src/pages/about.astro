@@ -1,0 +1,164 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+
+const figures = [
+  { n: '2003', l: 'Founded in Kanpur, Uttar Pradesh' },
+  { n: '145,000', l: 'Sq ft integrated facility' },
+  { n: '290+', l: 'Skilled professionals on the floor' },
+  { n: '232+', l: 'Product codes in the catalogue' },
+];
+
+const leadership = [
+  {
+    name: 'Mr. Biju Abraham',
+    role: 'Managing Partner',
+    bio: 'Over two decades in product design and marketing for personal protective equipment, leading the design direction and export business.',
+  },
+  {
+    name: 'Mr. Saji Thomas',
+    role: 'Partner',
+    bio: 'Oversees financial management, strategic planning and regulatory compliance across the manufacturing and export operation.',
+  },
+];
+---
+<Base
+  title="About SB Fall Protection — Manufacturer & Exporter Since 2003"
+  description="SB International, established 2003 in Kanpur India, manufactures and exports certified fall-protection and PPE. ISO 9001:2015 certified, SEDEX audited, Government of India recognised Export House."
+>
+  <PageHeader
+    eyebrow="About Our Company"
+    title="Built on Trust."
+    accent="Driven by Quality."
+    lead="An Indian manufacturer of certified height-safety equipment, supplying distributors, EPC contractors and safety companies worldwide from a single integrated facility."
+    crumbs={[{ label: 'About' }]}
+  />
+
+  <section class="sec">
+    <div class="wrap about-g">
+      <div class="about-fig reveal">
+        <img class="main" src="/assets/about-crew.jpg" alt="SB-equipped crew working at height" width="760" height="836">
+        <div class="float-card fc-a"><div class="big">20+</div><small>Years of Experience</small></div>
+        <div class="float-card fc-b"><div class="big">ISO 9001:2015 · SEDEX</div><small>Certified &amp; Audited</small></div>
+      </div>
+      <div class="reveal">
+        <p class="ab-lead">
+          Safety applies with equal force to the individual, to the family, to the
+          employer and to the state.
+        </p>
+        <div class="ab-body">
+          <p>
+            SB International was established in 2003 and grew from precision leather
+            craft into one of India's dedicated fall-protection manufacturers. What
+            began as an equestrian and personal protective equipment workshop is today
+            a 145,000 sq ft integrated plant in Kanpur, Uttar Pradesh.
+          </p>
+          <p>
+            Qualified designers, pattern masters, quality controllers and finishing
+            staff work under one roof. Because webbing, stitching, hardware assembly,
+            finishing and packing all happen in-house, quality control never leaves the
+            building — and custom or private-label products can be developed to a
+            buyer's exact specification.
+          </p>
+          <p>
+            The company is a Government of India recognised Export House, certified by
+            the Council for Leather Exports. The United States is our largest market,
+            alongside customers across Europe, the Middle East, Africa, Latin America
+            and Asia-Pacific.
+          </p>
+        </div>
+        <div class="cert-strip">
+          <span class="cert-chip">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4.5 6v5c0 4.8 3.2 8.5 7.5 10 4.3-1.5 7.5-5.2 7.5-10V6L12 3Z"/><path d="m9 12 2 2 4-4.5"/></svg>
+            ISO 9001:2015
+          </span>
+          <span class="cert-chip">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16M6 20V9l6-5 6 5v11"/><path d="M10 20v-6h4v6"/></svg>
+            SEDEX Audited
+          </span>
+          <span class="cert-chip">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3.5 9h17M3.5 15h17M12 3c-2.5 2.4-4 5.4-4 9s1.5 6.6 4 9c2.5-2.4 4-5.4 4-9s-1.5-6.6-4-9Z"/></svg>
+            Govt. Recognised Export House
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" style="padding-top:0">
+    <div class="wrap">
+      <div class="ab-figures">
+        {figures.map((f) => (
+          <div class="ab-fig reveal"><b>{f.n}</b><span>{f.l}</span></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="sec services">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="label">Leadership</span>
+        <h2>The People Behind <em>the Product</em></h2>
+      </div>
+      <div class="team-grid">
+        {leadership.map((p) => (
+          <div class="team-card reveal">
+            <b>{p.name}</b><em>{p.role}</em>
+            <p>{p.bio}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head left reveal">
+        <span class="label">Inside the Factory</span>
+        <h2>One Roof. <em>Zero Compromises.</em></h2>
+        <p>From webbing and stitching to final inspection and packing, every step happens in-house.</p>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="fac-track" id="facTrack">
+        <figure class="fac-card">
+          <img src="/assets/fac-stitching.jpg" alt="Stitching floor at the SB facility" width="1200" height="600">
+          <figcaption>The stitching floor — 290+ specialists</figcaption>
+        </figure>
+        <figure class="fac-card">
+          <img src="/assets/fac-cutting.jpg" alt="Webbing cutting and heat-sealing" width="840" height="650">
+          <figcaption>Webbing cutting &amp; heat-sealing</figcaption>
+        </figure>
+        <figure class="fac-card">
+          <img src="/assets/fac-inspection.jpg" alt="Inspection and packing" width="646" height="457">
+          <figcaption>Inspection &amp; packing</figcaption>
+        </figure>
+        <figure class="fac-card">
+          <img src="/assets/fac-campus.jpg" alt="SB International factory campus in Kanpur" width="1000" height="577">
+          <figcaption>SB International — Kanpur campus</figcaption>
+        </figure>
+        <figure class="fac-card">
+          <img src="/assets/fac-building.jpg" alt="Head office and design studio" width="800" height="530">
+          <figcaption>Head office &amp; design studio</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" style="padding-top:12px">
+    <div class="wrap">
+      <div class="cta-card reveal">
+        <img class="cta-bg" src="/assets/cta-abstract.jpg" alt="">
+        <div class="cta-inner">
+          <h2>Ready to Equip Your Crew?</h2>
+          <p>From single product lines to complete fall-protection programmes, our team delivers certified gear you can trust.</p>
+          <div class="btns">
+            <a class="btn btn-orange" href="/contact">Get Free Quote</a>
+            <a class="btn btn-white" href="/products">Browse Products</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

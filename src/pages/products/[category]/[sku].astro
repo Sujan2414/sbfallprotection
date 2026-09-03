@@ -1,0 +1,115 @@
+---
+import Base from '../../../layouts/Base.astro';
+import PageHeader from '../../../components/PageHeader.astro';
+import {
+  allProducts, getCategory, getFamily, getProducts,
+  productUrl, imageUrl, categoryUrl,
+} from '../../../lib/catalog';
+
+export function getStaticPaths() {
+  return allProducts().map((p) => ({
+    params: { category: p.category, sku: p.sku.toLowerCase() },
+    props: { product: p },
+  }));
+}
+
+const { product } = Astro.props;
+const cat = getCategory(product.category)!;
+const fam = getFamily(product.family);
+
+// sibling codes from the same family, for the related strip
+const siblings = getProducts(product.category, product.family)
+  .filter((p) => p.sku !== product.sku)
+  .slice(0, 8);
+
+const specEntries = Object.entries(product.specs);
+// Family bullets act as the shared spec sheet for variant-table products.
+const sharedNotes = specEntries.length === 0 ? (fam?.bullets ?? []) : [];
+
+const mailSubject = `Quote request — ${product.sku}`;
+const mailBody = `Hello SB Fall Protection team,\n\nPlease send pricing, MOQ and lead time for:\n\nProduct code: ${product.sku}\nRange: ${product.family_name}\nQuantity required: \n\nDelivery destination: \nCompany: \nContact number: \n\nThank you.`;
+const mailto = `mailto:sales@sbfallprotection.com?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+---
+<Base
+  title={`${product.sku} — ${product.family_name} | SB Fall Protection`}
+  description={`${product.sku}: ${product.attachment || product.specs['Usage'] || product.family_name}. Manufactured and exported by SB Fall Protection, Kanpur India. Full specifications and quote request.`}
+  image={imageUrl(product.image)}
+>
+  <PageHeader
+    eyebrow={product.family_name}
+    title={product.sku}
+    crumbs={[
+      { label: 'Products', href: '/products' },
+      { label: cat.name, href: categoryUrl(cat.slug) },
+      { label: product.sku },
+    ]}
+  />
+
+  <section class="sec">
+    <div class="wrap pd-grid">
+      <figure class="pd-media" style="margin:0">
+        <img src={imageUrl(product.image)} alt={`${product.sku} — ${product.family_name}`} width="600" height="600">
+      </figure>
+
+      <div>
+        <h2 class="pd-title">{product.attachment || product.specs['Usage'] || product.family_name}</h2>
+        <p class="pd-fam">
+          {product.sku} · <a href={categoryUrl(cat.slug)}>{cat.name}</a> · {product.family_name}
+        </p>
+
+        {specEntries.length > 0 && (
+          <table class="spec-table">
+            <tbody>
+              {specEntries.map(([k, v]) => (
+                <tr><th scope="row">{k}</th><td>{v}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+
+        {sharedNotes.length > 0 && (
+          <div class="fam-notes" style="margin-top:26px">
+            <ul>{sharedNotes.slice(0, 6).map((b) => <li>{b}</li>)}</ul>
+          </div>
+        )}
+
+        <div class="pd-cta">
+          <a class="btn btn-orange" href={mailto}>Request a Quote <span class="arr">→</span></a>
+          <a class="btn btn-ink" href="/contact">Contact Sales</a>
+        </div>
+        <p class="pd-note">
+          Certificates and test documentation are supplied with every quotation.
+          Custom and private-label builds of this product are available — MOQs apply.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {siblings.length > 0 && (
+    <section class="sec" style="padding-top:0">
+      <div class="wrap pd-related">
+        <div class="family-head">
+          <div><h2>More from {product.family_name}</h2></div>
+          <a class="cat-go" href={categoryUrl(cat.slug)}>View all {cat.name}
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="sku-grid">
+          {siblings.map((p) => (
+            <a class="sku-card" href={productUrl(p)}>
+              <span class="sku-ph">
+                <img src={imageUrl(p.image)} alt={p.sku} loading="lazy" width="300" height="300">
+              </span>
+              <span class="sku-body">
+                <span class="sku-code">{p.sku}</span>
+                {(p.attachment || p.specs['Usage']) && (
+                  <span class="sku-desc">{p.attachment || p.specs['Usage']}</span>
+                )}
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</Base>

@@ -1,0 +1,31 @@
+---
+interface Crumb { label: string; href?: string }
+interface Props {
+  eyebrow?: string;
+  title: string;
+  accent?: string;
+  lead?: string;
+  crumbs?: Crumb[];
+}
+const { eyebrow, title, accent, lead, crumbs = [] } = Astro.props;
+---
+<header class="page-head">
+  <div class="wrap">
+    {crumbs.length > 0 && (
+      /* a <div role="navigation"> not a <nav>: the global stylesheet pins the
+         site header with a bare `nav` selector, which would fix this to the top */
+      <div class="crumb" role="navigation" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        {crumbs.map((c) => (
+          <>
+            <i>/</i>
+            {c.href ? <a href={c.href}>{c.label}</a> : <span>{c.label}</span>}
+          </>
+        ))}
+      </div>
+    )}
+    {eyebrow && <span class="label" style="display:block;margin-top:22px">{eyebrow}</span>}
+    <h1>{title}{accent && <> <em>{accent}</em></>}</h1>
+    {lead && <p>{lead}</p>}
+  </div>
+</header>
