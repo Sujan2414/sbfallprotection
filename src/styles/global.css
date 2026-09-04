@@ -953,18 +953,29 @@
 /* inner pages only — the homepage hero scrolls normally */
 .page-hero{position:sticky;top:0;z-index:0}
 
-/* whatever follows the hero becomes the sheet that slides over it */
-.page-hero + section,
-.page-hero + div{
+/* EVERY later sibling must be opaque and above the hero, not just the first —
+   the hero stays pinned behind the whole page, so any transparent section
+   below lets it show through at the edges. */
+.page-hero ~ section,
+.page-hero ~ div,
+.page-hero ~ footer{
   position:relative;z-index:1;
   background:var(--white);
+}
+/* sections that carry their own colour keep it (higher specificity wins) */
+.page-hero ~ section.services,
+.page-hero ~ section.testi,
+.page-hero ~ section.contact{background:var(--light)}
+.page-hero ~ section.reels{background:var(--ink)}
+.page-hero ~ footer{background:var(--orange)}
+
+/* only the first one gets the rounded sheet edge that rides over the hero */
+.page-hero + section,
+.page-hero + div{
   border-radius:30px 30px 0 0;
   margin-top:-30px;
   box-shadow:0 -22px 50px rgba(19,19,18,.16);
 }
-/* the sheet's own dark/tinted variants keep their colour */
-.page-hero + section.services{background:var(--light)}
-.page-hero + section.reels{background:var(--ink)}
 
 @media(max-width:760px){
   .page-hero + section,.page-hero + div{
@@ -1074,3 +1085,73 @@
 .article-cta b{display:block;font-size:18.5px;font-weight:600;letter-spacing:-.02em}
 .article-cta span{display:block;margin-top:6px;color:var(--gray);font-size:14.5px;max-width:46ch}
 @media(max-width:640px){.article-cta{padding:22px}.article-cta .btn{width:100%;justify-content:center}}
+
+/* ================= MOBILE: TAP TARGETS & LEGIBILITY =================
+   From a mobile audit at 360/390px. Standalone links were 20–32px tall and
+   some body copy sat at 12.8px; both are below comfortable touch/reading size.
+   Inline links inside prose are deliberately left alone — WCAG exempts links
+   in a sentence, and padding them would break the line rhythm. */
+@media(max-width:760px){
+  /* product-card description was the smallest real body copy on the site */
+  .sku-desc{font-size:13.5px;line-height:1.5}
+  .sku-std{font-size:12px;padding:5px 10px}
+  .cat-count,.post-meta{font-size:13px}
+
+  /* footer navigation: block links need a real hit area */
+  .f-col a{padding:11px 0;font-size:15.5px}
+  .f-col h4{margin-bottom:8px}
+  .fc-item span{font-size:15px}
+  .f-socials a{width:50px;height:50px}
+
+  /* contact card: phone and email are primary actions */
+  .ct-item a{padding:9px 0;font-size:15.5px}
+  .ct-item span{font-size:15px}
+
+  /* breadcrumb trail: room to tap without enlarging the type */
+  .crumb{line-height:2.1;gap:6px 9px}
+  .crumb a{padding:5px 0}
+
+  /* small in-card links */
+  .svc-link{padding:10px 0}
+  .svc-foot{padding-top:4px}
+  .cat-go{padding:9px 0}
+
+  /* nav panel entries already large; keep the CTA comfortable */
+  .nav-panel a{padding:15px 16px}
+
+  /* conversational flow controls */
+  .flow-chip{padding:12px 17px;font-size:14.5px}
+  .flow-input input,.flow-input select,.flow-input textarea{padding:15px;font-size:16px}
+  .flow-send{width:52px;height:52px}
+  /* 16px inputs stop iOS Safari zooming the page on focus */
+  .f-fields input,.f-fields select,.f-fields textarea{font-size:16px}
+}
+
+/* ================= MOBILE: BLOG ================= */
+@media(max-width:760px){
+  .topic-row{gap:8px;margin-bottom:24px;
+    /* let the filters scroll sideways rather than stack into a tall block */
+    flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;
+    margin-left:-20px;margin-right:-20px;padding:2px 20px 4px}
+  .topic-row::-webkit-scrollbar{display:none}
+  .topic-pill{flex:0 0 auto;padding:10px 16px}
+
+  .post-lead{border-radius:20px;margin-bottom:20px}
+  .post-lead .post-ph{aspect-ratio:16/10}
+  .post-lead-body{padding:22px 20px 24px;gap:10px}
+  .post-lead-body h3{font-size:21px}
+  .post-lead-body p{font-size:14.5px}
+
+  .post-grid{gap:18px}
+  .post-card{border-radius:18px}
+  .post-body{padding:18px 18px 20px}
+  .post-body h3{font-size:18px}
+  .post-topic{top:11px;left:11px;font-size:11px;padding:5px 11px}
+
+  /* article */
+  .article-meta{padding-bottom:20px;margin-bottom:26px;font-size:13.5px}
+  .article-foot{margin-top:38px;padding-top:26px}
+  .article-cta{flex-direction:column;align-items:flex-start;gap:16px;padding:22px 20px}
+  .article-cta .btn{width:100%;justify-content:center}
+  .prose hr + p{padding:16px 18px}
+}
