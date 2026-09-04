@@ -42,8 +42,10 @@ body.adm-body {
   font-size: 14px;
   -webkit-font-smoothing: antialiased;
 }
-.adm-body h1, .adm-body h2, .adm-body h3, .adm-body h4 { margin: 0; }
-.adm-body p { margin: 0; }
+/* :where() keeps the reset at zero specificity, so a single authored class
+   still wins. Without it `.adm-body p` (0,1,1) silently beat rules like
+   `.adm-login-foot { margin-top }` (0,1,0) and the spacing vanished. */
+.adm-body :where(h1, h2, h3, h4, p) { margin: 0; }
 .adm-body a { color: inherit; text-decoration: none; }
 .adm-body img { display: block; max-width: 100%; }
 .adm-body button, .adm-body input, .adm-body select, .adm-body textarea { font: inherit; }
@@ -60,8 +62,11 @@ body.adm-body {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   background: #fff;
 }
-.adm-login-form { display: grid; place-items: center; padding: 40px 32px; }
-.adm-login-inner { width: 100%; max-width: 400px; }
+.adm-login-form { display: grid; place-items: center; padding: 40px 32px; min-height: 0; }
+.adm-login-inner {
+  width: 100%; max-width: 400px;
+  display: flex; flex-direction: column; align-items: stretch;
+}
 
 .adm-logo { display: flex; align-items: center; gap: 10px; }
 .adm-logo img { width: 36px; height: 36px; }
@@ -69,13 +74,15 @@ body.adm-body {
 .adm-logo b span { color: var(--a-accent); }
 
 .adm-login-inner h1 {
-  font-size: 34px; font-weight: 700; letter-spacing: -0.9px;
-  margin-top: 34px; line-height: 1.15;
+  font-size: 32px; font-weight: 700; letter-spacing: -0.8px;
+  margin-top: 30px; line-height: 1.15;
 }
-.adm-login-inner .sub { margin-top: 9px; color: var(--a-muted); font-size: 14.5px; line-height: 1.6; }
+.adm-login-inner .sub { margin-top: 10px; color: var(--a-muted); font-size: 14.5px; line-height: 1.6; }
 .adm-login-inner .adm-field { margin-top: 22px; }
-.adm-login-inner .adm-field:first-of-type { margin-top: 30px; }
-.adm-login-inner .adm-btn-lg { margin-top: 26px; }
+.adm-login-inner .adm-field:first-of-type { margin-top: 28px; }
+.adm-login-inner .adm-check { margin-top: 20px; }
+.adm-login-inner .adm-btn-lg { margin-top: 24px; }
+.adm-login-inner #loginMsg:not(:empty) { margin-top: 4px; }
 
 /* password field with a reveal toggle */
 .adm-pw { position: relative; display: block; }
@@ -89,28 +96,54 @@ body.adm-body {
 .adm-pw-eye svg { width: 19px; height: 19px; }
 .adm-pw-eye:hover { color: var(--a-ink); background: var(--a-thead); }
 
-.adm-check { display: flex; align-items: center; gap: 11px; margin-top: 18px; cursor: pointer; }
+.adm-check { display: flex; align-items: center; gap: 11px; cursor: pointer; }
 .adm-check input {
   width: 18px; height: 18px; flex: 0 0 18px; margin: 0;
   accent-color: var(--a-accent); cursor: pointer;
 }
 .adm-check span { font-size: 13.5px; font-weight: 600; color: var(--a-muted); }
 
+/* divider + Google button (only rendered once the provider is enabled) */
+.adm-or {
+  display: flex; align-items: center; gap: 14px;
+  margin-top: 22px; color: var(--a-faint);
+  font-size: 12.5px; font-weight: 600;
+}
+.adm-or::before, .adm-or::after {
+  content: ''; flex: 1; height: 1px; background: var(--a-line);
+}
+.adm-btn-google {
+  margin-top: 16px; width: 100%;
+  display: flex; align-items: center; justify-content: center; gap: 11px;
+  background: #fff; color: var(--a-ink);
+  border: 1px solid var(--a-border);
+  padding: 14px 20px; font-size: 14.5px; font-weight: 600;
+}
+.adm-btn-google:hover { background: var(--a-thead); border-color: var(--a-muted); }
+.adm-btn-google svg { flex: none; }
+
 .adm-login-foot {
-  margin-top: 22px; font-size: 12.5px; line-height: 1.65;
+  margin-top: 20px; font-size: 12.5px; line-height: 1.65;
   color: var(--a-faint); text-align: center;
 }
 .adm-login-foot strong { color: var(--a-muted); }
 
 /* photo column */
-.adm-login-art { padding: 16px 16px 16px 0; }
+.adm-login-art { padding: 16px 16px 16px 0; min-height: 0; }
 .adm-login-img {
-  position: relative; height: 100%; border-radius: 22px; overflow: hidden;
+  position: relative; height: 100%; min-height: 0;
+  border-radius: 22px; overflow: hidden;
   background: var(--a-ink);
   animation: adm-slide-in 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
   animation-delay: 120ms;
 }
-.adm-login-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* out of flow on purpose: in flow, height:100% against an auto-height parent
+   resolves to the file's intrinsic height and the photo dictates the page
+   height instead of the viewport */
+.adm-login-img img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
 .adm-login-img::after {
   content: ''; position: absolute; inset: 0;
   background: linear-gradient(to top, rgba(20,16,14,.88) 0%, rgba(20,16,14,.34) 38%, rgba(20,16,14,.06) 62%);
@@ -528,6 +561,9 @@ table.adm-table tbody tr:hover { background: #fcfcfd; }
   max-width: 900px;
 }
 .adm-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 30px; }
+/* .adm-field is a <label>: inline by default, which silently drops every
+   vertical margin set on it outside a grid/flex parent */
+.adm-field { display: block; }
 .adm-fields .full { grid-column: 1 / -1; }
 .adm-field span, .adm-label {
   display: block;

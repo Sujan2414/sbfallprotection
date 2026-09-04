@@ -175,6 +175,29 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
   if (error) msg.innerHTML = `<div class="adm-msg err">${esc(error.message)}</div>`;
 });
 
+/**
+ * Google sign-in. The button only exists when the build sets
+ * SUPABASE_GOOGLE_AUTH=1, so this is a no-op until Google is enabled in
+ * Supabase. Same session storage as the password flow, so "keep me signed in"
+ * still applies -- OAuth returns to this page and onAuthStateChange picks it up.
+ */
+const btnGoogle = document.getElementById('btnGoogle');
+if (btnGoogle) {
+  btnGoogle.addEventListener('click', async () => {
+    window.localStorage.setItem(REMEMBER, '1');
+    btnGoogle.disabled = true;
+    const { error } = await sb.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: window.location.origin + '/admin/' },
+    });
+    if (error) {
+      btnGoogle.disabled = false;
+      document.getElementById('loginMsg').innerHTML =
+        `<div class="adm-msg err">${esc(error.message)}</div>`;
+    }
+  });
+}
+
 document.getElementById('btnOut').addEventListener('click', () => sb.auth.signOut());
 
 sb.auth.onAuthStateChange((_evt, session) => {
