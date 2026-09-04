@@ -1,0 +1,220 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import WorldMap from '../components/WorldMap.astro';
+import QuoteFlow from '../components/QuoteFlow.astro';
+
+/**
+ * Detail page behind the home page's Export Markets section. Regions, lead
+ * times and the paperwork that ships with an order, then an enquiry flow that
+ * lands in the same Supabase inbox as every other form on the site.
+ */
+const regions = [
+  {
+    name: 'North America',
+    lead: 'Largest market',
+    countries: 'United States · Canada · Mexico',
+    note: 'Our biggest export destination. ANSI Z359-referenced product documentation supplied with every consignment.',
+  },
+  {
+    name: 'Europe & UK',
+    lead: 'EN certified',
+    countries: 'United Kingdom · Germany · Netherlands · Poland · Spain',
+    note: 'EN 361, 354, 355, 358 and 360 type-test reports and CE technical files shared with quotations.',
+  },
+  {
+    name: 'Middle East',
+    lead: 'Fast lead times',
+    countries: 'UAE · Saudi Arabia · Qatar · Oman · Kuwait',
+    note: 'Short sea freight from Nhava Sheva and Mundra, with oil-and-gas and construction specifications supported.',
+  },
+  {
+    name: 'Africa',
+    lead: 'Project supply',
+    countries: 'South Africa · Nigeria · Kenya · Egypt · Tanzania',
+    note: 'Mining and utilities projects supplied in bulk, including private-label programmes for local distributors.',
+  },
+  {
+    name: 'Asia Pacific',
+    lead: 'Growing',
+    countries: 'Australia · Singapore · Malaysia · Japan · South Korea',
+    note: 'Height-safety kits for construction, telecom towers and shipyards, packed to distributor specification.',
+  },
+  {
+    name: 'South America',
+    lead: 'Distributor led',
+    countries: 'Brazil · Chile · Colombia · Peru',
+    note: 'Distributor appointments open across the region, with Spanish and Portuguese labelling available.',
+  },
+];
+
+const steps = [
+  { n: '01', t: 'Enquiry & quotation', d: 'Send your product codes and quantities. You get a costed quotation with the applicable certificates attached, usually within one business day.' },
+  { n: '02', t: 'Sampling & approval', d: 'Pre-production samples for new specifications or private-label artwork, couriered for approval before the line is committed.' },
+  { n: '03', t: 'Manufacture & testing', d: 'Production runs in-house across cutting, stitching and assembly, with batch testing and in-line inspection at every stage.' },
+  { n: '04', t: 'Documentation & dispatch', d: 'Export packing, invoice, packing list, certificate of origin and test reports issued together, then FOB or CIF as agreed.' },
+];
+
+const paperwork = [
+  'Commercial invoice and packing list',
+  'Certificate of origin (Council for Leather Exports)',
+  'EN / ANSI third-party type-test reports',
+  'ISO 9001:2015 certificate of conformity',
+  'Batch-level declaration of conformity',
+  'SEDEX audit reference on request',
+];
+
+const terms = [
+  { k: 'Incoterms', v: 'FOB, CIF and CFR — Nhava Sheva, Mundra or Kolkata' },
+  { k: 'Payment', v: 'Letter of credit at sight, or advance TT for first orders' },
+  { k: 'Lead time', v: '3–5 weeks for catalogue lines, 6–8 for private label' },
+  { k: 'MOQ', v: 'Container or mixed-pallet quantities; ask about trial orders' },
+  { k: 'Labelling', v: 'Your brand, artwork and languages, applied in-house' },
+  { k: 'Packing', v: 'Master cartons to your carton specification and marking' },
+];
+---
+<Base
+  title="Export Markets — SB Fall Protection, Kanpur India"
+  description="SB International exports certified fall-protection PPE to North America, Europe, the Middle East, Africa, Asia Pacific and South America. Lead times, Incoterms, documentation and enquiries."
+>
+  <PageHeader
+    eyebrow="Export Markets"
+    title="Shipping Certified"
+    accent="Height Safety Worldwide"
+    lead="A Government of India recognised Export House supplying distributors, EPC contractors and safety companies across six continents from one integrated facility in Kanpur."
+    crumbs={[{ label: 'Export Markets' }]}
+    image="export"
+    imageAlt="Container terminal at dusk with stacked export containers"
+  />
+
+  <!-- ── the map, with the headline numbers beside it ────────────── -->
+  <section class="sec">
+    <div class="wrap mkt-g">
+      <div class="reveal">
+        <div class="sec-head left" style="margin-bottom:0">
+          <span class="label">Where We Ship</span>
+          <h2>Six Continents, <em>One Factory</em></h2>
+          <p>Every order leaves the same 145,000 sq ft facility, so the harness that lands in Houston is built on the same line, to the same standard, as the one that lands in Riyadh.</p>
+        </div>
+        <div class="exp-figures">
+          <div><b>500+</b><span>Customers worldwide</span></div>
+          <div><b>20+</b><span>Years exporting</span></div>
+          <div><b>USA</b><span>Largest single market</span></div>
+        </div>
+      </div>
+      <div class="reveal"><WorldMap /></div>
+    </div>
+  </section>
+
+  <!-- ── regions ─────────────────────────────────────────────────── -->
+  <section class="sec services">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="label">Regions</span>
+        <h2>Markets We <em>Serve Today</em></h2>
+        <p>If your country isn't listed, ask anyway — we quote worldwide and appoint distributors in open territories.</p>
+      </div>
+      <div class="exp-grid">
+        {regions.map((r) => (
+          <article class="exp-card reveal">
+            <div class="exp-card-top">
+              <h3>{r.name}</h3>
+              <span class="exp-tag">{r.lead}</span>
+            </div>
+            <p class="exp-countries">{r.countries}</p>
+            <p class="exp-note">{r.note}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── how an export order runs ────────────────────────────────── -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head left reveal">
+        <span class="label">How It Works</span>
+        <h2>From Enquiry to <em>Bill of Lading</em></h2>
+      </div>
+      <div class="exp-steps">
+        {steps.map((s) => (
+          <div class="exp-step reveal">
+            <span class="exp-step-n">{s.n}</span>
+            <h3>{s.t}</h3>
+            <p>{s.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── terms and paperwork ─────────────────────────────────────── -->
+  <section class="sec services">
+    <div class="wrap exp-two">
+      <div class="reveal">
+        <div class="sec-head left" style="margin-bottom:26px">
+          <span class="label">Trade Terms</span>
+          <h2>The Commercial <em>Detail</em></h2>
+        </div>
+        <dl class="exp-terms">
+          {terms.map((t) => (
+            <div><dt>{t.k}</dt><dd>{t.v}</dd></div>
+          ))}
+        </dl>
+      </div>
+      <div class="reveal">
+        <div class="exp-docs">
+          <h3>What ships with the goods</h3>
+          <ul>
+            {paperwork.map((d) => (
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
+                {d}
+              </li>
+            ))}
+          </ul>
+          <p class="exp-docs-note">
+            Product-level test documentation is issued with the quotation, not after
+            the order — so your compliance team can sign off before you commit.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── enquiry ─────────────────────────────────────────────────── -->
+  <section class="sec contact" id="export-enquiry">
+    <div class="wrap exp-two">
+      <div class="reveal">
+        <div class="sec-head left" style="margin-bottom:26px">
+          <span class="label">Export Enquiry</span>
+          <h2>Tell Us Where It's <em>Going</em></h2>
+          <p>Share the destination and rough quantities and we'll come back with a costed quotation, the certificates that apply, and a realistic ship date.</p>
+        </div>
+        <div class="exp-contact">
+          <a class="exp-cline" href="mailto:sales@sbfallprotection.com">
+            <span class="ic">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            </span>
+            <span><b>sales@sbfallprotection.com</b><em>Export sales desk</em></span>
+          </a>
+          <a class="exp-cline" href="tel:+915122406728">
+            <span class="ic">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>
+            </span>
+            <span><b>+91 512 240 6728</b><em>Mon–Sat, 9:30–18:30 IST</em></span>
+          </a>
+          <a class="exp-cline" href="https://wa.me/919544070143" target="_blank" rel="noopener">
+            <span class="ic">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.1l-.7.9c-.2.2-.3.3-.6.1a8 8 0 0 1-2.3-1.4 8.7 8.7 0 0 1-1.6-2c-.2-.3 0-.5.1-.6l.6-.7c.2-.2.1-.4 0-.6l-.9-2.1c-.2-.5-.4-.4-.6-.4h-.6c-.2 0-.5.1-.8.4a3.4 3.4 0 0 0-1 2.5c0 1.5 1 2.9 1.2 3.1a11 11 0 0 0 4.4 3.9c2.1.8 2.5.7 3 .6.5 0 1.6-.6 1.8-1.3.2-.6.2-1.2.2-1.3 0-.1-.1-.2-.4-.3Z"/><path d="M12 2a10 10 0 0 0-8.5 15.3L2 22l4.8-1.4A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .9.9-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Z"/></svg>
+            </span>
+            <span><b>WhatsApp</b><em>+91 95440 70143</em></span>
+          </a>
+        </div>
+      </div>
+      <div class="reveal">
+        <QuoteFlow />
+      </div>
+    </div>
+  </section>
+</Base>

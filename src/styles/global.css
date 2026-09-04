@@ -1158,3 +1158,161 @@
   .article-cta .btn{width:100%;justify-content:center}
   .prose hr + p{padding:16px 18px}
 }
+
+/* ============ QUICK CATEGORY LINKS (products section head) ============ */
+/* A jump-off row so the home page reaches every range in one click, rather
+   than making people open /products first. */
+.qlinks{
+  display:flex;flex-wrap:wrap;gap:9px;
+  margin-top:26px;max-width:min(100%,960px);
+}
+.sec-head:not(.left) .qlinks{justify-content:center;margin-left:auto;margin-right:auto}
+.qlink{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:10px 16px;border-radius:999px;
+  border:1px solid var(--line);background:var(--white);
+  font-size:13.5px;font-weight:600;color:var(--ink);
+  transition:background .2s ease,border-color .2s ease,color .2s ease,transform .2s ease;
+}
+.qlink:hover{background:var(--cream);border-color:var(--orange);color:var(--orange-dark);transform:translateY(-2px)}
+.qlink.all{background:var(--ink);border-color:var(--ink);color:var(--white)}
+.qlink.all svg{transition:transform .25s ease}
+.qlink.all:hover{background:var(--orange);border-color:var(--orange);color:var(--white)}
+.qlink.all:hover svg{transform:translateX(3px)}
+
+@media(max-width:860px){
+  /* a single scrolling row keeps the chips off six stacked lines on a phone */
+  .qlinks{
+    flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;
+    margin-top:22px;padding-bottom:4px;
+    /* bleed to the screen edge so the last chip doesn't look clipped */
+    margin-left:-20px;margin-right:-20px;padding-left:20px;padding-right:20px;
+  }
+  .qlinks::-webkit-scrollbar{display:none}
+  .qlink{flex:0 0 auto;padding:11px 16px}
+}
+
+/* ============ CERTIFICATIONS (about page) ============ */
+/* Real marks only: the ISO and SEDEX logos as supplied by the client, with the
+   export recognitions set as typographic badges — no invented lockups. */
+.team-card{display:flex;flex-direction:column}
+.team-photo{
+  width:96px;height:96px;border-radius:50%;object-fit:cover;
+  margin-bottom:18px;border:3px solid var(--cream);
+}
+
+.cert-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:44px}
+.cert-card{
+  background:var(--white);border:1px solid var(--line);border-radius:20px;
+  padding:28px;display:grid;grid-template-columns:auto 1fr;
+  gap:26px;align-items:center;
+}
+.cert-mark{
+  width:148px;height:104px;flex:none;display:grid;place-items:center;
+  background:var(--light);border-radius:16px;
+}
+.cert-mark img{max-height:78px;max-width:124px;width:auto;object-fit:contain}
+.cert-text b{display:block;font-size:19px;font-weight:600;letter-spacing:-.02em}
+.cert-text p{margin-top:9px;color:var(--gray);font-size:14.5px;line-height:1.6}
+
+.cert-rec{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}
+.cert-badge{
+  display:flex;align-items:flex-start;gap:12px;
+  background:var(--cream);border-radius:16px;padding:20px 22px;
+}
+.cert-badge svg{color:var(--orange);flex:none;margin-top:2px}
+.cert-badge b{display:block;font-size:14.5px;font-weight:600;line-height:1.4}
+.cert-badge em{
+  font-style:normal;display:block;margin-top:5px;
+  font-size:13px;color:var(--gray);line-height:1.5;
+}
+
+@media(max-width:900px){
+  .cert-grid{grid-template-columns:1fr;gap:16px}
+  .cert-rec{grid-template-columns:1fr;gap:12px}
+  .cert-card{padding:22px;gap:18px}
+  .cert-mark{width:92px;height:82px}
+  .cert-mark img{max-height:62px;max-width:78px}
+}
+
+/* ============ EXPORT MARKETS PAGE ============ */
+.exp-figures{
+  display:grid;grid-template-columns:repeat(3,auto);gap:30px;
+  margin-top:34px;justify-content:start;
+}
+.exp-figures b{display:block;font-size:34px;font-weight:600;letter-spacing:-.03em;color:var(--orange)}
+.exp-figures span{display:block;margin-top:4px;font-size:13.5px;color:var(--gray);max-width:14ch;line-height:1.45}
+
+.exp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px}
+.exp-card{
+  background:var(--white);border:1px solid var(--line);border-radius:20px;
+  padding:28px 26px;transition:transform .25s ease,box-shadow .25s ease;
+}
+.exp-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(19,19,18,.08)}
+.exp-card-top{display:flex;align-items:center;gap:12px}
+.exp-card h3{font-size:20px;font-weight:600;letter-spacing:-.02em;flex:1}
+.exp-tag{
+  flex:none;background:var(--cream);color:var(--orange-dark);
+  border-radius:999px;padding:5px 12px;font-size:12.5px;font-weight:600;
+  letter-spacing:.01em;white-space:nowrap;
+}
+.exp-countries{margin-top:14px;font-size:14px;font-weight:600;color:var(--ink);line-height:1.55}
+.exp-note{margin-top:10px;font-size:14px;color:var(--gray);line-height:1.6}
+
+.exp-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:16px}
+.exp-step{border-top:2px solid var(--line);padding-top:20px}
+.exp-step-n{
+  display:block;font-size:13px;font-weight:700;letter-spacing:.08em;
+  color:var(--orange);margin-bottom:12px;
+}
+.exp-step h3{font-size:18px;font-weight:600;letter-spacing:-.02em}
+.exp-step p{margin-top:10px;font-size:14px;color:var(--gray);line-height:1.65}
+
+.exp-two{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+
+.exp-terms{display:grid;gap:0}
+.exp-terms > div{
+  display:grid;grid-template-columns:130px 1fr;gap:18px;
+  padding:16px 0;border-bottom:1px solid var(--line);
+}
+.exp-terms > div:first-child{border-top:1px solid var(--line)}
+.exp-terms dt{font-size:13px;font-weight:700;letter-spacing:.04em;color:var(--orange-dark)}
+.exp-terms dd{font-size:14.5px;color:var(--ink);line-height:1.6}
+
+.exp-docs{background:var(--white);border:1px solid var(--line);border-radius:22px;padding:32px 30px}
+.exp-docs h3{font-size:20px;font-weight:600;letter-spacing:-.02em}
+.exp-docs ul{list-style:none;margin-top:20px;display:grid;gap:13px}
+.exp-docs li{display:flex;align-items:flex-start;gap:11px;font-size:14.5px;line-height:1.55}
+.exp-docs li svg{color:var(--orange);flex:none;margin-top:2px}
+.exp-docs-note{
+  margin-top:24px;padding-top:20px;border-top:1px solid var(--line);
+  font-size:13.5px;color:var(--gray);line-height:1.65;
+}
+
+.exp-contact{display:grid;gap:12px;margin-top:6px}
+.exp-cline{
+  display:flex;align-items:center;gap:14px;
+  background:var(--white);border:1px solid var(--line);border-radius:16px;
+  padding:16px 18px;transition:border-color .2s ease,transform .2s ease;
+}
+.exp-cline:hover{border-color:var(--orange);transform:translateY(-2px)}
+.exp-cline .ic{
+  width:42px;height:42px;flex:none;border-radius:12px;
+  background:var(--cream);color:var(--orange);display:grid;place-items:center;
+}
+.exp-cline b{display:block;font-size:15px;font-weight:600;letter-spacing:-.01em}
+.exp-cline em{font-style:normal;display:block;margin-top:3px;font-size:12.5px;color:var(--gray)}
+
+@media(max-width:1080px){
+  .exp-grid{grid-template-columns:1fr 1fr}
+  .exp-steps{grid-template-columns:1fr 1fr}
+  .exp-two{grid-template-columns:1fr;gap:38px}
+}
+@media(max-width:760px){
+  .exp-grid,.exp-steps{grid-template-columns:1fr;gap:16px}
+  .exp-figures{grid-template-columns:1fr 1fr;gap:22px}
+  .exp-figures b{font-size:28px}
+  .exp-card{padding:22px 20px}
+  .exp-docs{padding:24px 22px}
+  .exp-terms > div{grid-template-columns:1fr;gap:5px;padding:14px 0}
+}

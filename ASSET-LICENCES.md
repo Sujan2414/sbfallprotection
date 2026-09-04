@@ -16,9 +16,11 @@ reusing the client's own material on the client's own site.
 | `deco-*.png` (8 files) | Product cut-outs made from the studio photography |
 | `fac-stitching / fac-cutting / fac-inspection / fac-campus / fac-building .jpg` | Factory and premises photography |
 | `hero-harness*.jpg / .webp`, `hero-harnesses*` | Worker in an SB harness (their photo) |
-| `hero-about*`, `hero-contact*` | Derived from the factory / head-office photos above |
-| `about-crew.jpg`, `urgent-worker.jpg`, `video-poster.jpg` | Site photography |
+| `hero-contact*` | Derived from the head-office photo above |
+| `urgent-worker.jpg`, `video-poster.jpg` | Site photography |
 | `avatar-1…4.jpg` | Avatars from the existing site |
+| `team-biju.jpg`, `team-saji.jpg` | Leadership portraits from the existing site |
+| `cert-iso-9001.png`, `cert-sedex.jpg` | Certification marks as published by the client (ISO 9001:2015; SEDEX ref. ZS1000032714) |
 | Catalogue product images | Served from the client's WordPress host (`src/data/catalog.json`) |
 
 ## 2. Pexels — free for commercial use, no attribution required
@@ -38,6 +40,10 @@ Covered by the [Pexels licence](https://www.pexels.com/license/).
 | `hero-rope-access-rescue.*` | 21923132 |
 | `hero-safety-garments.*` | 28196526 |
 | `contact-ropeaccess.jpg` | 21923132 |
+| `hero-about.*` | 2760241 |
+| `hero-export.*` | 3057960 |
+| `about-crew.jpg` | 19100322 |
+| `admin-login.jpg` (admin console, never public) | 1216589 |
 
 ## 3. Mixkit — free for commercial use, no attribution required
 

@@ -88,3 +88,9 @@
   from = "/company-catalogue"
   to = "/contact"
   status = 301
+
+# the admin console is a private tool, never indexed
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"

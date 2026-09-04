@@ -7,6 +7,6 @@ export default defineConfig({
   // indexes each SKU. Deploys as plain files to Netlify.
   output: 'static',
   build: { format: 'directory' },
-  integrations: [sitemap()],
+  integrations: [sitemap({ filter: (page) => !page.includes('/admin') })],
   devToolbar: { enabled: false },
 });

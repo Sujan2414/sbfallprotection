@@ -1,0 +1,684 @@
+/* SB Fall Protection — admin console.
+   Layout, spacing and components follow the DashStack admin UI kit
+   (sidebar + top bar + stat cards + data table + form card). Two deliberate
+   deviations from the kit: the accent is SB's brand orange rather than
+   DashStack blue, since this is SB's own tool; and the kit's demo assets
+   (stock product photos, flags, avatars) are not imported — they are its
+   sample content, not design elements.
+
+   Self-contained on purpose: the admin panel does not load the public site's
+   stylesheet, so none of this ships to visitors. */
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,600;0,6..12,700;0,6..12,800&display=swap');
+
+:root {
+  --a-accent: #fe5922;          /* SB orange, in place of DashStack #4880ff */
+  --a-accent-dark: #e8480f;
+  --a-accent-soft: #fff1ea;
+  --a-ink: #202224;
+  --a-muted: #606060;
+  --a-faint: rgba(43, 48, 52, 0.4);
+  --a-bg: #f5f6fa;
+  --a-thead: #f1f4f9;
+  --a-line: #e3e5ec;
+  --a-border: #d5d5d5;
+  --a-green: #00b69b;
+  --a-amber: #fcbe2d;
+  --a-red: #fd5454;
+  --a-red-text: #f93c65;
+  --a-blue: #4880ff;
+  --a-card-shadow: 6px 6px 54px rgba(0, 0, 0, 0.05);
+  --a-sidebar: 260px;
+  --a-topbar: 70px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body.adm-body {
+  margin: 0;
+  background: var(--a-bg);
+  color: var(--a-ink);
+  font-family: 'Nunito Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+.adm-body h1, .adm-body h2, .adm-body h3, .adm-body h4 { margin: 0; }
+.adm-body p { margin: 0; }
+.adm-body a { color: inherit; text-decoration: none; }
+.adm-body img { display: block; max-width: 100%; }
+.adm-body button, .adm-body input, .adm-body select, .adm-body textarea { font: inherit; }
+[hidden] { display: none !important; }
+
+/* --------------------------- sign in --------------------------- */
+/* Split screen: the form sits left, a full-bleed site photo right. The photo
+   column is dropped below 900px rather than stacked -- on a phone it would push
+   the form under the fold for no gain. */
+
+.adm-login {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  background: #fff;
+}
+.adm-login-form { display: grid; place-items: center; padding: 40px 32px; }
+.adm-login-inner { width: 100%; max-width: 400px; }
+
+.adm-logo { display: flex; align-items: center; gap: 10px; }
+.adm-logo img { width: 36px; height: 36px; }
+.adm-logo b { font-size: 19px; font-weight: 800; letter-spacing: -0.2px; }
+.adm-logo b span { color: var(--a-accent); }
+
+.adm-login-inner h1 {
+  font-size: 34px; font-weight: 700; letter-spacing: -0.9px;
+  margin-top: 34px; line-height: 1.15;
+}
+.adm-login-inner .sub { margin-top: 9px; color: var(--a-muted); font-size: 14.5px; line-height: 1.6; }
+.adm-login-inner .adm-field { margin-top: 22px; }
+.adm-login-inner .adm-field:first-of-type { margin-top: 30px; }
+.adm-login-inner .adm-btn-lg { margin-top: 26px; }
+
+/* password field with a reveal toggle */
+.adm-pw { position: relative; display: block; }
+.adm-pw input { padding-right: 46px; }
+.adm-pw-eye {
+  position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+  width: 34px; height: 34px; display: grid; place-items: center;
+  border: none; background: none; cursor: pointer;
+  color: var(--a-faint); border-radius: 8px;
+}
+.adm-pw-eye svg { width: 19px; height: 19px; }
+.adm-pw-eye:hover { color: var(--a-ink); background: var(--a-thead); }
+
+.adm-check { display: flex; align-items: center; gap: 11px; margin-top: 18px; cursor: pointer; }
+.adm-check input {
+  width: 18px; height: 18px; flex: 0 0 18px; margin: 0;
+  accent-color: var(--a-accent); cursor: pointer;
+}
+.adm-check span { font-size: 13.5px; font-weight: 600; color: var(--a-muted); }
+
+.adm-login-foot {
+  margin-top: 22px; font-size: 12.5px; line-height: 1.65;
+  color: var(--a-faint); text-align: center;
+}
+.adm-login-foot strong { color: var(--a-muted); }
+
+/* photo column */
+.adm-login-art { padding: 16px 16px 16px 0; }
+.adm-login-img {
+  position: relative; height: 100%; border-radius: 22px; overflow: hidden;
+  background: var(--a-ink);
+  animation: adm-slide-in 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 120ms;
+}
+.adm-login-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.adm-login-img::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(20,16,14,.88) 0%, rgba(20,16,14,.34) 38%, rgba(20,16,14,.06) 62%);
+}
+.adm-login-cap {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 1;
+  padding: 34px 36px 36px; color: #fff;
+}
+.adm-login-cap::before {
+  content: ''; display: block; width: 44px; height: 3px; border-radius: 2px;
+  background: var(--a-accent); margin-bottom: 18px;
+}
+.adm-login-cap b {
+  display: block; font-size: 25px; font-weight: 700;
+  letter-spacing: -0.6px; line-height: 1.25; max-width: 22ch;
+}
+.adm-login-cap span {
+  display: block; margin-top: 10px; font-size: 14px; line-height: 1.6;
+  color: rgba(255, 255, 255, 0.74); max-width: 40ch;
+}
+
+/* staggered entrance */
+.a-el {
+  opacity: 0; filter: blur(6px); transform: translateY(14px);
+  animation: adm-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes adm-fade-up { to { opacity: 1; filter: blur(0); transform: none; } }
+@keyframes adm-slide-in {
+  from { opacity: 0; filter: blur(8px); transform: translateX(26px); }
+  to   { opacity: 1; filter: blur(0); transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .a-el, .adm-login-img { animation: none; opacity: 1; filter: none; transform: none; }
+}
+
+/* ─────────────────────────── shell ─────────────────────────── */
+
+.adm-shell { min-height: 100vh; }
+
+.adm-side {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: var(--a-sidebar);
+  background: #fff;
+  border-right: 1px solid var(--a-line);
+  display: flex;
+  flex-direction: column;
+  z-index: 30;
+}
+.adm-side-top { padding: 24px 26px 18px; }
+.adm-nav { flex: 1; overflow-y: auto; padding: 4px 14px 20px; }
+.adm-nav-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.26px;
+  color: var(--a-ink);
+  opacity: 0.6;
+  padding: 18px 12px 8px;
+}
+.adm-navitem {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  padding: 14px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: var(--a-ink);
+  transition: background .15s ease, color .15s ease;
+}
+.adm-navitem svg { flex: none; width: 20px; height: 20px; }
+.adm-navitem:hover { background: var(--a-bg); }
+.adm-navitem.on { background: var(--a-accent); color: #fff; }
+.adm-navitem.on:hover { background: var(--a-accent); }
+/* the kit marks the active row with a small tab on the sidebar's left edge */
+.adm-navitem.on::before {
+  content: "";
+  position: absolute;
+  left: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5px;
+  height: 34px;
+  border-radius: 0 4px 4px 0;
+  background: var(--a-accent);
+}
+.adm-navitem .count {
+  margin-left: auto;
+  background: var(--a-accent);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+}
+.adm-navitem.on .count { background: rgba(255, 255, 255, .25); }
+.adm-divider { height: 1px; background: var(--a-line); margin: 10px 26px; }
+
+.adm-top {
+  position: fixed;
+  top: 0; right: 0;
+  left: var(--a-sidebar);
+  height: var(--a-topbar);
+  background: #fff;
+  border-bottom: 1px solid var(--a-line);
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 0 26px;
+  z-index: 25;
+}
+.adm-burger {
+  display: none;
+  width: 40px; height: 40px;
+  border: 1px solid var(--a-line);
+  background: #fff;
+  border-radius: 10px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+.adm-search {
+  position: relative;
+  flex: 0 1 380px;
+}
+.adm-search svg {
+  position: absolute;
+  left: 15px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--a-faint);
+  pointer-events: none;
+}
+.adm-search input {
+  width: 100%;
+  background: var(--a-bg);
+  border: 0.6px solid var(--a-border);
+  border-radius: 19px;
+  padding: 11px 16px 11px 42px;
+  font-size: 14px;
+  color: var(--a-ink);
+}
+.adm-search input:focus { outline: none; border-color: var(--a-accent); background: #fff; }
+.adm-top .spacer { flex: 1; }
+
+.adm-bell { position: relative; width: 26px; height: 26px; color: var(--a-muted); }
+.adm-bell .dot {
+  position: absolute;
+  top: -4px; right: -5px;
+  min-width: 17px; height: 17px;
+  border-radius: 999px;
+  background: var(--a-red);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  padding: 0 4px;
+}
+.adm-user { display: flex; align-items: center; gap: 11px; }
+.adm-avatar {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: var(--a-accent-soft);
+  color: var(--a-accent-dark);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 14px;
+  flex: none;
+}
+/* scoped to the name block: a bare `.adm-user span` also matches .adm-avatar
+   and would override its display:grid, dropping the initials out of the circle */
+.adm-user > span:last-child b { display: block; font-size: 14px; font-weight: 700; color: #404040; }
+.adm-user > span:last-child > span { display: block; font-size: 12px; font-weight: 600; color: #565656; }
+
+.adm-main {
+  margin-left: var(--a-sidebar);
+  padding: calc(var(--a-topbar) + 28px) 26px 40px;
+  max-width: 1500px;
+}
+.adm-title { font-size: 32px; font-weight: 700; letter-spacing: -0.11px; }
+.adm-pagehead {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+.adm-pagehead .spacer { flex: 1; }
+
+/* ─────────────────────────── buttons ─────────────────────────── */
+
+.adm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 11px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  transition: background .15s ease, opacity .15s ease, box-shadow .15s ease;
+}
+.adm-btn-primary { background: var(--a-accent); color: #fff; }
+.adm-btn-primary:hover { background: var(--a-accent-dark); }
+.adm-btn-ghost { background: #fff; color: var(--a-ink); border: 1px solid var(--a-border); }
+.adm-btn-ghost:hover { border-color: var(--a-accent); color: var(--a-accent); }
+.adm-btn-soft { background: var(--a-bg); color: var(--a-ink); }
+.adm-btn-soft:hover { background: #e9ebf2; }
+.adm-btn-danger { background: #fdecea; color: #a3231a; }
+.adm-btn-danger:hover { background: #fbdcd8; }
+.adm-btn[disabled] { opacity: .55; cursor: not-allowed; }
+.adm-btn-lg { padding: 15px 42px; font-size: 15px; }
+
+/* small square icon actions in table rows */
+.adm-act { display: inline-flex; gap: 8px; }
+.adm-icon-btn {
+  width: 34px; height: 34px;
+  border-radius: 7px;
+  border: 1px solid var(--a-line);
+  background: #fff;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  color: var(--a-blue);
+  transition: background .15s ease, border-color .15s ease;
+}
+.adm-icon-btn:hover { background: #eef3ff; border-color: #c8d8ff; }
+.adm-icon-btn.danger { color: var(--a-red); }
+.adm-icon-btn.danger:hover { background: #fdecea; border-color: #f6c9c4; }
+
+/* ─────────────────────────── cards & stats ─────────────────────────── */
+
+.adm-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: var(--a-card-shadow);
+}
+.adm-card-pad { padding: 24px 26px; }
+
+.adm-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 22px;
+  margin-bottom: 24px;
+}
+.adm-stat {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: var(--a-card-shadow);
+  padding: 22px 24px;
+}
+.adm-stat-row { display: flex; align-items: flex-start; gap: 14px; }
+.adm-stat-row .grow { flex: 1; min-width: 0; }
+.adm-stat-label { font-size: 16px; font-weight: 600; color: var(--a-ink); opacity: .7; }
+.adm-stat-value { font-size: 28px; font-weight: 700; letter-spacing: 1px; margin-top: 8px; }
+.adm-stat-ic {
+  width: 52px; height: 52px;
+  border-radius: 20px;
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.adm-stat-foot { margin-top: 16px; font-size: 14px; font-weight: 600; color: var(--a-muted); display: flex; align-items: center; gap: 7px; }
+.adm-stat-foot .up { color: var(--a-green); }
+.adm-stat-foot .down { color: var(--a-red-text); }
+
+/* ─────────────────────────── data table ─────────────────────────── */
+
+.adm-table-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: var(--a-card-shadow);
+  padding: 20px;
+}
+.adm-table-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 4px 6px 18px;
+}
+.adm-table-head h2 { font-size: 20px; font-weight: 700; }
+.adm-table-head .spacer { flex: 1; }
+.adm-table-scroll { overflow-x: auto; }
+table.adm-table { width: 100%; border-collapse: collapse; }
+table.adm-table th {
+  text-align: left;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--a-ink);
+  padding: 15px 16px;
+  background: var(--a-thead);
+  white-space: nowrap;
+}
+table.adm-table thead tr th:first-child { border-radius: 12px 0 0 12px; }
+table.adm-table thead tr th:last-child { border-radius: 0 12px 12px 0; }
+table.adm-table td {
+  padding: 14px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--a-ink);
+  border-bottom: 1px solid var(--a-line);
+  vertical-align: middle;
+}
+table.adm-table tbody tr:last-child td { border-bottom: none; }
+table.adm-table tbody tr:hover { background: #fcfcfd; }
+.adm-td-muted { opacity: .8; font-weight: 600; color: var(--a-muted); }
+.adm-thumb {
+  width: 50px; height: 50px;
+  border-radius: 8px;
+  object-fit: contain;
+  background: #fff;
+  border: 1px solid var(--a-line);
+  padding: 3px;
+}
+.adm-thumb-ph {
+  width: 50px; height: 50px;
+  border-radius: 8px;
+  background: var(--a-bg);
+  display: grid;
+  place-items: center;
+  color: var(--a-faint);
+}
+.adm-code { font-weight: 700; }
+.adm-sub { display: block; font-size: 12.5px; font-weight: 600; color: var(--a-faint); margin-top: 3px; }
+.adm-empty { padding: 54px 20px; text-align: center; color: var(--a-muted); }
+
+/* status pills, per the kit's rounded solid style */
+.adm-pill {
+  display: inline-block;
+  border-radius: 13.5px;
+  padding: 5px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+}
+.adm-pill.green { background: var(--a-green); }
+.adm-pill.amber { background: var(--a-amber); }
+.adm-pill.red { background: var(--a-red); }
+.adm-pill.grey { background: #b9bcc4; }
+.adm-pill.blue { background: var(--a-blue); }
+
+.adm-pager {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 6px 4px;
+}
+.adm-pager .info { flex: 1; font-size: 14px; font-weight: 600; color: var(--a-faint); }
+.adm-page-btn {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  border: 1px solid var(--a-border);
+  background: #fff;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  color: var(--a-muted);
+}
+.adm-page-btn:hover:not([disabled]) { border-color: var(--a-accent); color: var(--a-accent); }
+.adm-page-btn[disabled] { opacity: .4; cursor: not-allowed; }
+
+/* ─────────────────────────── product grid ─────────────────────────── */
+
+.adm-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 22px;
+}
+.adm-tile {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: var(--a-card-shadow);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.adm-tile-ph {
+  height: 190px;
+  background: #fff;
+  border-bottom: 1px solid var(--a-line);
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+.adm-tile-ph img { width: 100%; height: 100%; object-fit: contain; }
+.adm-tile-body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.adm-tile-body h3 { font-size: 16px; font-weight: 700; }
+.adm-tile-meta { font-size: 13.5px; font-weight: 600; color: var(--a-accent); }
+.adm-tile-desc {
+  font-size: 13px; font-weight: 600; color: var(--a-faint); line-height: 1.5;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.adm-tile-foot { display: flex; align-items: center; gap: 10px; margin-top: auto; padding-top: 14px; }
+
+/* ─────────────────────────── form card ─────────────────────────── */
+
+.adm-form-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: var(--a-card-shadow);
+  padding: 40px;
+  max-width: 900px;
+}
+.adm-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 30px; }
+.adm-fields .full { grid-column: 1 / -1; }
+.adm-field span, .adm-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--a-ink);
+  margin-bottom: 9px;
+}
+.adm-field input, .adm-field select, .adm-field textarea {
+  width: 100%;
+  background: #fcfdfd;
+  border: 1px solid var(--a-line);
+  border-radius: 8px;
+  padding: 14px 15px;
+  font-size: 14px;
+  color: var(--a-ink);
+}
+.adm-field input::placeholder, .adm-field textarea::placeholder { color: var(--a-faint); }
+.adm-field :is(input, select, textarea):focus {
+  outline: none;
+  border-color: var(--a-accent);
+  background: #fff;
+}
+.adm-field textarea { resize: vertical; min-height: 110px; line-height: 1.6; }
+.adm-form-actions { display: flex; justify-content: center; gap: 12px; margin-top: 32px; }
+.adm-msg { margin-top: 16px; border-radius: 8px; padding: 12px 15px; font-size: 13.5px; font-weight: 600; }
+.adm-msg.err { background: #fdecea; color: #a3231a; }
+.adm-msg.ok { background: #e8f7ee; color: #14683a; }
+.adm-hint {
+  margin-top: 22px;
+  background: var(--a-accent-soft);
+  border-radius: 10px;
+  padding: 15px 17px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--a-accent-dark);
+  line-height: 1.6;
+}
+.adm-hint code { font-family: ui-monospace, Consolas, monospace; font-size: 12.5px; }
+
+/* ─────────────────────────── drawer ─────────────────────────── */
+
+.adm-drawer { position: fixed; inset: 0; z-index: 60; display: none; }
+.adm-drawer.open { display: block; }
+.adm-drawer .scrim { position: absolute; inset: 0; background: rgba(32, 34, 36, .45); }
+.adm-drawer-panel {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: min(620px, 100%);
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -20px 0 60px rgba(0, 0, 0, .18);
+}
+.adm-drawer-panel header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 20px 26px; border-bottom: 1px solid var(--a-line);
+}
+.adm-drawer-panel header h3 { flex: 1; font-size: 18px; font-weight: 700; }
+.adm-drawer-panel .body { flex: 1; overflow-y: auto; padding: 26px; }
+.adm-drawer-panel footer {
+  display: flex; gap: 12px; align-items: center;
+  padding: 18px 26px; border-top: 1px solid var(--a-line); background: var(--a-bg);
+}
+.adm-drawer-panel footer .spacer { flex: 1; }
+.adm-x {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: none; background: var(--a-bg); color: var(--a-muted);
+  font-size: 19px; line-height: 1; cursor: pointer;
+}
+.adm-x:hover { background: #e9ebf2; color: var(--a-ink); }
+
+/* the drawer reuses the form grid, but single column reads better in a panel */
+.adm-drawer-panel .adm-fields { grid-template-columns: 1fr 1fr; gap: 18px; }
+
+/* spec key/value editor */
+.spec-rows { display: flex; flex-direction: column; gap: 9px; margin-top: 9px; }
+.spec-row { display: grid; grid-template-columns: 1fr 1.3fr auto; gap: 9px; }
+.spec-row input {
+  background: #fcfdfd; border: 1px solid var(--a-line); border-radius: 8px;
+  padding: 11px 13px; font-size: 13.5px; min-width: 0;
+}
+.spec-row input:focus { outline: none; border-color: var(--a-accent); background: #fff; }
+.spec-del {
+  border: 1px solid var(--a-line); background: #fff; color: var(--a-muted);
+  width: 38px; border-radius: 8px; cursor: pointer; font-size: 17px; line-height: 1;
+}
+.spec-del:hover { background: #fdecea; color: var(--a-red); border-color: #f6c9c4; }
+
+/* ─────────────────────────── enquiry detail ─────────────────────────── */
+
+.inq-head { background: var(--a-bg); border-radius: 12px; padding: 18px 20px; }
+.inq-when { font-size: 13px; font-weight: 600; color: var(--a-faint); }
+.inq-name { font-size: 19px; font-weight: 700; margin-top: 5px; }
+.inq-co { font-size: 14px; font-weight: 600; color: var(--a-muted); }
+.inq-rows { margin-top: 15px; display: grid; gap: 7px; font-size: 14px; font-weight: 600; }
+.inq-rows a { color: var(--a-accent-dark); }
+.inq-rows .k { color: var(--a-faint); }
+.inq-msg {
+  background: var(--a-bg); border-radius: 12px; padding: 16px 18px;
+  white-space: pre-wrap; font-size: 14px; font-weight: 600; line-height: 1.65;
+}
+
+/* ─────────────────────────── toast ─────────────────────────── */
+
+.adm-toast {
+  position: fixed; left: 50%; bottom: 28px;
+  transform: translateX(-50%) translateY(90px);
+  background: var(--a-ink); color: #fff;
+  border-radius: 999px; padding: 14px 26px;
+  font-size: 14px; font-weight: 700;
+  z-index: 90; opacity: 0; pointer-events: none;
+  transition: transform .3s ease, opacity .3s ease;
+}
+.adm-toast.show { transform: translateX(-50%); opacity: 1; }
+.adm-toast.bad { background: #a3231a; }
+
+/* ─────────────────────────── responsive ─────────────────────────── */
+
+@media (max-width: 1080px) {
+  .adm-side { transform: translateX(-100%); transition: transform .25s ease; }
+  .adm-side.open { transform: none; }
+  .adm-top { left: 0; }
+  .adm-main { margin-left: 0; }
+  .adm-burger { display: flex; }
+  .adm-scrim-side {
+    position: fixed; inset: 0; background: rgba(32, 34, 36, .4); z-index: 29; display: none;
+  }
+  .adm-scrim-side.open { display: block; }
+}
+@media (max-width: 760px) {
+  .adm-main { padding: calc(var(--a-topbar) + 20px) 16px 32px; }
+  .adm-title { font-size: 25px; }
+  .adm-search { flex: 1; }
+  .adm-user > span:last-child { display: none; }
+  .adm-form-card { padding: 24px 20px; }
+  .adm-fields, .adm-drawer-panel .adm-fields { grid-template-columns: 1fr; }
+  .adm-stat-value { font-size: 24px; }
+  .spec-row { grid-template-columns: 1fr auto; }
+  .adm-table-card { padding: 14px; }
+}
+
+/* the sign-in photo column: keep it while it earns its width, then drop it */
+@media (max-width: 1180px) {
+  .adm-login-cap { padding: 26px 26px 28px; }
+  .adm-login-cap b { font-size: 21px; }
+  .adm-login-cap span { display: none; }
+}
+@media (max-width: 900px) {
+  .adm-login { grid-template-columns: 1fr; }
+  .adm-login-art { display: none; }
+  .adm-login-form { padding: 34px 22px; align-content: center; }
+  .adm-login-inner h1 { font-size: 29px; margin-top: 28px; }
+}

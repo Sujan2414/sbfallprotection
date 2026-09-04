@@ -1,0 +1,180 @@
+---
+import '../../styles/admin.css';
+
+// The anon key is safe in the browser: RLS restricts every write to an
+// authenticated session, so signing in is what grants edit rights.
+const sbUrl = import.meta.env.SUPABASE_URL ?? process.env.SUPABASE_URL ?? '';
+const sbKey = import.meta.env.SUPABASE_ANON_KEY ?? process.env.SUPABASE_ANON_KEY ?? '';
+
+const nav = [
+  { id: 'overview',  label: 'Dashboard', icon: 'grid' },
+  { id: 'products',  label: 'Products',  icon: 'box' },
+  { id: 'taxonomy',  label: 'Categories', icon: 'layers' },
+  { id: 'posts',     label: 'Articles',  icon: 'file' },
+  { id: 'inquiries', label: 'Enquiries', icon: 'inbox', count: true },
+];
+const icons: Record<string, string> = {
+  grid:   '<rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/>',
+  box:    '<path d="M21 8.4v7.2a2 2 0 0 1-1 1.73l-6.5 3.6a2 2 0 0 1-2 0L5 17.33a2 2 0 0 1-1-1.73V8.4a2 2 0 0 1 1-1.73l6.5-3.6a2 2 0 0 1 2 0l6.5 3.6A2 2 0 0 1 21 8.4Z"/><path d="m4.3 7.3 7.7 4.3 7.7-4.3M12 20.5v-8.9"/>',
+  layers: '<path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5M3 17.5l9 5 9-5"/>',
+  file:   '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/><path d="M14 3v5h5M9 13h6M9 17h4"/>',
+  inbox:  '<path d="M3 12h4l2 3h6l2-3h4"/><path d="M5 5h14l2 7v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5l2-7Z"/>',
+  cog:    '<circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.6.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 1.56V21a2 2 0 1 1-4 0v-.1A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.56-1H3a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6h.08A1.7 1.7 0 0 0 10 3.04V3a2 2 0 1 1 4 0v.1A1.7 1.7 0 0 0 15 4.6a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9v.08a1.7 1.7 0 0 0 1.56 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/>',
+  out:    '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/>',
+};
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin — SB Fall Protection</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="/assets/sb-logo.png">
+</head>
+<body class="adm-body" data-sb-url={sbUrl} data-sb-key={sbKey}>
+
+  <!-- ── sign in ─────────────────────────────────────────── -->
+  <div class="adm-login" id="admLogin" hidden>
+
+    <section class="adm-login-form">
+      <form class="adm-login-inner" id="loginForm">
+        <span class="adm-logo a-el" style="--d:60ms">
+          <img src="/assets/sb-logo.png" alt="" width="38" height="38">
+          <b>SB<span>Admin</span></b>
+        </span>
+
+        <h1 class="a-el" style="--d:140ms">Welcome back</h1>
+        <p class="sub a-el" style="--d:220ms">
+          Sign in to manage the catalogue, articles and enquiries.
+        </p>
+
+        <label class="adm-field full a-el" style="--d:300ms"><span>Email address</span>
+          <input type="email" name="email" placeholder="you@sbfallprotection.com"
+                 autocomplete="username" required></label>
+
+        <label class="adm-field full a-el" style="--d:380ms"><span>Password</span>
+          <span class="adm-pw">
+            <input type="password" name="password" id="pw" placeholder="Enter your password"
+                   autocomplete="current-password" required>
+            <button type="button" class="adm-pw-eye" id="pwEye" aria-label="Show password">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                   stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </span></label>
+
+        <label class="adm-check a-el" style="--d:460ms">
+          <input type="checkbox" name="remember" checked>
+          <span>Keep me signed in on this device</span>
+        </label>
+
+        <button class="adm-btn adm-btn-primary adm-btn-lg a-el" type="submit"
+                style="--d:540ms;width:100%">Sign in</button>
+
+        <div id="loginMsg"></div>
+
+        <p class="adm-login-foot a-el" style="--d:620ms">
+          Need an account? Staff logins are created in Supabase under
+          <strong>Authentication → Users</strong>.
+        </p>
+      </form>
+    </section>
+
+    <section class="adm-login-art" aria-hidden="true">
+      <div class="adm-login-img">
+        <img src="/assets/admin-login.jpg" alt="" width="1100" height="1375">
+        <div class="adm-login-cap">
+          <b>Fall protection, built in Kanpur since 2003</b>
+          <span>Harnesses, lanyards and connectors to EN and ANSI standards.</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ── console ─────────────────────────────────────────── -->
+  <div class="adm-shell" id="admApp" hidden>
+
+    <aside class="adm-side" id="admSide">
+      <div class="adm-side-top">
+        <span class="adm-logo">
+          <img src="/assets/sb-logo.png" alt="" width="34" height="34">
+          <b>SB<span>Admin</span></b>
+        </span>
+      </div>
+      <nav class="adm-nav">
+        {nav.map((n) => (
+          <button class:list={['adm-navitem', n.id === 'overview' && 'on']} data-tab={n.id}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                 stroke-linecap="round" stroke-linejoin="round" set:html={icons[n.icon]} />
+            {n.label}
+            {n.count && <span class="count" id="inqCount" hidden>0</span>}
+          </button>
+        ))}
+        <div class="adm-nav-label">Pages</div>
+        <button class="adm-navitem" data-tab="settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+               stroke-linecap="round" stroke-linejoin="round" set:html={icons.cog} />
+          Settings
+        </button>
+        <a class="adm-navitem" href="/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+               stroke-linecap="round" stroke-linejoin="round"><path d="M10 14 21 3M21 3v7M21 3h-7"/><path d="M19 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h5"/></svg>
+          View site
+        </a>
+      </nav>
+      <div class="adm-divider"></div>
+      <div style="padding:6px 14px 20px">
+        <button class="adm-navitem" id="btnOut">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+               stroke-linecap="round" stroke-linejoin="round" set:html={icons.out} />
+          Sign out
+        </button>
+      </div>
+    </aside>
+    <div class="adm-scrim-side" id="sideScrim"></div>
+
+    <header class="adm-top">
+      <button class="adm-burger" id="btnBurger" aria-label="Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="adm-search">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="globalSearch" placeholder="Search products, articles or enquiries…" aria-label="Search">
+      </div>
+      <span class="spacer"></span>
+      <span class="adm-bell">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+        <span class="dot" id="bellDot" hidden>0</span>
+      </span>
+      <button class="adm-btn adm-btn-primary" id="btnPublish" title="Rebuild the public site with the current content">Publish to site</button>
+      <span class="adm-user">
+        <span class="adm-avatar" id="admInitials">SB</span>
+        <span><b id="admWho">—</b><span>Administrator</span></span>
+      </span>
+    </header>
+
+    <main class="adm-main" id="admMain"></main>
+  </div>
+
+  <!-- ── drawer ─────────────────────────────────────────── -->
+  <div class="adm-drawer" id="drawer">
+    <div class="scrim" data-close></div>
+    <div class="adm-drawer-panel">
+      <header>
+        <h3 id="drawerTitle">Edit</h3>
+        <button class="adm-x" data-close aria-label="Close">×</button>
+      </header>
+      <div class="body" id="drawerBody"></div>
+      <footer>
+        <button class="adm-btn adm-btn-ghost" data-close>Cancel</button>
+        <span class="spacer"></span>
+        <button class="adm-btn adm-btn-primary" id="drawerSave">Save changes</button>
+      </footer>
+    </div>
+  </div>
+
+  <div class="adm-toast" id="toast"></div>
+
+  <script src="../../scripts/admin.js"></script>
+</body>
+</html>

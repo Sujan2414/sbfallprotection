@@ -13,13 +13,40 @@ const leadership = [
   {
     name: 'Mr. Biju Abraham',
     role: 'Managing Partner',
+    photo: '/assets/team-biju.jpg',
     bio: 'Over two decades in product design and marketing for personal protective equipment, leading the design direction and export business.',
   },
   {
     name: 'Mr. Saji Thomas',
     role: 'Partner',
+    photo: '/assets/team-saji.jpg',
     bio: 'Oversees financial management, strategic planning and regulatory compliance across the manufacturing and export operation.',
   },
+];
+
+/**
+ * Only ISO 9001 and SEDEX exist as marks; the export recognitions are held by
+ * the company but published without a logo, so they render as typographic
+ * badges rather than an invented lockup.
+ */
+const certs = [
+  {
+    logo: '/assets/cert-iso-9001.png',
+    alt: 'ISO 9001:2015 certified company',
+    name: 'ISO 9001:2015',
+    note: 'Quality management system certified across design, manufacturing and dispatch.',
+  },
+  {
+    logo: '/assets/cert-sedex.jpg',
+    alt: 'SEDEX certified company, reference ZS1000032714',
+    name: 'SEDEX Member',
+    note: 'Ethical trade audit on labour standards, health and safety, and environment.',
+  },
+];
+const recognitions = [
+  { name: 'Govt. of India Recognised Export House', note: 'Directorate General of Foreign Trade' },
+  { name: 'Council for Leather Exports', note: 'Registered member and certified exporter' },
+  { name: 'EN & ANSI Type-Tested', note: 'Third-party tested to European and American standards' },
 ];
 ---
 <Base
@@ -106,6 +133,7 @@ const leadership = [
       <div class="team-grid">
         {leadership.map((p) => (
           <div class="team-card reveal">
+            <img class="team-photo" src={p.photo} alt={p.name} width="300" height="300" loading="lazy">
             <b>{p.name}</b><em>{p.role}</em>
             <p>{p.bio}</p>
           </div>
@@ -115,6 +143,37 @@ const leadership = [
   </section>
 
   <section class="sec">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="label">Certifications</span>
+        <h2>Audited, Certified, <em>On Record</em></h2>
+        <p>Every claim on this site is backed by a certificate you can ask us for.</p>
+      </div>
+
+      <div class="cert-grid">
+        {certs.map((c) => (
+          <div class="cert-card reveal">
+            <span class="cert-mark"><img src={c.logo} alt={c.alt} loading="lazy"></span>
+            <div class="cert-text">
+              <b>{c.name}</b>
+              <p>{c.note}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="cert-rec">
+        {recognitions.map((r) => (
+          <div class="cert-badge reveal">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+            <span><b>{r.name}</b><em>{r.note}</em></span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" style="padding-top:0">
     <div class="wrap">
       <div class="sec-head left reveal">
         <span class="label">Inside the Factory</span>
