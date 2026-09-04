@@ -876,19 +876,40 @@
 }
 
 /* ================= CONVERSATIONAL QUOTE FLOW ================= */
-.flow{background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden}
-.flow-top{display:flex;align-items:center;gap:13px;padding:18px 22px;
-  background:var(--ink);color:#fff}
-.flow-avatar{width:42px;height:42px;flex:none;border-radius:50%;background:var(--orange);
-  display:grid;place-items:center;font-weight:700;font-size:14px;color:#fff}
+.flow{
+  background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;
+  /* the transcript scrolls internally, so the card itself never grows */
+  display:flex;flex-direction:column;
+}
+.flow-top{display:flex;align-items:center;gap:13px;padding:16px 20px;
+  background:var(--ink);color:#fff;flex:none}
+.flow-avatar{
+  width:44px;height:44px;flex:none;border-radius:50%;background:#fff;
+  display:grid;place-items:center;overflow:hidden;
+}
+.flow-avatar img{width:30px;height:30px;object-fit:contain}
 .flow-top b{display:block;font-size:15px;font-weight:600}
-.flow-top span{display:block;font-size:12.5px;color:rgba(255,255,255,.6);margin-top:2px}
+/* scoped to the text block: a bare `.flow-top span` also matches .flow-avatar
+   and would override its display:grid, pushing the label out of the circle */
+.flow-top > div > span{display:block;font-size:12.5px;color:rgba(255,255,255,.6);margin-top:2px}
 .flow-top .dot{width:7px;height:7px;border-radius:50%;background:#25D366;display:inline-block;margin-right:6px}
 
 .flow-bar{height:3px;background:var(--line)}
 .flow-bar i{display:block;height:100%;background:var(--orange);width:0;transition:width .4s ease}
 
-.flow-body{padding:22px;min-height:290px;display:flex;flex-direction:column;gap:14px}
+.flow-body{
+  padding:22px;display:flex;flex-direction:column;gap:14px;
+  /* the transcript grows with the conversation up to a cap, then scrolls —
+     so it neither starts as a blank panel nor stretches the page forever */
+  min-height:230px;max-height:min(46vh,420px);
+  overflow-y:auto;overscroll-behavior:contain;
+  scrollbar-width:thin;scrollbar-color:var(--line) transparent;
+}
+.flow-body::-webkit-scrollbar{width:8px}
+.flow-body::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px}
+.flow-body::-webkit-scrollbar-track{background:transparent}
+/* messages must not shrink to fit the fixed-height flex column */
+.flow-body > *{flex:none}
 .flow-msg{max-width:82%;padding:13px 16px;border-radius:16px;font-size:14.5px;line-height:1.5;
   animation:flowIn .32s ease both}
 .flow-msg.bot{background:var(--light);border-bottom-left-radius:5px;align-self:flex-start}
@@ -896,7 +917,7 @@
 @keyframes flowIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.flow-msg{animation:none}}
 
-.flow-foot{border-top:1px solid var(--line);padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+.flow-foot{border-top:1px solid var(--line);padding:16px 18px;display:flex;flex-direction:column;gap:10px;flex:none}
 .flow-input{display:flex;gap:10px}
 .flow-input input,.flow-input textarea,.flow-input select{
   flex:1;min-width:0;background:var(--light);border:1px solid transparent;border-radius:13px;
@@ -915,14 +936,16 @@
   padding:0;text-decoration:underline;align-self:flex-start}
 .flow-back:hover{color:var(--orange)}
 
-.flow-done{padding:30px 24px;text-align:center}
+/* the confirmation panel centres inside the fixed-height transcript area */
+.flow-body:has(.flow-done){justify-content:center}
+.flow-done{padding:30px 24px;text-align:center;width:100%}
 .flow-done .tick{width:58px;height:58px;margin:0 auto;border-radius:50%;background:#25D366;
   color:#fff;display:grid;place-items:center}
 .flow-done h4{margin:16px 0 0;font-size:20px;font-weight:600;letter-spacing:-.02em}
 .flow-done p{margin-top:9px;color:var(--gray);font-size:14.5px;line-height:1.6}
 .flow-done .btns{display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap}
 @media(max-width:560px){
-  .flow-body{padding:18px;min-height:250px}
+  .flow-body{padding:18px;min-height:200px;max-height:min(54vh,360px)}
   .flow-msg{max-width:88%;font-size:14px}
 }
 

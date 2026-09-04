@@ -44,6 +44,19 @@ Covered by the [Pexels licence](https://www.pexels.com/license/).
 | `hero-export.*` | 3057960 |
 | `about-crew.jpg` | 19100322 |
 | `admin-login.jpg` (admin console, never public) | 1216589 |
+| `hero-hooks-connectors.*`, `slide-d2.jpg` | 1216583 |
+| `hero-horizontal-lifeline.*` | 21923131 |
+| `hero-blog.*`, `blog-blog.jpg` | 585418 |
+| `hero-post-clearance.*`, `blog-post-clearance.jpg` | 19100321 |
+| `hero-post-rescue.*`, `blog-post-rescue.jpg` | 33728681 |
+| `hero-post-standards.*`, `blog-post-standards.jpg` | 1216591 |
+| `hero-post-private-label.*`, `blog-post-private-label.jpg` | 8488002 |
+| `hero-post-inspection.*`, `blog-post-inspection.jpg` | 8487999 |
+| `hero-post-srl-vs-lanyard.*`, `blog-post-srl-vs-lanyard.jpg` | 13832413 |
+
+No photo is used on two different pages. A page's hero and that same article's
+card image are cut from one photo on purpose; `fac-campus.jpg` doubles as
+`hero-contact.*` because it is the client's own building, on their contact page.
 
 ## 3. Mixkit — free for commercial use, no attribution required
 

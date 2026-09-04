@@ -12,7 +12,9 @@ const sbKey = import.meta.env.SUPABASE_ANON_KEY ?? process.env.SUPABASE_ANON_KEY
 <div class="flow" id="quoteFlow" data-sku={sku} data-category={category}
      data-sb-url={sbUrl} data-sb-key={sbKey}>
   <div class="flow-top">
-    <span class="flow-avatar">SB</span>
+    <span class="flow-avatar">
+      <img src="/assets/sb-logo.png" alt="" width="30" height="30">
+    </span>
     <div>
       <b>SB Sales Team</b>
       <span><i class="dot"></i>Typically replies within one business day</span>
