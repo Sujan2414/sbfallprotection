@@ -498,8 +498,8 @@
   .f-socials a{width:48px;height:48px;border-radius:14px;background:#fff;color:var(--orange);display:grid;place-items:center;transition:transform .15s}
   .f-socials a:hover{transform:translateY(-3px)}
   .f-bar{display:flex;gap:44px;flex-wrap:wrap;padding:26px 0 0;font-size:13.5px;color:rgba(255,255,255,.92)}
-  .f-mark-wrap{overflow:visible;margin-top:40px}
-  .f-mark{display:block;width:100%;height:auto;user-select:none;margin-bottom:-1.5%}
+  .f-mark-wrap{overflow:hidden;margin-top:40px}
+  .f-mark{display:block;width:100%;height:auto;user-select:none;margin-bottom:0}
   .f-mark text{font-weight:700;font-family:inherit}
   @media(max-width:1080px){.foot-grid{grid-template-columns:1fr 1fr}.f-tools{gap:32px}.f-tools img{height:130px}.f-tools img:first-child{height:104px}}
   @media(max-width:560px){.foot-grid{grid-template-columns:1fr}}
@@ -763,8 +763,8 @@
 .ct-item{display:flex;gap:15px;align-items:flex-start}
 .ct-ic{width:48px;height:48px;flex:none;border-radius:13px;background:var(--orange);color:#fff;display:grid;place-items:center}
 .ct-item b{display:block;font-size:15.5px;margin-bottom:4px}
-.ct-item span,.ct-item a{display:block;font-size:14.5px;color:var(--gray);line-height:1.55}
-.ct-item a:hover{color:var(--orange)}
+.ct-item div span,.ct-item div a{display:block;font-size:14.5px;color:var(--gray);line-height:1.55}
+.ct-item div a:hover{color:var(--orange)}
 .ct-map{border:0;width:100%;height:330px;border-radius:20px;margin-top:26px;display:block}
 @media(max-width:900px){.ct-grid{grid-template-columns:1fr;gap:32px}}
 
@@ -957,10 +957,13 @@
    the hero stays pinned behind the whole page, so any transparent section
    below lets it show through at the edges. */
 .page-hero ~ section,
-.page-hero ~ div,
+/* :not(.fab-stack) — the floating actions are a fixed-position div sibling and
+   must not be pulled into normal flow by this rule */
+.page-hero ~ div:not(.fab-stack),
 .page-hero ~ footer{
   position:relative;z-index:1;
   background:var(--white);
+  display:flow-root;   /* contain child margins so no transparent gap opens */
 }
 /* sections that carry their own colour keep it (higher specificity wins) */
 .page-hero ~ section.services,
@@ -1104,8 +1107,8 @@
   .f-socials a{width:50px;height:50px}
 
   /* contact card: phone and email are primary actions */
-  .ct-item a{padding:9px 0;font-size:15.5px}
-  .ct-item span{font-size:15px}
+  .ct-item div a{padding:9px 0;font-size:15.5px}
+  .ct-item div span{font-size:15px}
 
   /* breadcrumb trail: room to tap without enlarging the type */
   .crumb{line-height:2.1;gap:6px 9px}
