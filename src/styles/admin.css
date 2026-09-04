@@ -34,8 +34,12 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
+html:has(body.adm-body) { height: 100%; }
 body.adm-body {
   margin: 0;
+  /* the console is an app shell: the window never scrolls, the regions do */
+  height: 100%;
+  overflow: hidden;
   background: var(--a-bg);
   color: var(--a-ink);
   font-family: 'Nunito Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -57,14 +61,18 @@ body.adm-body {
    the form under the fold for no gain. */
 
 .adm-login {
-  min-height: 100dvh;
+  height: 100dvh;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   background: #fff;
 }
-.adm-login-form { display: grid; place-items: center; padding: 40px 32px; min-height: 0; }
+.adm-login-form {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 32px; min-height: 0; overflow-y: auto;
+}
 .adm-login-inner {
-  width: 100%; max-width: 400px;
+  width: 100%; max-width: 400px; flex: none;
+  margin-block: auto;
   display: flex; flex-direction: column; align-items: stretch;
 }
 
@@ -74,12 +82,12 @@ body.adm-body {
 .adm-logo b span { color: var(--a-accent); }
 
 .adm-login-inner h1 {
-  font-size: 32px; font-weight: 700; letter-spacing: -0.8px;
-  margin-top: 30px; line-height: 1.15;
+  font-size: 30px; font-weight: 700; letter-spacing: -0.7px;
+  margin-top: 26px; line-height: 1.15;
 }
 .adm-login-inner .sub { margin-top: 10px; color: var(--a-muted); font-size: 14.5px; line-height: 1.6; }
 .adm-login-inner .adm-field { margin-top: 22px; }
-.adm-login-inner .adm-field:first-of-type { margin-top: 28px; }
+.adm-login-inner .adm-field:first-of-type { margin-top: 24px; }
 .adm-login-inner .adm-check { margin-top: 20px; }
 .adm-login-inner .adm-btn-lg { margin-top: 24px; }
 .adm-login-inner #loginMsg:not(:empty) { margin-top: 4px; }
@@ -106,14 +114,14 @@ body.adm-body {
 /* divider + Google button (only rendered once the provider is enabled) */
 .adm-or {
   display: flex; align-items: center; gap: 14px;
-  margin-top: 22px; color: var(--a-faint);
+  margin-top: 18px; color: var(--a-faint);
   font-size: 12.5px; font-weight: 600;
 }
 .adm-or::before, .adm-or::after {
   content: ''; flex: 1; height: 1px; background: var(--a-line);
 }
 .adm-btn.adm-btn-google {
-  margin-top: 16px; width: 100%;
+  margin-top: 14px; width: 100%;
   display: flex; align-items: center; justify-content: center; gap: 11px;
   background: #fff; color: var(--a-ink);
   border: 1px solid var(--a-border);
@@ -182,7 +190,7 @@ body.adm-body {
 
 /* ─────────────────────────── shell ─────────────────────────── */
 
-.adm-shell { min-height: 100vh; }
+.adm-shell { height: 100dvh; overflow: hidden; }
 
 .adm-side {
   position: fixed;
@@ -329,8 +337,11 @@ body.adm-body {
 
 .adm-main {
   margin-left: var(--a-sidebar);
-  padding: calc(var(--a-topbar) + 28px) 26px 40px;
-  max-width: 1500px;
+  margin-top: var(--a-topbar);
+  height: calc(100dvh - var(--a-topbar));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 28px 26px 44px;
 }
 .adm-title { font-size: 32px; font-weight: 700; letter-spacing: -0.11px; }
 .adm-pagehead {

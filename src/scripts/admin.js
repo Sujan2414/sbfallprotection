@@ -183,24 +183,47 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
  */
 const btnGoogle = document.getElementById('btnGoogle');
 if (btnGoogle) {
+  const setupMsg =
+    'Google sign-in is not switched on yet. In Supabase go to Authentication → ' +
+    'Sign In / Providers → Google, paste the client ID and secret, and save. ' +
+    'Email and password work in the meantime.';
+
   btnGoogle.addEventListener('click', async () => {
-    window.localStorage.setItem(REMEMBER, '1');
+    const msg = document.getElementById('loginMsg');
+    msg.innerHTML = '';
     btnGoogle.disabled = true;
-    const { error } = await sb.auth.signInWithOAuth({
+    window.localStorage.setItem(REMEMBER, '1');
+
+    // Build the authorize URL without navigating, so a disabled provider shows
+    // a message here instead of dumping Supabase's raw 400 JSON in the tab.
+    const { data, error } = await sb.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: window.location.origin + '/admin/' },
+      options: {
+        redirectTo: window.location.origin + '/admin/',
+        skipBrowserRedirect: true,
+      },
     });
-    if (error) {
+    if (error || !data || !data.url) {
       btnGoogle.disabled = false;
-      // the provider-disabled case is a setup step, not a user error, so say so
-      const setup = /provider is not enabled|Unsupported provider/i.test(error.message);
-      document.getElementById('loginMsg').innerHTML =
-        `<div class="adm-msg err">${setup
-          ? 'Google sign-in is not switched on yet. Enable it in Supabase under ' +
-            'Authentication → Providers → Google, then try again. Email and ' +
-            'password work in the meantime.'
-          : esc(error.message)}</div>`;
+      msg.innerHTML = `<div class="adm-msg err">${esc((error && error.message) || setupMsg)}</div>`;
+      return;
     }
+
+    // A disabled provider answers 400 with CORS headers, so it is readable.
+    // Enabled, it answers a redirect, which reads as an opaque redirect
+    // cross-origin — and a blocked probe throws, in which case just go.
+    let disabled = false;
+    try {
+      const probe = await fetch(data.url, { redirect: 'manual' });
+      disabled = probe.status === 400;
+    } catch { /* opaque or blocked — proceed to the real redirect */ }
+
+    if (disabled) {
+      btnGoogle.disabled = false;
+      msg.innerHTML = `<div class="adm-msg err">${setupMsg}</div>`;
+      return;
+    }
+    window.location.assign(data.url);
   });
 }
 
