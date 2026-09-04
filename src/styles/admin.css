@@ -112,15 +112,15 @@ body.adm-body {
 .adm-or::before, .adm-or::after {
   content: ''; flex: 1; height: 1px; background: var(--a-line);
 }
-.adm-btn-google {
+.adm-btn.adm-btn-google {
   margin-top: 16px; width: 100%;
   display: flex; align-items: center; justify-content: center; gap: 11px;
   background: #fff; color: var(--a-ink);
   border: 1px solid var(--a-border);
   padding: 14px 20px; font-size: 14.5px; font-weight: 600;
 }
-.adm-btn-google:hover { background: var(--a-thead); border-color: var(--a-muted); }
-.adm-btn-google svg { flex: none; }
+.adm-btn.adm-btn-google:hover { background: var(--a-thead); border-color: var(--a-muted); }
+.adm-btn.adm-btn-google svg { flex: none; }
 
 .adm-login-foot {
   margin-top: 20px; font-size: 12.5px; line-height: 1.65;

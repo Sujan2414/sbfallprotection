@@ -192,8 +192,14 @@ if (btnGoogle) {
     });
     if (error) {
       btnGoogle.disabled = false;
+      // the provider-disabled case is a setup step, not a user error, so say so
+      const setup = /provider is not enabled|Unsupported provider/i.test(error.message);
       document.getElementById('loginMsg').innerHTML =
-        `<div class="adm-msg err">${esc(error.message)}</div>`;
+        `<div class="adm-msg err">${setup
+          ? 'Google sign-in is not switched on yet. Enable it in Supabase under ' +
+            'Authentication → Providers → Google, then try again. Email and ' +
+            'password work in the meantime.'
+          : esc(error.message)}</div>`;
     }
   });
 }
