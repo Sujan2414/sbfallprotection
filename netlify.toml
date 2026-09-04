@@ -23,6 +23,22 @@
     X-Frame-Options = "SAMEORIGIN"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
+# Serverless functions: the admin panel calls /api/* on both hosts, so map
+# those paths onto the Netlify functions. Vercel picks up /api itself.
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/api/users"
+  to = "/.netlify/functions/users"
+  status = 200
+
+[[redirects]]
+  from = "/api/publish"
+  to = "/.netlify/functions/publish"
+  status = 200
+
 # Preserve inbound links from the current WordPress site.
 [[redirects]]
   from = "/product-catagories"

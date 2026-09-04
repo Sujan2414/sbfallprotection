@@ -42,7 +42,7 @@ Covered by the [Pexels licence](https://www.pexels.com/license/).
 | `contact-ropeaccess.jpg` | 21923132 |
 | `hero-about.*` | 2760241 |
 | `hero-export.*` | 3057960 |
-| `about-crew.jpg` | 19100322 |
+| `about-crew.jpg` | 585419 |
 | `admin-login.jpg` (admin console, never public) | 1216581 |
 | `hero-hooks-connectors.*`, `slide-d2.jpg` | 1216583 |
 | `hero-horizontal-lifeline.*` | 21923131 |

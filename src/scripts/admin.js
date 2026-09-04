@@ -9,7 +9,9 @@
  *
  * The public site is statically generated, so edits land in the database
  * immediately but only reach visitors after a rebuild — hence "Publish to
- * site", which pings a deploy hook stored in the settings table.
+ * site", which calls a serverless endpoint holding the deploy hook. Staff
+ * accounts go through a second endpoint for the same reason: the service_role
+ * key it needs must never reach the browser.
  *
  * Presentation follows the DashStack admin UI kit; see src/styles/admin.css.
  */
@@ -86,8 +88,30 @@ const ICON = {
   box: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8.4v7.2a2 2 0 0 1-1 1.73l-6.5 3.6a2 2 0 0 1-2 0L5 17.33a2 2 0 0 1-1-1.73V8.4a2 2 0 0 1 1-1.73l6.5-3.6a2 2 0 0 1 2 0l6.5 3.6A2 2 0 0 1 21 8.4Z"/><path d="m4.3 7.3 7.7 4.3 7.7-4.3M12 20.5v-8.9"/></svg>',
   layers: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5M3 17.5l9 5 9-5"/></svg>',
   inbox: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2 3h6l2-3h4"/><path d="M5 5h14l2 7v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5l2-7Z"/></svg>',
+  people: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
   file: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>',
 };
+
+/**
+ * The staff-account and publish endpoints run server-side because they need
+ * the service_role key and the deploy hook, neither of which may reach the
+ * browser. Both take the caller's session token so they can check who is asking.
+ */
+async function api(path, method = 'GET', body) {
+  const { data } = await sb.auth.getSession();
+  const token = data && data.session ? data.session.access_token : '';
+  const res = await fetch(path, {
+    method,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      ...(body ? { 'Content-Type': 'application/json' } : {}),
+    },
+    ...(body ? { body: JSON.stringify(body) } : {}),
+  });
+  let json = null;
+  try { json = await res.json(); } catch { /* empty body */ }
+  return { ok: res.ok, status: res.status, data: json || {} };
+}
 
 /* ─────────────────────────── drawer ─────────────────────────── */
 
@@ -313,7 +337,7 @@ document.querySelectorAll('.adm-navitem[data-tab]').forEach((b) =>
   b.addEventListener('click', () => setTab(b.dataset.tab)));
 
 function render() {
-  ({ overview, products, taxonomy, posts, inquiries, settings }[tab] || overview)();
+  ({ overview, products, taxonomy, posts, inquiries, users, settings }[tab] || overview)();
   window.scrollTo({ top: 0 });
 }
 
@@ -770,68 +794,150 @@ function openInq(id) {
 
 /* ─────────────────────────── settings & publish ─────────────────────────── */
 
-async function getSetting(key) {
-  const { data } = await sb.from('settings').select('value').eq('key', key).maybeSingle();
-  return data ? data.value : '';
+/**
+ * Staff accounts. The heavy lifting is server-side (api/users.js) because
+ * listing and creating Supabase users needs the service_role key.
+ */
+function users() {
+  main.innerHTML = pageHead('Users',
+    '<button class="adm-btn adm-btn-primary" id="newUser">+ Add user</button>') +
+    '<div class="adm-table-card"><div class="adm-empty">Loading staff accounts...</div></div>';
+  main.querySelector('#newUser').addEventListener('click', () => addUser());
+  loadUsers();
 }
+
+async function loadUsers() {
+  const card = main.querySelector('.adm-table-card');
+  const { ok, status, data } = await api('/api/users');
+
+  if (!ok) {
+    // 501 means the server has no service_role key yet, 404 means the function
+    // is not deployed. Both are setup problems, so say which.
+    const setup = status === 501 || status === 404;
+    card.innerHTML = `<div class="adm-empty" style="text-align:left;padding:26px 24px">
+      <strong style="display:block;font-size:16px;color:var(--a-ink);margin-bottom:8px">
+        ${setup ? 'One setup step left' : 'Could not load staff accounts'}</strong>
+      ${esc(data.message || data.error || `The server answered ${status}.`)}
+      ${status === 404 ? '<br><br>The /api/users function is not deployed yet - push and redeploy.' : ''}
+    </div>`;
+    return;
+  }
+
+  const rows = data.users || [];
+  card.innerHTML = `
+    <div class="adm-table-head"><h2>Staff Accounts</h2><span class="spacer"></span>
+      <span class="adm-td-muted">${rows.length} ${rows.length === 1 ? 'account' : 'accounts'}</span></div>
+    <div class="adm-table-scroll">
+      <table class="adm-table"><thead><tr>
+        <th>Email</th><th>Status</th><th>Last sign-in</th><th>Added</th><th>Sign-in</th><th>Action</th>
+      </tr></thead><tbody>
+      ${rows.map((u) => `<tr>
+        <td><span class="adm-code">${esc(u.email)}</span>
+            ${u.email === data.caller ? '<span class="adm-sub">this is you</span>' : ''}</td>
+        <td><span class="adm-pill ${u.confirmed ? 'green' : 'amber'}">${u.confirmed ? 'Active' : 'Unconfirmed'}</span></td>
+        <td class="adm-td-muted">${fmtWhen(u.last_sign_in_at)}</td>
+        <td class="adm-td-muted">${fmtDate(u.created_at)}</td>
+        <td class="adm-td-muted">${esc((u.providers || []).join(', ') || 'password')}</td>
+        <td><span class="adm-act">${u.email === data.caller ? '<span class="adm-td-muted">-</span>'
+          : `<button class="adm-icon-btn danger" data-del-user="${esc(u.id)}"
+                     data-email="${esc(u.email)}" title="Remove">${ICON.trash}</button>`}</span></td>
+      </tr>`).join('')}
+      </tbody></table>
+    </div>`;
+
+  card.querySelectorAll('[data-del-user]').forEach((b) =>
+    b.addEventListener('click', () => removeUser(b.dataset.delUser, b.dataset.email)));
+
+  main.insertAdjacentHTML('beforeend', `<div class="adm-hint" style="max-width:none">
+    Anyone listed here can sign in and edit everything - the catalogue, articles
+    and enquiries. There are no roles yet, so only add people who should have
+    that.${data.allowList ? '' : ' Set <strong>ADMIN_EMAILS</strong> on the host to ' +
+    'restrict who may add and remove accounts.'}</div>`);
+}
+
+/** A password the browser generates, so nobody invents a weak one. */
+function suggestPassword() {
+  const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789';
+  const bytes = new Uint32Array(18);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes, (n) => alphabet[n % alphabet.length]).join('');
+}
+
+function addUser() {
+  openDrawer('Add a staff account', `
+    <div class="adm-fields">
+      ${field('Email address', 'email', '', 'email')}
+      ${field('Password', 'password', suggestPassword(), 'text')}
+    </div>
+    <button type="button" class="adm-btn adm-btn-soft" id="regen" style="margin-top:12px">
+      Generate another password</button>
+    <div class="adm-hint">
+      The account is created ready to use, with no confirmation email. Send the
+      password to your colleague over WhatsApp or in person, and have them
+      change it once they are in.
+    </div>`,
+    async () => {
+      const email = val('email');
+      const password = val('password');
+      const { ok, data } = await api('/api/users', 'POST', { email, password });
+      if (!ok) throw new Error(data.message || data.error || 'Could not create that user.');
+      await loadUsers();
+    });
+  drawerBody.querySelector('#regen').addEventListener('click', () => {
+    drawerBody.querySelector('[name="password"]').value = suggestPassword();
+  });
+}
+
+function removeUser(id, email) {
+  openDrawer('Remove this account?', `
+    <p style="font-size:15px;line-height:1.65">
+      <strong>${esc(email)}</strong> will no longer be able to sign in. Nothing they
+      created is deleted, so products, articles and enquiries all stay.
+    </p>
+    <button class="adm-btn adm-btn-danger" id="confirmDelUser" style="margin-top:22px">
+      Yes, remove this account</button>`, null);
+  drawerBody.querySelector('#confirmDelUser').addEventListener('click', async () => {
+    const { ok, data } = await api('/api/users', 'DELETE', { id });
+    if (!ok) return toast(data.message || data.error || 'Could not remove that user', true);
+    closeDrawer();
+    toast(`${email} removed`);
+    loadUsers();
+  });
+}
+
+/* --------------------------- settings --------------------------- */
 
 function settings() {
   main.innerHTML = pageHead('Settings') + `
     <div class="adm-form-card">
-      <div class="adm-fields">
-        <label class="adm-field full"><span>Deploy hook URL</span>
-          <input type="url" id="hookUrl" placeholder="https://api.vercel.com/v1/integrations/deploy/…"></label>
-      </div>
-      <p class="adm-td-muted" style="margin-top:12px;line-height:1.65;font-weight:600">
-        <strong>Publish to site</strong> calls this URL to rebuild the public site with the
-        current content. Create one in Vercel under Project → Settings → Git → Deploy Hooks
-        (or in Netlify under Build &amp; deploy → Build hooks), then paste it here.
-      </p>
-      <div class="adm-form-actions">
-        <button class="adm-btn adm-btn-primary adm-btn-lg" id="saveHook">Save settings</button>
-      </div>
-      <div id="hookMsg"></div>
-    </div>
-
-    <div class="adm-form-card" style="margin-top:24px">
       <span class="adm-label">Signed in as</span>
       <p style="font-size:16px;font-weight:700">${esc(document.getElementById('admWho').textContent)}</p>
       <div class="adm-hint">
-        Add or remove staff accounts in Supabase under <strong>Authentication → Users</strong>.
-        Everyone who can sign in has full edit rights — there are no roles yet.
+        Manage who else can sign in under <strong>Users</strong>. Everyone with an
+        account has full edit rights, as there are no roles yet.
       </div>
-    </div>`;
+    </div>
 
-  getSetting('deploy_hook').then((v) => { main.querySelector('#hookUrl').value = v || ''; });
-  main.querySelector('#saveHook').addEventListener('click', async () => {
-    const value = main.querySelector('#hookUrl').value.trim();
-    const { error } = await sb.from('settings').upsert(
-      { key: 'deploy_hook', value, updated_at: new Date().toISOString() }, { onConflict: 'key' });
-    toast(error ? error.message : 'Settings saved', !!error);
-  });
+    <div class="adm-form-card" style="margin-top:24px">
+      <span class="adm-label">Publishing</span>
+      <p class="adm-td-muted" style="margin-top:8px;line-height:1.65;font-weight:600">
+        The public site is pre-rendered, so your edits reach visitors only after a
+        rebuild. <strong>Publish to site</strong> triggers one. The deploy hook it
+        calls is held on the server, not here.
+      </p>
+    </div>`;
 }
 
 document.getElementById('btnPublish').addEventListener('click', async () => {
   const btn = document.getElementById('btnPublish');
-  const hook = await getSetting('deploy_hook');
-  if (!hook) {
-    toast('Add a deploy hook URL under Settings first', true);
-    setTab('settings');
-    return;
-  }
   btn.disabled = true;
-  btn.textContent = 'Publishing…';
-  try {
-    // no-cors: deploy hooks send no CORS headers, so the response is opaque.
-    // A thrown error still means the request never left the browser.
-    await fetch(hook, { method: 'POST', mode: 'no-cors' });
-    toast('Rebuild triggered — the site updates in a minute or two');
-  } catch {
-    toast('Could not reach the deploy hook', true);
-  } finally {
-    btn.disabled = false;
-    btn.textContent = 'Publish to site';
-  }
+  btn.textContent = 'Publishing...';
+  const { ok, status, data } = await api('/api/publish', 'POST');
+  btn.disabled = false;
+  btn.textContent = 'Publish to site';
+  if (ok) return toast('Rebuild triggered - the site updates in a minute or two');
+  if (status === 404) return toast('The /api/publish function is not deployed yet', true);
+  toast(data.message || data.error || `The server answered ${status}`, true);
 });
 
 /* onAuthStateChange fires with the restored session on load */
