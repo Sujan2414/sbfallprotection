@@ -1,0 +1,90 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const all = (await getCollection('blog')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+// prefer posts sharing the topic, then fill up with the most recent
+const related = [
+  ...all.filter((p) => p.id !== post.id && p.data.topic === post.data.topic),
+  ...all.filter((p) => p.id !== post.id && p.data.topic !== post.data.topic),
+].slice(0, 3);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Base
+  title={`${post.data.title} | SB Fall Protection`}
+  description={post.data.excerpt}
+  image={`/assets/hero-${post.data.image}.jpg`}
+>
+  <PageHeader
+    eyebrow={post.data.topic}
+    title={post.data.title}
+    crumbs={[{ label: 'Blog', href: '/blog' }, { label: post.data.topic }]}
+    image={post.data.image}
+    imageAlt={post.data.imageAlt}
+  />
+
+  <section class="sec">
+    <div class="wrap">
+      <article class="article">
+        <div class="article-meta">
+          <span class="who">{post.data.author}</span>
+          <i>·</i><span>{fmt(post.data.date)}</span>
+          <i>·</i><span>{post.data.readMins} min read</span>
+        </div>
+        <div class="prose"><Content /></div>
+      </article>
+
+      <div class="article-foot">
+        <div class="article-cta">
+          <div>
+            <b>Need this specified for your site?</b>
+            <span>Tell us what the work looks like and our team will come back with a configuration, MOQs and pricing.</span>
+          </div>
+          <a class="btn btn-orange" href="/contact">Talk to our team <span class="arr">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {related.length > 0 && (
+    <section class="sec" style="padding-top:0">
+      <div class="wrap">
+        <div class="family-head">
+          <div><h2>Keep reading</h2></div>
+          <a class="cat-go" href="/blog">All articles
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="post-grid">
+          {related.map((p) => (
+            <a class="post-card" href={`/blog/${p.id}`}>
+              <span class="post-ph">
+                <span class="post-topic">{p.data.topic}</span>
+                <img src={`/assets/blog-${p.data.image}.jpg`} alt={p.data.imageAlt}
+                     width="760" height="475" loading="lazy">
+              </span>
+              <span class="post-body">
+                <h3>{p.data.title}</h3>
+                <p>{p.data.excerpt}</p>
+                <span class="post-meta">{fmt(p.data.date)} <i>·</i> {p.data.readMins} min read</span>
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</Base>

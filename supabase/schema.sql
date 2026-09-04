@@ -162,3 +162,33 @@ begin
       t || '_touch', t);
   end loop;
 end $$;
+
+-- ─────────────────────────── blog posts ───────────────────────────────────
+-- Mirrors src/content/blog/*.md so posts can move into the CMS later.
+
+create table if not exists posts (
+  slug        text primary key,
+  title       text not null,
+  excerpt     text default '',
+  body        text default '',        -- markdown
+  image       text,                   -- asset slug: hero-<image>/blog-<image>
+  image_alt   text default '',
+  topic       text,
+  author      text default 'SB Fall Protection',
+  read_mins   int  default 5,
+  featured    boolean default false,
+  published   boolean default true,
+  published_at timestamptz default now(),
+  created_at  timestamptz default now(),
+  updated_at  timestamptz default now()
+);
+
+create index if not exists posts_published_idx on posts (published, published_at desc);
+
+alter table posts enable row level security;
+create policy posts_public_read on posts
+  for select using (published = true);
+create policy posts_staff_write on posts
+  for all to authenticated using (true) with check (true);
+create trigger posts_touch before update on posts
+  for each row execute function touch_updated_at();

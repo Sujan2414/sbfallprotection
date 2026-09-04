@@ -46,18 +46,13 @@
     if ('IntersectionObserver' in window){
       new IntersectionObserver(function(en){ heroVisible = en[0].isIntersecting; }).observe(hero);
     }
-    /* The hero is pinned and the page slides over it, so translating the image
-       on scroll would drag it out of the frame. Scroll instead drives a slow
-       zoom + dim, which reads as depth behind the incoming content. */
     (function loop(){
       if (heroVisible){
         tx += (mx - tx) * 0.06;
         ty += (my - ty) * 0.06;
-        var k = Math.min(window.scrollY / (hero.offsetHeight || 1), 1);
-        var zoom = 1.12 + k * 0.06;
+        var sy = Math.min(window.scrollY, hero.offsetHeight) * drift;
         hImg.style.transform =
-          'translate3d(' + tx.toFixed(2) + 'px,' + ty.toFixed(2) + 'px,0) scale(' + zoom.toFixed(4) + ')';
-        hImg.style.filter = 'brightness(' + (1 - k * 0.28).toFixed(3) + ')';
+          'translate3d(' + tx.toFixed(2) + 'px,' + (sy + ty).toFixed(2) + 'px,0) scale(1.12)';
       }
       requestAnimationFrame(loop);
     })();

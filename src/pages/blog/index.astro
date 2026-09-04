@@ -1,0 +1,109 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+const [lead, ...rest] = posts;
+const topics = [...new Set(posts.map((p) => p.data.topic))].sort();
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+---
+<Base
+  title="Height Safety Insights — SB Fall Protection Blog"
+  description="Practical guidance on fall protection from the people who manufacture it: harness inspection, EN standards, fall clearance calculation, rescue planning and private-label sourcing."
+  image="/assets/hero-blog.jpg"
+>
+  <PageHeader
+    eyebrow="Insights"
+    title="Notes From the"
+    accent="Factory Floor"
+    lead="Practical guidance on working at height from the people who make the equipment — inspection, standards, system selection and rescue planning."
+    crumbs={[{ label: 'Blog' }]}
+    image="blog"
+    imageAlt="Technician inspecting industrial equipment in a manufacturing plant"
+  />
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="topic-row reveal">
+        <button class="topic-pill on" data-topic="all" type="button">All articles</button>
+        {topics.map((t) => (
+          <button class="topic-pill" data-topic={t} type="button">{t}</button>
+        ))}
+      </div>
+
+      {lead && (
+        <a class="post-lead reveal" href={`/blog/${lead.id}`} data-topic={lead.data.topic}>
+          <span class="post-ph">
+            <span class="post-topic">{lead.data.topic}</span>
+            <img src={`/assets/blog-${lead.data.image}.jpg`} alt={lead.data.imageAlt}
+                 width="760" height="475" loading="eager">
+          </span>
+          <span class="post-lead-body">
+            <span class="label">Latest</span>
+            <h3>{lead.data.title}</h3>
+            <p>{lead.data.excerpt}</p>
+            <span class="post-meta" style="border:0;padding:0;margin:6px 0 0">
+              {fmt(lead.data.date)} <i>·</i> {lead.data.readMins} min read
+            </span>
+          </span>
+        </a>
+      )}
+
+      <div class="post-grid" id="postGrid">
+        {rest.map((p) => (
+          <a class="post-card" href={`/blog/${p.id}`} data-topic={p.data.topic}>
+            <span class="post-ph">
+              <span class="post-topic">{p.data.topic}</span>
+              <img src={`/assets/blog-${p.data.image}.jpg`} alt={p.data.imageAlt}
+                   width="760" height="475" loading="lazy">
+            </span>
+            <span class="post-body">
+              <h3>{p.data.title}</h3>
+              <p>{p.data.excerpt}</p>
+              <span class="post-meta">
+                {fmt(p.data.date)} <i>·</i> {p.data.readMins} min read
+              </span>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" style="padding-top:0">
+    <div class="wrap">
+      <div class="cta-card reveal">
+        <img class="cta-bg" src="/assets/cta-abstract.jpg" alt="">
+        <div class="cta-inner">
+          <h2>Question we haven't covered?</h2>
+          <p>Our team answers specification and compliance questions from buyers every day. Ask us directly — no obligation.</p>
+          <div class="btns">
+            <a class="btn btn-orange" href="/contact">Talk to our team</a>
+            <a class="btn btn-white" href="/products">Browse products</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  /* topic filter — no page reload, and it keeps the lead card in sync */
+  const pills = document.querySelectorAll<HTMLElement>('.topic-pill');
+  const cards = document.querySelectorAll<HTMLElement>('[data-topic]:not(.topic-pill)');
+  pills.forEach((pill) => {
+    pill.addEventListener('click', () => {
+      const want = pill.dataset.topic;
+      pills.forEach((p) => p.classList.toggle('on', p === pill));
+      cards.forEach((c) => {
+        const show = want === 'all' || c.dataset.topic === want;
+        c.style.display = show ? '' : 'none';
+      });
+    });
+  });
+</script>
