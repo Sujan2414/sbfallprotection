@@ -43,7 +43,7 @@ Covered by the [Pexels licence](https://www.pexels.com/license/).
 | `hero-about.*` | 2760241 |
 | `hero-export.*` | 3057960 |
 | `about-crew.jpg` | 19100322 |
-| `admin-login.jpg` (admin console, never public) | 1216589 |
+| `admin-login.jpg` (admin console, never public) | 1216581 |
 | `hero-hooks-connectors.*`, `slide-d2.jpg` | 1216583 |
 | `hero-horizontal-lifeline.*` | 21923131 |
 | `hero-blog.*`, `blog-blog.jpg` | 585418 |
