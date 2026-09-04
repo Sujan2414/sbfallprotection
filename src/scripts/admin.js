@@ -256,10 +256,23 @@ sb.auth.onAuthStateChange((_evt, session) => {
     loginView.hidden = true;
     appView.hidden = false;
     const email = session.user.email || '';
+    me = {
+      id: session.user.id,
+      email,
+      role: 'admin',
+      last_sign_in_at: session.user.last_sign_in_at || null,
+      created_at: session.user.created_at || null,
+    };
     document.getElementById('admWho').textContent = email;
     document.getElementById('admInitials').textContent =
       (email.slice(0, 2) || 'SB').toUpperCase();
-    boot();
+    // the roster decides what the sidebar and Users tab allow
+    sb.from('staff').select('role').eq('user_id', me.id).maybeSingle()
+      .then(({ data }) => {
+        if (data && data.role) { me.role = data.role; me.rostered = true; }
+      })
+      .catch(() => {})
+      .finally(boot);
   } else {
     appView.hidden = true;
     loginView.hidden = false;
@@ -276,6 +289,9 @@ document.getElementById('btnBurger').addEventListener('click', () => {
   sideScrim.classList.toggle('open');
 });
 sideScrim.addEventListener('click', closeSide);
+
+// the bell is a shortcut to the enquiry inbox it counts
+document.getElementById('btnBell').addEventListener('click', () => setTab('inquiries'));
 
 document.getElementById('globalSearch').addEventListener('input', (e) => {
   const q = e.target.value.trim();
@@ -788,54 +804,109 @@ function openInq(id) {
 function apiError(data, fallback) {
   console.warn('[admin]', data);
   const code = data && data.error;
-  if (!code || code === 'not_configured' || code === 'forbidden') return fallback;
+  if (!code) return fallback;
+  // codes the person cannot act on, phrased so they still know which wall they hit
+  if (code === 'not_configured') return 'Account management is not switched on yet.';
+  if (code === 'forbidden') return data.message || 'You do not have access to do that.';
   return String(code);
 }
 
 /**
- * Staff accounts. The heavy lifting is server-side (api/users.js) because
- * listing and creating Supabase users needs the service_role key.
+ * Staff accounts.
+ *
+ * The roster is read straight from the `staff` table with the ordinary session,
+ * so the list works without the service_role key. Creating and removing the
+ * underlying auth users does need that key, so those go through /api/users.
+ * Your own row always shows, taken from the live session, even if neither is
+ * reachable.
  */
+let me = {
+  id: '', email: '', role: 'admin', last_sign_in_at: null, created_at: null,
+  // null role = no roster row yet, which the API treats as the bootstrap case
+  rostered: false,
+};
+const canManageUsers = () => me.role === 'super_admin' || !me.rostered;
+
+const ROLE_LABEL = { super_admin: 'Super admin', admin: 'Admin' };
+
 function users() {
+  const canManage = canManageUsers();
   main.innerHTML = pageHead('Users',
-    '<button class="adm-btn adm-btn-primary" id="newUser">+ Add user</button>') +
+    canManage ? '<button class="adm-btn adm-btn-primary" id="newUser">+ Add user</button>' : '') +
     '<div class="adm-table-card"><div class="adm-empty">Loading staff accounts...</div></div>';
-  main.querySelector('#newUser').addEventListener('click', () => addUser());
+  const add = main.querySelector('#newUser');
+  if (add) add.addEventListener('click', () => addUser());
   loadUsers();
 }
 
 async function loadUsers() {
   const card = main.querySelector('.adm-table-card');
-  const { ok, status, data } = await api('/api/users');
 
-  if (!ok) {
-    // Whatever went wrong is a server or setup problem, not something the
-    // person looking at this screen can act on, so keep the detail in the
-    // console and show a plain empty state.
-    console.warn('[admin] /api/users', status, data);
-    card.innerHTML = '<div class="adm-empty">No staff accounts to show.</div>';
-    return;
-  }
+  // the roster, readable with the ordinary session
+  const roster = await sb.from('staff').select('user_id, email, role').order('email');
+  if (roster.error) console.warn('[admin] staff table', roster.error.message);
 
-  const rows = data.users || [];
+  // live auth detail (last sign-in, confirmed, provider) when the key is set
+  const live = await api('/api/users');
+  if (!live.ok) console.warn('[admin] /api/users', live.status, live.data);
+
+  const byEmail = new Map();
+  const put = (email, patch) => {
+    const k = String(email || '').toLowerCase();
+    if (!k) return;
+    byEmail.set(k, { ...(byEmail.get(k) || { email }), ...patch });
+  };
+
+  (roster.data || []).forEach((r) => put(r.email, { id: r.user_id, role: r.role }));
+  (live.ok ? live.data.users || [] : []).forEach((u) =>
+    put(u.email, {
+      id: u.id,
+      confirmed: u.confirmed,
+      last_sign_in_at: u.last_sign_in_at,
+      created_at: u.created_at,
+      providers: u.providers,
+    }));
+
+  // you are always in the list, whatever else failed
+  put(me.email, {
+    id: me.id,
+    role: (byEmail.get(me.email.toLowerCase()) || {}).role || me.role,
+    last_sign_in_at: (byEmail.get(me.email.toLowerCase()) || {}).last_sign_in_at || me.last_sign_in_at,
+    created_at: (byEmail.get(me.email.toLowerCase()) || {}).created_at || me.created_at,
+    confirmed: true,
+  });
+
+  const rows = [...byEmail.values()].sort((a, b) => {
+    if (a.role !== b.role) return a.role === 'super_admin' ? -1 : 1;
+    return String(a.email).localeCompare(String(b.email));
+  });
+  const canManage = canManageUsers();
+
   card.innerHTML = `
     <div class="adm-table-head"><h2>Staff Accounts</h2><span class="spacer"></span>
       <span class="adm-td-muted">${rows.length} ${rows.length === 1 ? 'account' : 'accounts'}</span></div>
     <div class="adm-table-scroll">
       <table class="adm-table"><thead><tr>
-        <th>Email</th><th>Status</th><th>Last sign-in</th><th>Added</th><th>Sign-in</th><th>Action</th>
+        <th>Email</th><th>Access</th><th>Status</th><th>Last sign-in</th><th>Sign-in</th>
+        ${canManage ? '<th>Action</th>' : ''}
       </tr></thead><tbody>
-      ${rows.map((u) => `<tr>
-        <td><span class="adm-code">${esc(u.email)}</span>
-            ${u.email === data.caller ? '<span class="adm-sub">this is you</span>' : ''}</td>
-        <td><span class="adm-pill ${u.confirmed ? 'green' : 'amber'}">${u.confirmed ? 'Active' : 'Unconfirmed'}</span></td>
-        <td class="adm-td-muted">${fmtWhen(u.last_sign_in_at)}</td>
-        <td class="adm-td-muted">${fmtDate(u.created_at)}</td>
-        <td class="adm-td-muted">${esc((u.providers || []).join(', ') || 'password')}</td>
-        <td><span class="adm-act">${u.email === data.caller ? '<span class="adm-td-muted">-</span>'
-          : `<button class="adm-icon-btn danger" data-del-user="${esc(u.id)}"
-                     data-email="${esc(u.email)}" title="Remove">${ICON.trash}</button>`}</span></td>
-      </tr>`).join('')}
+      ${rows.map((u) => {
+        const isMe = String(u.email).toLowerCase() === me.email.toLowerCase();
+        return `<tr>
+          <td><span class="adm-code">${esc(u.email)}</span>
+              ${isMe ? '<span class="adm-sub">this is you</span>' : ''}</td>
+          <td><span class="adm-pill ${u.role === 'super_admin' ? 'blue' : 'grey'}">${
+            esc(ROLE_LABEL[u.role] || 'Admin')}</span></td>
+          <td><span class="adm-pill ${u.confirmed === false ? 'amber' : 'green'}">${
+            u.confirmed === false ? 'Unconfirmed' : 'Active'}</span></td>
+          <td class="adm-td-muted">${fmtWhen(u.last_sign_in_at)}</td>
+          <td class="adm-td-muted">${esc((u.providers || []).join(', ') || 'password')}</td>
+          ${canManage ? `<td><span class="adm-act">${isMe
+            ? '<span class="adm-td-muted">-</span>'
+            : `<button class="adm-icon-btn danger" data-del-user="${esc(u.id || '')}"
+                       data-email="${esc(u.email)}" title="Remove">${ICON.trash}</button>`}</span></td>` : ''}
+        </tr>`;
+      }).join('')}
       </tbody></table>
     </div>`;
 
@@ -848,11 +919,16 @@ function addUser() {
     <div class="adm-fields">
       ${field('Email address', 'email', '', 'email')}
       ${field('Password', 'password', '', 'text')}
+      ${select('Access level', 'role',
+        [['admin', 'Admin — full content access'],
+         ['super_admin', 'Super admin — content, plus manage accounts']], 'admin')}
     </div>`,
     async () => {
-      const email = val('email');
-      const password = val('password');
-      const { ok, data } = await api('/api/users', 'POST', { email, password });
+      const { ok, data } = await api('/api/users', 'POST', {
+        email: val('email'),
+        password: val('password'),
+        role: val('role'),
+      });
       if (!ok) throw new Error(apiError(data, 'Could not add that account.'));
       await loadUsers();
     });
