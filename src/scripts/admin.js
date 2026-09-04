@@ -27,9 +27,10 @@ const toastEl = document.getElementById('toast');
 
 if (!URL || !KEY) {
   loginView.hidden = false;
+  // the detail is for whoever deploys this, not for whoever is signing in
+  console.error('[admin] SUPABASE_URL / SUPABASE_ANON_KEY missing from this build');
   document.getElementById('loginMsg').innerHTML =
-    '<div class="adm-msg err">Supabase is not configured for this build. ' +
-    'Set SUPABASE_URL and SUPABASE_ANON_KEY, then redeploy.</div>';
+    '<div class="adm-msg err">Sign-in is unavailable right now.</div>';
   throw new Error('supabase not configured');
 }
 
@@ -207,10 +208,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
  */
 const btnGoogle = document.getElementById('btnGoogle');
 if (btnGoogle) {
-  const setupMsg =
-    'Google sign-in is not switched on yet. In Supabase go to Authentication → ' +
-    'Sign In / Providers → Google, paste the client ID and secret, and save. ' +
-    'Email and password work in the meantime.';
+  const setupMsg = 'Google sign-in is not available yet — use your email and password.';
 
   btnGoogle.addEventListener('click', async () => {
     const msg = document.getElementById('loginMsg');
@@ -385,12 +383,7 @@ function overview() {
       </div>
       <div class="adm-table-scroll">${inqTable(db.inquiries.slice(0, 6))}</div>
     </div>
-
-    <div class="adm-hint" style="max-width:none">
-      The public site is pre-rendered, so anything you change here reaches visitors
-      only after a rebuild. Press <strong>Publish to site</strong> when you have finished editing.
-      ${hidden ? `<br>${hidden} product${hidden === 1 ? ' is' : 's are'} currently hidden from the site.` : ''}
-    </div>`;
+`;
 
   main.querySelector('[data-goto]').addEventListener('click', () => setTab('inquiries'));
   wireInq();
@@ -550,9 +543,7 @@ function deleteProduct(id) {
       This permanently removes <strong>${esc(p.sku)}</strong> from the catalogue.
       Its page disappears from the site at the next publish.
     </p>
-    <div class="adm-hint">If you only want it off the site for now, close this and set
-      its status to <strong>Hidden</strong> instead — that keeps the record.</div>
-    <button class="adm-btn adm-btn-danger" id="confirmDel" style="margin-top:22px">
+<button class="adm-btn adm-btn-danger" id="confirmDel" style="margin-top:22px">
       Yes, delete permanently</button>`, null);
   drawerBody.querySelector('#confirmDel').addEventListener('click', async () => {
     const { error } = await sb.from('products').delete().eq('id', id);
@@ -616,8 +607,7 @@ function editCategory(slug) {
       ${field('Intro (category page)', 'intro', c.intro || '', 'textarea')}
       ${field('Icon key', 'icon', c.icon || '', 'text')}
     </div>
-    <div class="adm-hint">Icon keys: harness, lanyard, positioning, hook, anchor,
-      lifeline, srl, material, rescue, garment.</div>`,
+`,
     async () => {
       const patch = { name: val('name'), blurb: val('blurb'), intro: val('intro'), icon: val('icon') };
       const { error } = await sb.from('categories').update(patch).eq('slug', slug);
@@ -670,11 +660,7 @@ function posts() {
         </div>
       </article>`).join('') || '<div class="adm-card adm-empty">No articles yet.</div>'}
     </div>
-    <div class="adm-hint">
-      Bodies are Markdown: <code>##</code> for a heading, <code>**bold**</code>,
-      <code>[label](/url)</code> for links. The image key points at files already in
-      <code>/assets</code> — it loads <code>hero-&lt;key&gt;.jpg</code> and <code>blog-&lt;key&gt;.jpg</code>.
-    </div>`;
+`;
   main.querySelectorAll('[data-post]').forEach((b) => b.addEventListener('click', () => editPost(b.dataset.post)));
   main.querySelector('#newPost').addEventListener('click', () => editPost(null));
 }
@@ -795,6 +781,18 @@ function openInq(id) {
 /* ─────────────────────────── settings & publish ─────────────────────────── */
 
 /**
+ * Server replies carry two kinds of error: a plain sentence the person can act
+ * on ("that is not an email address"), and a machine code for a setup or
+ * permission problem they cannot. Show the first, log the second.
+ */
+function apiError(data, fallback) {
+  console.warn('[admin]', data);
+  const code = data && data.error;
+  if (!code || code === 'not_configured' || code === 'forbidden') return fallback;
+  return String(code);
+}
+
+/**
  * Staff accounts. The heavy lifting is server-side (api/users.js) because
  * listing and creating Supabase users needs the service_role key.
  */
@@ -811,15 +809,11 @@ async function loadUsers() {
   const { ok, status, data } = await api('/api/users');
 
   if (!ok) {
-    // 501 means the server has no service_role key yet, 404 means the function
-    // is not deployed. Both are setup problems, so say which.
-    const setup = status === 501 || status === 404;
-    card.innerHTML = `<div class="adm-empty" style="text-align:left;padding:26px 24px">
-      <strong style="display:block;font-size:16px;color:var(--a-ink);margin-bottom:8px">
-        ${setup ? 'One setup step left' : 'Could not load staff accounts'}</strong>
-      ${esc(data.message || data.error || `The server answered ${status}.`)}
-      ${status === 404 ? '<br><br>The /api/users function is not deployed yet - push and redeploy.' : ''}
-    </div>`;
+    // Whatever went wrong is a server or setup problem, not something the
+    // person looking at this screen can act on, so keep the detail in the
+    // console and show a plain empty state.
+    console.warn('[admin] /api/users', status, data);
+    card.innerHTML = '<div class="adm-empty">No staff accounts to show.</div>';
     return;
   }
 
@@ -847,45 +841,21 @@ async function loadUsers() {
 
   card.querySelectorAll('[data-del-user]').forEach((b) =>
     b.addEventListener('click', () => removeUser(b.dataset.delUser, b.dataset.email)));
-
-  main.insertAdjacentHTML('beforeend', `<div class="adm-hint" style="max-width:none">
-    Anyone listed here can sign in and edit everything - the catalogue, articles
-    and enquiries. There are no roles yet, so only add people who should have
-    that.${data.allowList ? '' : ' Set <strong>ADMIN_EMAILS</strong> on the host to ' +
-    'restrict who may add and remove accounts.'}</div>`);
-}
-
-/** A password the browser generates, so nobody invents a weak one. */
-function suggestPassword() {
-  const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789';
-  const bytes = new Uint32Array(18);
-  crypto.getRandomValues(bytes);
-  return Array.from(bytes, (n) => alphabet[n % alphabet.length]).join('');
 }
 
 function addUser() {
   openDrawer('Add a staff account', `
     <div class="adm-fields">
       ${field('Email address', 'email', '', 'email')}
-      ${field('Password', 'password', suggestPassword(), 'text')}
-    </div>
-    <button type="button" class="adm-btn adm-btn-soft" id="regen" style="margin-top:12px">
-      Generate another password</button>
-    <div class="adm-hint">
-      The account is created ready to use, with no confirmation email. Send the
-      password to your colleague over WhatsApp or in person, and have them
-      change it once they are in.
+      ${field('Password', 'password', '', 'text')}
     </div>`,
     async () => {
       const email = val('email');
       const password = val('password');
       const { ok, data } = await api('/api/users', 'POST', { email, password });
-      if (!ok) throw new Error(data.message || data.error || 'Could not create that user.');
+      if (!ok) throw new Error(apiError(data, 'Could not add that account.'));
       await loadUsers();
     });
-  drawerBody.querySelector('#regen').addEventListener('click', () => {
-    drawerBody.querySelector('[name="password"]').value = suggestPassword();
-  });
 }
 
 function removeUser(id, email) {
@@ -898,7 +868,7 @@ function removeUser(id, email) {
       Yes, remove this account</button>`, null);
   drawerBody.querySelector('#confirmDelUser').addEventListener('click', async () => {
     const { ok, data } = await api('/api/users', 'DELETE', { id });
-    if (!ok) return toast(data.message || data.error || 'Could not remove that user', true);
+    if (!ok) return toast(apiError(data, 'Could not remove that account'), true);
     closeDrawer();
     toast(`${email} removed`);
     loadUsers();
@@ -912,11 +882,7 @@ function settings() {
     <div class="adm-form-card">
       <span class="adm-label">Signed in as</span>
       <p style="font-size:16px;font-weight:700">${esc(document.getElementById('admWho').textContent)}</p>
-      <div class="adm-hint">
-        Manage who else can sign in under <strong>Users</strong>. Everyone with an
-        account has full edit rights, as there are no roles yet.
-      </div>
-    </div>
+</div>
 
     <div class="adm-form-card" style="margin-top:24px">
       <span class="adm-label">Publishing</span>
@@ -936,8 +902,7 @@ document.getElementById('btnPublish').addEventListener('click', async () => {
   btn.disabled = false;
   btn.textContent = 'Publish to site';
   if (ok) return toast('Rebuild triggered - the site updates in a minute or two');
-  if (status === 404) return toast('The /api/publish function is not deployed yet', true);
-  toast(data.message || data.error || `The server answered ${status}`, true);
+  toast(apiError(data, 'Could not publish just now'), true);
 });
 
 /* onAuthStateChange fires with the restored session on load */
