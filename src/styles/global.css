@@ -659,10 +659,22 @@
 .cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .cat-card{
   display:flex;flex-direction:column;height:100%;
-  background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px 24px 22px;
+  background:#fff;border:1px solid var(--line);border-radius:20px;
   position:relative;overflow:hidden;
   transition:transform .24s ease,box-shadow .24s ease,border-color .24s ease;
 }
+/* product shot for the range, cut out of SB's own studio photography */
+.cat-media{
+  position:relative;display:block;flex:none;
+  background:#f7f6f4;border-bottom:1px solid var(--line);
+  overflow:hidden;
+}
+.cat-media img{
+  display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;
+  transition:transform .5s cubic-bezier(.22,1,.36,1);
+}
+.cat-card:hover .cat-media img{transform:scale(1.06)}
+.cat-body{display:flex;flex-direction:column;flex:1;padding:22px 24px 20px}
 /* a thin brand rule that wipes in on hover */
 .cat-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;
   background:var(--orange);transform:scaleX(0);transform-origin:left;
@@ -670,10 +682,16 @@
 .cat-card:hover{transform:translateY(-5px);box-shadow:0 22px 46px rgba(19,19,18,.11);
   border-color:rgba(254,89,34,.42)}
 .cat-card:hover::before{transform:scaleX(1)}
-.cat-ic{width:54px;height:54px;flex:none;border-radius:15px;background:var(--cream);color:var(--orange);
+/* the range icon sits on the photo, so the card leads with the product */
+.cat-ic{
+  position:absolute;top:14px;left:14px;
+  width:46px;height:46px;flex:none;border-radius:13px;
+  background:rgba(255,255,255,.92);color:var(--orange);
+  box-shadow:0 3px 12px rgba(19,19,18,.09);
   display:grid;place-items:center;transition:background .24s ease,color .24s ease}
+.cat-ic svg{width:26px;height:26px}
 .cat-card:hover .cat-ic{background:var(--orange);color:#fff}
-.cat-card h3{font-size:19px;font-weight:600;letter-spacing:-.02em;margin-top:18px}
+.cat-card h3{font-size:19px;font-weight:600;letter-spacing:-.02em}
 .cat-card p{margin-top:8px;margin-bottom:18px;color:var(--gray);font-size:14.5px;line-height:1.55}
 /* margin-top:auto pins the footer row to the bottom so every card lines up */
 .cat-foot{display:flex;align-items:center;justify-content:space-between;gap:14px;

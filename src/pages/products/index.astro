@@ -26,14 +26,20 @@ const total = allProducts().length;
       <div class="cat-grid">
         {categories.map((c) => (
           <a class="cat-card" href={categoryUrl(c.slug)}>
-            <span class="cat-ic"><CatIcon name={c.icon} /></span>
-            <h3>{c.name}</h3>
-            <p>{c.blurb}</p>
+            <span class="cat-media">
+              <img src={`/assets/cat-${c.slug}.jpg`} alt={`${c.name} from the SB Fall Protection range`}
+                   width="640" height="427" loading="lazy" decoding="async">
+              <span class="cat-ic"><CatIcon name={c.icon} /></span>
+            </span>
+            <span class="cat-body">
+              <h3>{c.name}</h3>
+              <p>{c.blurb}</p>
             <span class="cat-foot">
               <span class="cat-count">{c.count} product {c.count === 1 ? 'code' : 'codes'}</span>
               <span class="cat-go">View range
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>
               </span>
+            </span>
             </span>
           </a>
         ))}
