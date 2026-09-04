@@ -72,15 +72,8 @@ export async function handleUsers(req) {
   if (!env('SUPABASE_URL') || !env('SUPABASE_ANON_KEY')) {
     return reply(500, { error: 'SUPABASE_URL and SUPABASE_ANON_KEY are not set on the server.' });
   }
-  if (!env('SUPABASE_SERVICE_ROLE_KEY')) {
-    return reply(501, {
-      error: 'not_configured',
-      message:
-        'Add SUPABASE_SERVICE_ROLE_KEY as an environment variable on the host, then redeploy. ' +
-        'Find it in Supabase under Project Settings → API → service_role. Keep it server-side only.',
-    });
-  }
-
+  // Authenticate before reporting anything about the server's configuration —
+  // an anonymous caller should learn nothing about how this is set up.
   if (!req.token) return reply(401, { error: 'Sign in first.' });
   const caller = await callerFromToken(req.token);
   if (!caller) return reply(401, { error: 'That session is not valid any more. Sign in again.' });
@@ -88,6 +81,15 @@ export async function handleUsers(req) {
     return reply(403, {
       error: 'forbidden',
       message: `${caller.email} is not on the ADMIN_EMAILS allow-list, so it cannot manage staff accounts.`,
+    });
+  }
+
+  if (!env('SUPABASE_SERVICE_ROLE_KEY')) {
+    return reply(501, {
+      error: 'not_configured',
+      message:
+        'Add SUPABASE_SERVICE_ROLE_KEY as an environment variable on the host, then redeploy. ' +
+        'Find it in Supabase under Project Settings → API → service_role. Keep it server-side only.',
     });
   }
 
