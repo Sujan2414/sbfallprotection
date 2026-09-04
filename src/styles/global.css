@@ -758,7 +758,7 @@
 }
 
 /* ================= CONTACT PAGE ================= */
-.ct-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;align-items:start}
+.ct-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;align-items:stretch}
 .ct-card{background:var(--light);border-radius:20px;padding:26px;display:flex;flex-direction:column;gap:20px}
 .ct-item{display:flex;gap:15px;align-items:flex-start}
 .ct-ic{width:48px;height:48px;flex:none;border-radius:13px;background:var(--orange);color:#fff;display:grid;place-items:center}
@@ -888,14 +888,21 @@
   display:grid;place-items:center;overflow:hidden;
 }
 .flow-avatar img{width:30px;height:30px;object-fit:contain}
-.flow-top b{display:block;font-size:15px;font-weight:600}
+.flow-who{min-width:0}
+.flow-who b{
+  display:block;font-size:16px;font-weight:600;
+  letter-spacing:-.01em;line-height:1.25;
+}
 /* scoped to the text block: a bare `.flow-top span` also matches .flow-avatar
    and would override its display:grid, pushing the label out of the circle */
-.flow-top > div > span{display:block;font-size:12.5px;color:rgba(255,255,255,.6);margin-top:2px}
-.flow-top .dot{width:7px;height:7px;border-radius:50%;background:#25D366;display:inline-block;margin-right:6px}
+.flow-status{
+  display:flex;align-items:center;gap:7px;margin-top:4px;
+  font-size:12.5px;font-weight:500;line-height:1.3;
+  color:rgba(255,255,255,.62);
+}
+/* flex centres the dot on the text rather than dropping it to the baseline */
+.flow-status .dot{width:7px;height:7px;flex:none;border-radius:50%;background:#25D366}
 
-.flow-bar{height:3px;background:var(--line)}
-.flow-bar i{display:block;height:100%;background:var(--orange);width:0;transition:width .4s ease}
 
 .flow-body{
   padding:22px;display:flex;flex-direction:column;gap:14px;
@@ -910,6 +917,10 @@
 .flow-body::-webkit-scrollbar-track{background:transparent}
 /* messages must not shrink to fit the fixed-height flex column */
 .flow-body > *{flex:none}
+/* stack the transcript from the bottom, the way a messenger does, so a tall
+   card doesn't open with a blank panel above the first message. An auto margin
+   resolves to 0 once the content overflows, so scrolling still behaves. */
+.flow-body > .flow-msg:first-child{margin-top:auto}
 .flow-msg{max-width:82%;padding:13px 16px;border-radius:16px;font-size:14.5px;line-height:1.5;
   animation:flowIn .32s ease both}
 .flow-msg.bot{background:var(--light);border-bottom-left-radius:5px;align-self:flex-start}
@@ -918,6 +929,7 @@
 @media (prefers-reduced-motion:reduce){.flow-msg{animation:none}}
 
 .flow-foot{border-top:1px solid var(--line);padding:16px 18px;display:flex;flex-direction:column;gap:10px;flex:none}
+.flow-foot:empty{display:none}
 .flow-input{display:flex;gap:10px}
 .flow-input input,.flow-input textarea,.flow-input select{
   flex:1;min-width:0;background:var(--light);border:1px solid transparent;border-radius:13px;
@@ -936,9 +948,13 @@
   padding:0;text-decoration:underline;align-self:flex-start}
 .flow-back:hover{color:var(--orange)}
 
-/* the confirmation panel centres inside the fixed-height transcript area */
-.flow-body:has(.flow-done){justify-content:center}
-.flow-done{padding:30px 24px;text-align:center;width:100%}
+/* The confirmation panel replaces the transcript, so the scroll cap comes off:
+   centring a taller-than-cap child in a flex column pushes its top out of
+   reach, which was clipping the tick. */
+.flow-body:has(.flow-done){min-height:0;overflow-y:auto;padding:0}
+/* auto margins centre the panel but collapse to 0 when it is taller than the
+   space — unlike justify-content:center, which would put its top out of reach */
+.flow-done{padding:36px 24px 34px;text-align:center;width:100%;margin:auto 0}
 .flow-done .tick{width:58px;height:58px;margin:0 auto;border-radius:50%;background:#25D366;
   color:#fff;display:grid;place-items:center}
 .flow-done h4{margin:16px 0 0;font-size:20px;font-weight:600;letter-spacing:-.02em}
@@ -1291,7 +1307,7 @@
 .exp-step h3{font-size:18px;font-weight:600;letter-spacing:-.02em}
 .exp-step p{margin-top:10px;font-size:14px;color:var(--gray);line-height:1.65}
 
-.exp-two{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.exp-two{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:stretch}
 
 .exp-terms{display:grid;gap:0}
 .exp-terms > div{
@@ -1338,4 +1354,22 @@
   .exp-card{padding:22px 20px}
   .exp-docs{padding:24px 22px}
   .exp-terms > div{grid-template-columns:1fr;gap:5px;padding:14px 0}
+}
+
+
+/* ============ CHAT CARD FILLS ITS COLUMN ============ */
+/* Beside a taller column, the card stretches and the transcript absorbs the
+   spare height, so no dead space opens up under it. Only above each grid's
+   own breakpoint — once the layout is a single column there is no row height
+   to fill, and flex:1 there would let the transcript grow without limit
+   again. */
+@media(min-width:901px){
+  .ct-grid > .flow-col{display:flex}
+  .ct-grid > .flow-col > .flow{flex:1;min-height:0}
+  .ct-grid > .flow-col .flow-body{flex:1 1 0;min-height:200px;max-height:none}
+}
+@media(min-width:1081px){
+  .exp-two > .flow-col{display:flex}
+  .exp-two > .flow-col > .flow{flex:1;min-height:0}
+  .exp-two > .flow-col .flow-body{flex:1 1 0;min-height:200px;max-height:none}
 }

@@ -11,6 +11,7 @@
 
   var body = document.getElementById('flowBody');
   var foot = document.getElementById('flowFoot');
+  // the progress bar was removed from the header; keep the lookup optional
   var bar = document.getElementById('flowBar');
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -86,7 +87,7 @@
   }
 
   function progress() {
-    bar.style.width = Math.round((i / steps.length) * 100) + '%';
+    if (bar) bar.style.width = Math.round((i / steps.length) * 100) + '%';
   }
 
   function ask() {
@@ -208,7 +209,7 @@
 
     function done(viaEmail) {
       thinking.remove();
-      bar.style.width = '100%';
+      if (bar) bar.style.width = '100%';
       var subject = 'Quote request' + (answers.sku ? ' — ' + answers.sku : '');
       var mailBody =
         'Name: ' + (answers.name || '-') +
