@@ -39,6 +39,11 @@
   to = "/.netlify/functions/publish"
   status = 200
 
+[[redirects]]
+  from = "/api/notify"
+  to = "/.netlify/functions/notify"
+  status = 200
+
 # Preserve inbound links from the current WordPress site.
 [[redirects]]
   from = "/product-catagories"

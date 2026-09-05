@@ -193,7 +193,14 @@
       '\nDeliver to: ' + (answers.country || '-') +
       (answers.sku ? '\nProduct code: ' + answers.sku : '');
 
+    /* The id is generated here rather than by Postgres: anonymous callers may
+       insert an enquiry but not read one back, so this is the only way to know
+       which row to ask the notifier about. */
+    var newId = null;
+    try { newId = crypto.randomUUID(); } catch (e) { newId = null; }
+
     var payload = {
+      id: newId || undefined,
       name: answers.name || null,
       company: answers.company && answers.company !== '—' ? answers.company : null,
       email: answers.email || null,
@@ -251,7 +258,21 @@
       },
       body: JSON.stringify(payload),
     })
-      .then(function (r) { done(!r.ok); })
+      .then(function (r) {
+        if (!r.ok) return done(true);
+        // Tell the sales desk. Only the id travels — the endpoint reads the
+        // enquiry back server-side, so this cannot be used to send mail.
+        if (payload.id) {
+          fetch('/api/notify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: payload.id }),
+            keepalive: true,
+          }).catch(function () {});
+        }
+        // the enquiry is saved either way, so never fail the visitor on this
+        done(false);
+      })
       .catch(function () { done(true); });
   }
 
