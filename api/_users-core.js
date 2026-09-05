@@ -80,6 +80,14 @@ async function roleOf(userId) {
   return body[0].role || 'admin';
 }
 
+/** True only when nobody has been rostered yet — a genuinely fresh install. */
+async function rosterIsEmpty() {
+  const { ok, body } = await sbFetch('/rest/v1/staff?select=user_id&limit=1', {
+    headers: admin(),
+  });
+  return ok && Array.isArray(body) && body.length === 0;
+}
+
 /** Add or update someone's roster entry. */
 async function setRole(userId, email, role) {
   return sbFetch('/rest/v1/staff?on_conflict=user_id', {
@@ -121,6 +129,10 @@ export async function handleUsers(req) {
   }
 
   if (req.method === 'GET') {
+    const callerRole = await roleOf(caller.id);
+    if (callerRole === null && !(await rosterIsEmpty())) {
+      return reply(403, { error: 'forbidden', message: 'This account is not on the staff list.' });
+    }
     const { ok, status, body } = await sbFetch('/auth/v1/admin/users?per_page=200', {
       headers: admin(),
     });
@@ -130,7 +142,7 @@ export async function handleUsers(req) {
     return reply(200, {
       users,
       caller: caller.email,
-      callerRole: (await roleOf(caller.id)) || 'admin',
+      callerRole: callerRole || 'admin',
       allowList: Boolean(env('ADMIN_EMAILS')),
     });
   }
@@ -141,7 +153,9 @@ export async function handleUsers(req) {
   // panel behaved before roles existed.
   if (req.method === 'POST' || req.method === 'DELETE') {
     const role = await roleOf(caller.id);
-    const bootstrapping = role === null && !env('ADMIN_EMAILS');
+    // Bootstrap means "nobody is rostered yet", not "this caller has no row".
+    // The looser test handed account management to anyone who could sign in.
+    const bootstrapping = role === null && !env('ADMIN_EMAILS') && (await rosterIsEmpty());
     if (!bootstrapping && role !== 'super_admin') {
       return reply(403, {
         error: 'forbidden',

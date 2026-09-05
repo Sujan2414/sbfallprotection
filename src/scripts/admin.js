@@ -251,6 +251,17 @@ if (btnGoogle) {
 
 document.getElementById('btnOut').addEventListener('click', () => sb.auth.signOut());
 
+/** Signed in, but not staff: say so plainly and end the session. */
+function refuse(email) {
+  sb.auth.signOut().finally(() => {
+    appView.hidden = true;
+    loginView.hidden = false;
+    document.getElementById('loginMsg').innerHTML =
+      `<div class="adm-msg err">${esc(email)} does not have access to this panel.
+       Ask an administrator to add you under Users.</div>`;
+  });
+}
+
 sb.auth.onAuthStateChange((_evt, session) => {
   if (session) {
     loginView.hidden = true;
@@ -266,13 +277,21 @@ sb.auth.onAuthStateChange((_evt, session) => {
     document.getElementById('admWho').textContent = email;
     document.getElementById('admInitials').textContent =
       (email.slice(0, 2) || 'SB').toUpperCase();
-    // the roster decides what the sidebar and Users tab allow
-    sb.from('staff').select('role').eq('user_id', me.id).maybeSingle()
-      .then(({ data }) => {
-        if (data && data.role) { me.role = data.role; me.rostered = true; }
-      })
-      .catch(() => {})
-      .finally(boot);
+    /*
+     * Signing in is not the same as having access. Supabase will happily
+     * authenticate a Google account; whether it may use this panel is decided
+     * by the staff roster, so check that before showing anything. An empty
+     * roster is the fresh-install case and is allowed through.
+     */
+    Promise.all([
+      sb.from('staff').select('role').eq('user_id', me.id).maybeSingle(),
+      sb.from('staff').select('user_id').limit(1),
+    ]).then(([mine, any]) => {
+      if (mine.data && mine.data.role) { me.role = mine.data.role; me.rostered = true; }
+      const rosterEmpty = !any.error && (any.data || []).length === 0;
+      if (!me.rostered && !rosterEmpty) return refuse(email);
+      boot();
+    }).catch(() => boot());
   } else {
     appView.hidden = true;
     loginView.hidden = false;
@@ -919,7 +938,7 @@ let me = {
   // null role = no roster row yet, which the API treats as the bootstrap case
   rostered: false,
 };
-const canManageUsers = () => me.role === 'super_admin' || !me.rostered;
+const canManageUsers = () => me.role === 'super_admin';
 
 const ROLE_LABEL = { super_admin: 'Super admin', admin: 'Admin' };
 
@@ -989,8 +1008,8 @@ async function loadUsers() {
         return `<tr>
           <td><span class="adm-code">${esc(u.email)}</span>
               ${isMe ? '<span class="adm-sub">this is you</span>' : ''}</td>
-          <td><span class="adm-pill ${u.role === 'super_admin' ? 'blue' : 'grey'}">${
-            esc(ROLE_LABEL[u.role] || 'Admin')}</span></td>
+          <td><span class="adm-pill ${u.role === 'super_admin' ? 'blue' : u.role ? 'grey' : 'red'}">${
+            esc(ROLE_LABEL[u.role] || 'No access')}</span></td>
           <td><span class="adm-pill ${u.confirmed === false ? 'amber' : 'green'}">${
             u.confirmed === false ? 'Unconfirmed' : 'Active'}</span></td>
           <td class="adm-td-muted">${fmtWhen(u.last_sign_in_at)}</td>
