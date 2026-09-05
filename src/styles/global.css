@@ -1483,6 +1483,9 @@
 .flow-mode[aria-pressed="true"]{background:var(--orange);border-color:var(--orange)}
 
 .flow-form{padding:20px 18px 22px;display:flex;flex-direction:column;gap:14px;flex:none}
+/* the class above sets display:flex, which outranks the browser's own
+   [hidden]{display:none} — so the attribute did nothing until this */
+.flow-form[hidden]{display:none}
 .flow-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .flow-form label{display:flex;flex-direction:column;gap:6px;min-width:0}
 .flow-form label.wide{grid-column:1/-1}
