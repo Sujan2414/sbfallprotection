@@ -278,6 +278,25 @@
      and the viewer opts in. Unmuting one mutes the rest — four soundtracks at
      once is nobody's idea of a good time. */
   var soundBtns = document.querySelectorAll('.reel-sound');
+
+  /* A silent clip should not offer a speaker. Stock footage usually carries no
+     audio track; reels pulled from Instagram do. Chrome only reports this once
+     playback has started, so check a moment after each clip begins. */
+  function hasAudio(v) {
+    if (v.mozHasAudio !== undefined) return v.mozHasAudio;
+    if (v.audioTracks) return v.audioTracks.length > 0;
+    if (v.webkitAudioDecodedByteCount !== undefined) return v.webkitAudioDecodedByteCount > 0;
+    return true;   // unknown: leave the control in place
+  }
+  soundBtns.forEach(function (btn) {
+    var v = btn.closest('.reel').querySelector('video');
+    if (!v) return;
+    v.addEventListener('playing', function once() {
+      setTimeout(function () { if (!hasAudio(v)) btn.hidden = true; }, 400);
+      v.removeEventListener('playing', once);
+    });
+  });
+
   soundBtns.forEach(function (btn) {
     btn.addEventListener('click', function (e) {
       // the tile is wrapped in a link to Instagram; don't follow it

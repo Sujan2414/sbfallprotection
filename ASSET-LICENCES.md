@@ -69,9 +69,13 @@ expressly permitted.
 
 | File | Mixkit clip ID |
 |---|---|
-| `showreel.mp4`, `reel-1.mp4`, `reel-1.jpg` | 41056 |
-| `showreel-2.mp4`, `reel-2.mp4`, `reel-2.jpg` | 41055 |
-| `showreel-3.mp4`, `reel-3.mp4`, `reel-3.jpg` | 41042 |
+| `showreel.mp4` | 41056 |
+| `showreel-2.mp4` | 41055 |
+| `showreel-3.mp4` | 41042 |
+| `reel-1.mp4`, `reel-1.jpg` — high ropes course | 18284 |
+| `reel-2.mp4`, `reel-2.jpg` — tying in to a harness | 41030 |
+| `reel-3.mp4`, `reel-3.jpg` — roped climbing | 41047 |
+| `reel-4.mp4`, `reel-4.jpg` — rope work | 41037 |
 | `slide-a / slide-b2 / slide-c2 / slide-d2 .jpg` | Frames taken from the clips above |
 
 ## 4. Generated for this project — no third-party rights

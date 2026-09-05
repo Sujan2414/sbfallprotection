@@ -14,10 +14,10 @@ const categories = getCategories();
 const IG = 'https://www.instagram.com/sbfallprotection/';
 const dbReels = await fetchReels();
 const fallbackReels = [
-  { src: '/assets/reel-1.mp4', poster: '/assets/reel-1.jpg', cap: 'Harness & connector detail', href: IG },
-  { src: '/assets/reel-2.mp4', poster: '/assets/reel-2.jpg', cap: 'Rope access & controlled descent', href: IG },
-  { src: '/assets/reel-3.mp4', poster: '/assets/reel-3.jpg', cap: 'Fall protection in training', href: IG },
-  { src: '/assets/showreel.mp4', poster: '/assets/video-poster.jpg', cap: 'Working at height, protected', href: IG },
+  { src: '/assets/reel-1.mp4', poster: '/assets/reel-1.jpg', cap: 'Clipped in on a high ropes course', href: IG },
+  { src: '/assets/reel-2.mp4', poster: '/assets/reel-2.jpg', cap: 'Tying in to a harness', href: IG },
+  { src: '/assets/reel-3.mp4', poster: '/assets/reel-3.jpg', cap: 'Roped climbing at height', href: IG },
+  { src: '/assets/reel-4.mp4', poster: '/assets/reel-4.jpg', cap: 'Rope work before the climb', href: IG },
 ];
 const reels = dbReels.length
   ? dbReels.map((r) => ({
