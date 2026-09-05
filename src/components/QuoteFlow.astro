@@ -33,9 +33,9 @@ const sbKey = import.meta.env.SUPABASE_ANON_KEY ?? process.env.SUPABASE_ANON_KEY
   <form class="flow-form" id="flowForm" hidden novalidate>
     <div class="flow-form-grid">
       <label><span>Name</span><input name="name" autocomplete="name" required placeholder="Full name"></label>
-      <label><span>Company</span><input name="company" autocomplete="organization" placeholder="Optional"></label>
+      <label><span>Company</span><input name="company" autocomplete="organization" placeholder="e.g. Apex Safety Supplies"></label>
       <label><span>Email</span><input name="email" type="email" autocomplete="email" required placeholder="you@company.com"></label>
-      <label><span>Phone</span><input name="phone" type="tel" autocomplete="tel" placeholder="Optional"></label>
+      <label><span>Phone</span><input name="phone" type="tel" autocomplete="tel" placeholder="e.g. +91 98765 43210"></label>
       <label><span>Deliver to</span><input name="country" required placeholder="Country or port"></label>
       <label><span>Category</span>
         <select name="category" required>
