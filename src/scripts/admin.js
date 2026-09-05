@@ -221,7 +221,7 @@ if (btnGoogle) {
     const { data, error } = await sb.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.origin + '/admin/',
+        redirectTo: window.location.origin + '/sb-admin/',
         skipBrowserRedirect: true,
       },
     });

@@ -1425,3 +1425,46 @@
   .reel,.reel-sound{transition:none}
   .reel:hover{transform:none}
 }
+
+/* ============ PHONE: HERO STATS IN ONE ROW ============ */
+/* Four stacked figures pushed everything below the fold. They read fine as a
+   single row of four once the type scales down with the viewport. */
+@media(max-width:860px){
+  .stats-g{grid-template-columns:repeat(4,1fr);gap:0}
+  .stat{padding:6px 4px;border-left:1px solid rgba(255,255,255,.28)}
+  .stat:first-child{border-left:none}
+  .stat:nth-child(3){border-left:1px solid rgba(255,255,255,.28)}
+  .stat .num{font-size:clamp(19px,5.4vw,30px);letter-spacing:-.03em}
+  .stat .num i{font-size:.62em}
+  .stat small{font-size:clamp(9.5px,2.5vw,12px);line-height:1.25;display:block;margin-top:3px}
+}
+@media(max-width:480px){
+  .stats-g{grid-template-columns:repeat(4,1fr)}
+  .stat{border-left:1px solid rgba(255,255,255,.28);padding:6px 3px}
+  .stat:first-child{border-left:none}
+  .stat .num{font-size:clamp(18px,5.2vw,26px)}
+  .stats-card{padding:30px 14px}
+}
+
+/* ============ PHONE: "WHY" CARDS AS A SCROLLING ROW ============ */
+/* One row that drifts on its own and can also be dragged, rather than three
+   full-width cards the visitor has to scroll past vertically. */
+@media(max-width:620px){
+  .why-g{
+    display:flex;grid-template-columns:none;
+    gap:14px;overflow-x:auto;
+    /* deliberately no scroll-snap: mandatory snapping pins scrollLeft to a
+       snap point, which cancels the automatic drift on every frame */
+    scrollbar-width:none;-webkit-overflow-scrolling:touch;
+    /* bleed to the screen edge so the last card doesn't look clipped */
+    margin-left:-20px;margin-right:-20px;padding:4px 20px 10px;
+  }
+  .why-g::-webkit-scrollbar{display:none}
+  .why-col{display:contents}
+  .why-card{
+    flex:0 0 78%;margin:0;
+    padding:24px 22px;
+  }
+  /* the photo is decoration here; the cards are the message */
+  .why-img{display:none}
+}

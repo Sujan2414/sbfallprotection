@@ -135,18 +135,24 @@
     render(); restart();
   }
 
-  /* quote form -> mailto (interim until the Nodemailer/M365 endpoint is live) */
+  /*
+   * Quote form. Saves to Supabase like the chat flow on the contact page does,
+   * then pings the notifier so the sales desk is emailed. Opening the visitor's
+   * mail client is the fallback, not the plan: it used to be the only path,
+   * which meant an enquiry was lost whenever they had no mail app set up.
+   */
   var form = document.getElementById('quoteForm');
   if (form) {
-    form.addEventListener('submit', function(e){
+    form.addEventListener('submit', function (e) {
       e.preventDefault();
       var f = e.target;
-      var val = function(name){
+      var val = function (name) {
         return f.elements[name] && f.elements[name].value ? f.elements[name].value.trim() : '';
       };
       var type = val('type') || 'General enquiry';
+      var name = (val('fname') + ' ' + val('lname')).trim();
       var lines = [
-        'Name: ' + (val('fname') + ' ' + val('lname')).trim(),
+        'Name: ' + name,
         'Company: ' + (val('company') || '-'),
         'Phone: ' + (val('phone') || '-'),
         'Email: ' + val('email'),
@@ -156,10 +162,114 @@
         'Message:',
         val('msg'),
       ];
-      location.href = 'mailto:sales@sbfallprotection.com?subject=' +
-        encodeURIComponent('Quote request — ' + type) +
-        '&body=' + encodeURIComponent(lines.join('\n'));
+
+      var btn = f.querySelector('button[type=submit]');
+      var label = btn ? btn.textContent : '';
+      if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+
+      function mailFallback() {
+        location.href = 'mailto:sales@sbfallprotection.com?subject=' +
+          encodeURIComponent('Quote request — ' + type) +
+          '&body=' + encodeURIComponent(lines.join('\n'));
+      }
+
+      function done(ok) {
+        if (btn) { btn.disabled = false; btn.textContent = label; }
+        if (!ok) return mailFallback();
+        f.innerHTML =
+          '<h3>Thank you<em>.</em></h3>' +
+          '<p class="respond">Your request has reached our sales desk. ' +
+          'We typically respond within one business day.</p>';
+      }
+
+      var url = f.getAttribute('data-sb-url');
+      var key = f.getAttribute('data-sb-key');
+      if (!url || !key) return done(false);
+
+      // minted here because anonymous callers may insert an enquiry but not
+      // read one back, and the notifier needs to know which row to send
+      var id = null;
+      try { id = crypto.randomUUID(); } catch (err) { id = null; }
+
+      fetch(url + '/rest/v1/inquiries', {
+        method: 'POST',
+        headers: {
+          apikey: key,
+          Authorization: 'Bearer ' + key,
+          'Content-Type': 'application/json',
+          Prefer: 'return=minimal',
+        },
+        body: JSON.stringify({
+          id: id || undefined,
+          name: name || null,
+          company: val('company') || null,
+          email: val('email') || null,
+          phone: val('phone') || null,
+          country: val('country') || null,
+          category: type,
+          message: val('msg') || null,
+          source_page: location.pathname,
+        }),
+      })
+        .then(function (r) {
+          if (!r.ok) return done(false);
+          if (id) {
+            fetch('/api/notify', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ id: id }),
+              keepalive: true,
+            }).catch(function () {});
+          }
+          done(true);
+        })
+        .catch(function () { done(false); });
     });
+  }
+
+  /*
+   * "Why global buyers trust us" drifts along on a phone, where the cards are
+   * a horizontal row. It pauses while the visitor is dragging it and resumes
+   * afterwards, so the automatic motion never fights a deliberate swipe.
+   */
+  var whyRow = document.querySelector('.why-g');
+  if (whyRow && window.matchMedia('(max-width:620px)').matches && !reduce) {
+    var whyPaused = false, whyIdle = null;
+
+    function whyHold(ms) {
+      whyPaused = true;
+      clearTimeout(whyIdle);
+      whyIdle = setTimeout(function () { whyPaused = false; }, ms || 2600);
+    }
+    /* Only real input pauses it. A 'scroll' listener cannot tell the drift's own
+       scrollLeft write from a swipe, so it paused itself on every frame and the
+       row never moved. */
+    ['touchstart', 'pointerdown', 'wheel'].forEach(function (ev) {
+      whyRow.addEventListener(ev, function () { whyHold(); }, { passive: true });
+    });
+    whyRow.addEventListener('touchend', function () { whyHold(2600); }, { passive: true });
+
+    /* The position is accumulated here rather than read back from scrollLeft
+       each frame: a ~0.4px step gets rounded away on read, so the row crawled
+       at a fifth of the intended speed. */
+    var whyLast = 0;
+    var whyPos = whyRow.scrollLeft;
+    ['touchend', 'pointerup'].forEach(function (ev) {
+      whyRow.addEventListener(ev, function () { whyPos = whyRow.scrollLeft; }, { passive: true });
+    });
+
+    (function drift(now) {
+      requestAnimationFrame(drift);
+      if (whyPaused || !whyLast) { whyLast = now; return; }
+      var dt = now - whyLast;
+      whyLast = now;
+      if (dt > 120) return;                     // tab was in the background
+      var max = whyRow.scrollWidth - whyRow.clientWidth;
+      if (max <= 0) return;
+      whyPos += dt * 0.022;                     // ~22px per second
+      if (whyPos >= max) whyPos = 0;            // loop back to the start
+      whyRow.scrollLeft = whyPos;
+    })(0);
   }
 
   /* showreel: chain three clips, with mobile-safe autoplay */

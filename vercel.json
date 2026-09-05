@@ -19,5 +19,17 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/admin",
+      "destination": "/sb-admin",
+      "permanent": true
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "/sb-admin",
+      "permanent": true
+    }
   ]
 }

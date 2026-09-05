@@ -47,6 +47,17 @@
   to = "/.netlify/functions/notify"
   status = 200
 
+# the console moved; keep old bookmarks working
+[[redirects]]
+  from = "/admin"
+  to = "/sb-admin/"
+  status = 301
+
+[[redirects]]
+  from = "/admin/*"
+  to = "/sb-admin/"
+  status = 301
+
 # Preserve inbound links from the current WordPress site.
 [[redirects]]
   from = "/product-catagories"
@@ -115,6 +126,6 @@
 
 # the admin console is a private tool, never indexed
 [[headers]]
-  for = "/admin/*"
+  for = "/sb-admin/*"
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"

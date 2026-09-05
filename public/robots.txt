@@ -1,4 +1,4 @@
 User-agent: *
-Disallow: /admin
+Disallow: /sb-admin
 
 Sitemap: https://www.sbfallprotection.com/sitemap-index.xml

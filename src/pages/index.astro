@@ -6,6 +6,11 @@ import { fetchReels } from '../lib/supabase';
 
 const categories = getCategories();
 
+// The anon key is public by design: RLS lets it insert an enquiry and read the
+// catalogue, nothing more. Without it the form falls back to opening an email.
+const sbUrl = import.meta.env.SUPABASE_URL ?? process.env.SUPABASE_URL ?? '';
+const sbKey = import.meta.env.SUPABASE_ANON_KEY ?? process.env.SUPABASE_ANON_KEY ?? '';
+
 /**
  * Reels come from the `instagram_posts` table so staff can change them from the
  * admin panel. Until they add any, the licensed stand-in clips in /assets keep
@@ -442,7 +447,7 @@ const cardHref: Record<string, string> = {
           </div>
         </div>
       </div>
-      <form class="cc-form" id="quoteForm">
+      <form class="cc-form" id="quoteForm" data-sb-url={sbUrl} data-sb-key={sbKey}>
         <h3>Request a <em>Free Quote</em></h3>
         <p class="respond">We typically respond within one business day.</p>
         <div class="f-fields">
