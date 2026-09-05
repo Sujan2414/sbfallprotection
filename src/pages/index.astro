@@ -14,10 +14,10 @@ const categories = getCategories();
 const IG = 'https://www.instagram.com/sbfallprotection/';
 const dbReels = await fetchReels();
 const fallbackReels = [
-  { src: '/assets/reel-1.mp4', poster: '/assets/reel-1.jpg', cap: 'Clipped in on a high ropes course', href: IG },
-  { src: '/assets/reel-2.mp4', poster: '/assets/reel-2.jpg', cap: 'Tying in to a harness', href: IG },
-  { src: '/assets/reel-3.mp4', poster: '/assets/reel-3.jpg', cap: 'Roped climbing at height', href: IG },
-  { src: '/assets/reel-4.mp4', poster: '/assets/reel-4.jpg', cap: 'Rope work before the climb', href: IG },
+  { src: '/assets/reel-1.mp4?v=2', poster: '/assets/reel-1.jpg?v=2', cap: 'Clipped in on a high ropes course', href: IG },
+  { src: '/assets/reel-2.mp4?v=2', poster: '/assets/reel-2.jpg?v=2', cap: 'Tying in to a harness', href: IG },
+  { src: '/assets/reel-3.mp4?v=2', poster: '/assets/reel-3.jpg?v=2', cap: 'Roped climbing at height', href: IG },
+  { src: '/assets/reel-4.mp4?v=2', poster: '/assets/reel-4.jpg?v=2', cap: 'Rope work before the climb', href: IG },
 ];
 const reels = dbReels.length
   ? dbReels.map((r) => ({
@@ -403,7 +403,7 @@ const cardHref: Record<string, string> = {
 <section class="sec" id="about" style="padding-top:24px">
   <div class="wrap about-g">
     <div class="about-fig reveal">
-      <img class="main" src="/assets/about-crew.jpg" alt="Worker wearing an SB full body harness on site">
+      <img class="main" src="/assets/about-crew.jpg?v=2" alt="Worker wearing an SB full body harness on site">
       <div class="float-card fc-a"><div class="big">20+</div><small>Years of Experience</small></div>
       <div class="float-card fc-b"><div class="big">ISO 9001:2015 · SEDEX</div><small>Certified &amp; Audited</small></div>
     </div>

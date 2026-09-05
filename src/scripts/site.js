@@ -95,7 +95,7 @@
     { q: '\u201cAs a US importer, documentation and lead times matter as much as the gear itself. SB delivers on all three, order after order.\u201d',
       n: 'Managing Director', r: 'Safety Equipment Distributor, USA', av: '/assets/avatar-3.jpg', ph: '/assets/slide-c2.jpg' },
     { q: '\u201cTheir garments and PPE range let us consolidate three suppliers into one \u2014 and the quality has stayed consistent across every order since.\u201d',
-      n: 'Operations Manager', r: 'Industrial Safety Supplier', av: '/assets/avatar-1.jpg', ph: '/assets/slide-d2.jpg' }
+      n: 'Operations Manager', r: 'Industrial Safety Supplier', av: '/assets/avatar-1.jpg', ph: '/assets/slide-d2.jpg?v=2' }
   ];
   var qEl = document.getElementById('tQuote'), nEl = document.getElementById('tName'),
       rEl = document.getElementById('tRole'), pEl = document.getElementById('tPhoto'),

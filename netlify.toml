@@ -14,7 +14,10 @@
 [[headers]]
   for = "/assets/*"
   [headers.values]
-    Cache-Control = "public, max-age=604800"
+    # These filenames are hand-managed and their content does change, so they
+    # must stay revalidatable. Only the fingerprinted /_astro/* bundles above
+    # are safe to mark immutable.
+    Cache-Control = "public, max-age=3600, stale-while-revalidate=86400"
 
 [[headers]]
   for = "/*"
