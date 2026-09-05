@@ -288,10 +288,23 @@
 
   /* ---- factory gallery (featured) ---- */
   .fac-track{
-    display:flex;gap:24px;overflow-x:auto;
-    padding:8px max(40px, calc((100vw - 1140px) / 2)) 28px;
+    display:block;overflow-x:auto;
+    padding:8px 0 28px;
     cursor:grab;scrollbar-width:none;
   }
+  /* the moving part: two identical sets, translated by exactly one set */
+  .fac-strip{
+    display:flex;width:max-content;
+    padding-left:max(40px, calc((100vw - 1140px) / 2));
+    animation:fac-marquee var(--fac-dur,40s) linear infinite;
+    will-change:transform;
+  }
+  .fac-set{display:flex;gap:24px;padding-right:24px;flex:none}
+  @keyframes fac-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .fac-track:hover .fac-strip,
+  .fac-track.is-paused .fac-strip,
+  .fac-track.dragging .fac-strip{animation-play-state:paused}
+  @media (prefers-reduced-motion:reduce){ .fac-strip{animation-duration:calc(var(--fac-dur,40s) * 5)} }
   .fac-track::-webkit-scrollbar{display:none}
   .fac-track.dragging{cursor:grabbing}
   .fac-card{
@@ -1521,4 +1534,10 @@
    it did while the touchable area grows to ~44px. */
 @media(max-width:700px){
   .pd-fam a{display:inline-block;padding:13px 6px;margin:-13px -6px}
+}
+
+
+/* ============ PHONE: SHORTER ABOUT FIGURE ============ */
+@media(max-width:700px){
+  .about-fig .main{aspect-ratio:16/11;max-height:300px}
 }

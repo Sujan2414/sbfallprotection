@@ -303,76 +303,102 @@
   }
 
   /* factory gallery: continuous ticker, drag on desktop, native swipe on touch */
+  /*
+   * Factory ticker. Motion is a CSS transform animation on an inner strip, not
+   * a scrollLeft write per frame: on a phone the per-frame write fought the
+   * native scroll compositor and rounded to device pixels, which read as
+   * stutter. A transform runs on the compositor thread and stays smooth even
+   * while the main thread is busy. The track itself stays a real scroller so a
+   * swipe or a mouse drag still works on top of it.
+   */
   var track = document.getElementById('facTrack');
   if (track){
-    var down = false, startX = 0, startScroll = 0, paused = false, loopW = 0;
+    /* two identical sets, each with a trailing gap, so -50% is a seamless wrap */
+    var cards = Array.prototype.slice.call(track.children);
+    var strip = document.createElement('div');
+    strip.className = 'fac-strip';
+    for (var k = 0; k < 2; k++){
+      var set = document.createElement('div');
+      set.className = 'fac-set';
+      cards.forEach(function(c){ set.appendChild(k ? c.cloneNode(true) : c); });
+      strip.appendChild(set);
+    }
+    track.appendChild(strip);
 
-    /* duplicate cards so the ticker can wrap seamlessly */
-    track.innerHTML += track.innerHTML;
-    function measure(){ loopW = track.scrollWidth / 2; }
+    var speedPerSec = reduce ? 15 : 75;                 // px per second
+    function measure(){
+      var loopW = strip.scrollWidth / 2;
+      if (loopW > 0) strip.style.setProperty('--fac-dur', (loopW / speedPerSec) + 's');
+    }
     measure();
     window.addEventListener('resize', measure);
-    if (window.ResizeObserver) new ResizeObserver(measure).observe(track);
+    if (window.ResizeObserver) new ResizeObserver(measure).observe(strip);
+
+    var down = false, startX = 0, startScroll = 0, resume;
+    function hold(){ track.classList.add('is-paused'); clearTimeout(resume); }
+    function release(ms){ clearTimeout(resume); resume = setTimeout(function(){ track.classList.remove('is-paused'); }, ms); }
 
     if (canHover){
       track.addEventListener('mousedown', function(e){
         down = true; startX = e.pageX; startScroll = track.scrollLeft;
-        track.classList.add('dragging'); e.preventDefault();
+        track.classList.add('dragging'); hold(); e.preventDefault();
       });
       window.addEventListener('mousemove', function(e){
         if (down) track.scrollLeft = startScroll - (e.pageX - startX);
       });
       window.addEventListener('mouseup', function(){
-        down = false; track.classList.remove('dragging');
+        if (!down) return;
+        down = false; track.classList.remove('dragging'); release(600);
       });
-      track.addEventListener('mouseenter', function(){ paused = true; });
-      track.addEventListener('mouseleave', function(){ paused = false; });
+      /* hover pause is CSS; nothing to do here */
     } else {
-      /* touch: let the browser scroll natively, just pause the ticker meanwhile */
-      var resume;
-      track.addEventListener('touchstart', function(){
-        paused = true; clearTimeout(resume);
-      }, { passive: true });
-      track.addEventListener('touchend', function(){
-        clearTimeout(resume); resume = setTimeout(function(){ paused = false; }, 2000);
-      }, { passive: true });
-      track.addEventListener('touchcancel', function(){ paused = false; }, { passive: true });
+      track.addEventListener('touchstart', hold, { passive: true });
+      track.addEventListener('touchend', function(){ release(2000); }, { passive: true });
+      track.addEventListener('touchcancel', function(){ release(400); }, { passive: true });
     }
-
-    var speedPerSec = reduce ? 15 : 75; // pixels per second
-    var floatScroll = track.scrollLeft;
-    var lastTime = performance.now();
-    (function tick(now){
-      var dt = Math.min(now - lastTime, 100); // cap dt at 100ms to prevent huge jumps
-      lastTime = now;
-      
-      if (!down && !paused) {
-        if (Math.abs(floatScroll - track.scrollLeft) > 10) floatScroll = track.scrollLeft;
-        floatScroll += (speedPerSec * dt) / 1000;
-        track.scrollLeft = floatScroll;
-      } else {
-        floatScroll = track.scrollLeft;
-      }
-      
-      if (loopW > 0){
-        if (track.scrollLeft >= loopW) { track.scrollLeft -= loopW; floatScroll -= loopW; }
-        else if (track.scrollLeft < 0) { track.scrollLeft += loopW; floatScroll += loopW; }
-      }
-      requestAnimationFrame(tick);
-    })(performance.now());
   }
 
   /* reels strip: load + play each clip only while it is on screen, so four
      videos never download at once (matters most on mobile data) */
   var reels = document.querySelectorAll('.reel video');
+
+  /* play() straight after load() rejects on most phones — the element has no
+     data yet. Try now; if it refuses, try once more when it can actually play. */
+  function tryPlay(v){
+    /* HAVE_CURRENT_DATA or better: safe to play. Below that, play() right after
+       load() is rejected with AbortError and nothing retries — so wait for the
+       data instead of racing it. */
+    if (v.readyState >= 2) {
+      var p = v.play(); if (p && p.catch) p.catch(function(){});
+      return;
+    }
+    if (v.dataset.waiting) return;
+    v.dataset.waiting = '1';
+    v.addEventListener('loadeddata', function once(){
+      v.removeEventListener('loadeddata', once);
+      delete v.dataset.waiting;
+      if (v.dataset.onscreen) { var q = v.play(); if (q && q.catch) q.catch(function(){}); }
+    });
+  }
+  /* Some phones need one gesture before any media plays, even muted. The first
+     touch anywhere retries every clip that is on screen. */
+  if (reels.length) {
+    document.addEventListener('touchstart', function unlock(){
+      document.removeEventListener('touchstart', unlock);
+      reels.forEach(function(v){ if (v.dataset.onscreen && v.paused && !reduce) tryPlay(v); });
+    }, { passive: true, once: true });
+  }
+
   if (reels.length && 'IntersectionObserver' in window) {
     var reelObs = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         var v = en.target;
         if (en.isIntersecting) {
+          v.dataset.onscreen = '1';
           if (v.preload === 'none') { v.preload = 'auto'; v.load(); }
-          if (!reduce) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+          if (!reduce) tryPlay(v);
         } else {
+          delete v.dataset.onscreen;
           v.pause();
         }
       });
