@@ -1468,3 +1468,54 @@
   /* the photo is decoration here; the cards are the message */
   .why-img{display:none}
 }
+
+
+/* ============ QUOTE FLOW: FORM MODE ============ */
+.flow-mode{
+  margin-left:auto;flex:none;
+  display:inline-flex;align-items:center;gap:7px;
+  padding:9px 13px;border-radius:999px;border:1px solid rgba(255,255,255,.22);
+  background:rgba(255,255,255,.08);color:#fff;
+  font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;
+  transition:background .2s ease,border-color .2s ease;
+}
+.flow-mode:hover{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.4)}
+.flow-mode[aria-pressed="true"]{background:var(--orange);border-color:var(--orange)}
+
+.flow-form{padding:20px 18px 22px;display:flex;flex-direction:column;gap:14px;flex:none}
+.flow-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.flow-form label{display:flex;flex-direction:column;gap:6px;min-width:0}
+.flow-form label.wide{grid-column:1/-1}
+.flow-form label span{font-size:12.5px;font-weight:600;color:var(--gray)}
+.flow-form input,.flow-form select,.flow-form textarea{
+  width:100%;padding:12px 14px;border-radius:12px;
+  border:1px solid var(--line);background:var(--light);
+  font:inherit;font-size:14.5px;color:var(--ink);
+}
+.flow-form textarea{resize:vertical;min-height:84px;line-height:1.5}
+.flow-form :is(input,select,textarea):focus{outline:none;border-color:var(--orange);background:#fff}
+.flow-form :is(input,select,textarea):user-invalid{border-color:#d9432b}
+.flow-form-send{width:100%;justify-content:center;margin-top:2px}
+.flow-form-err{font-size:13px;color:#b0281c;margin:0}
+
+/* in form mode the card is content-sized — no fixed transcript to fill */
+.flow.is-form .flow-body,.flow.is-form .flow-foot{display:none}
+
+@media(max-width:700px){
+  .flow-mode span{display:none}            /* icon only; the row is tight */
+  /* 42px square: a thumb target, not a 35px pill */
+  .flow-mode{width:42px;height:42px;padding:0;justify-content:center;border-radius:12px}
+  .flow-mode svg{width:18px;height:18px}
+  .flow-form{padding:16px 14px 18px}
+  .flow-form-grid{grid-template-columns:1fr;gap:11px}
+  .flow-form input,.flow-form select,.flow-form textarea{padding:13px 14px;font-size:16px}
+}
+
+
+/* ============ PHONE: INLINE LINKS GET A THUMB-SIZED HIT AREA ============ */
+/* An inline link inherits its line box — about 18px — as its tap target. The
+   negative margin cancels the padding visually, so the text sits exactly where
+   it did while the touchable area grows to ~44px. */
+@media(max-width:700px){
+  .pd-fam a{display:inline-block;padding:13px 6px;margin:-13px -6px}
+}

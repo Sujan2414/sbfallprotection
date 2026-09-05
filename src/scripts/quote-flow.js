@@ -204,6 +204,7 @@
       name: answers.name || null,
       company: answers.company && answers.company !== '—' ? answers.company : null,
       email: answers.email || null,
+      phone: answers.phone || null,
       country: answers.country || null,
       category: answers.category || null,
       message: message,
@@ -274,6 +275,75 @@
         done(false);
       })
       .catch(function () { done(true); });
+  }
+
+  /* ───────────── form mode ─────────────
+     Same destination, different route. The chat stays rendered underneath so
+     switching back loses nothing; the form simply fills `answers` in one go and
+     hands over to the same submit(). */
+  var modeBtn = document.getElementById('flowMode');
+  var formEl = document.getElementById('flowForm');
+  var formErr = document.getElementById('flowFormErr');
+
+  function setMode(form) {
+    root.classList.toggle('is-form', form);
+    formEl.hidden = !form;
+    modeBtn.setAttribute('aria-pressed', form ? 'true' : 'false');
+    modeBtn.querySelector('span').textContent = form ? 'Back to chat' : 'Use a form';
+    modeBtn.setAttribute('aria-label', form ? 'Back to chat' : 'Fill in a form instead');
+    if (form) {
+      var first = formEl.querySelector('input[name=name]');
+      if (first && !reduce) first.focus({ preventScroll: true });
+    }
+  }
+  if (modeBtn && formEl) {
+    modeBtn.setAttribute('aria-label', 'Fill in a form instead');
+    modeBtn.addEventListener('click', function () {
+      setMode(!root.classList.contains('is-form'));
+    });
+
+    formEl.addEventListener('submit', function (e) {
+      e.preventDefault();
+      formErr.hidden = true;
+      var fd = new FormData(formEl);
+      var get = function (k) { return String(fd.get(k) || '').trim(); };
+
+      var missing = ['name', 'email', 'country', 'category', 'detail'].filter(function (k) { return !get(k); });
+      if (missing.length) {
+        formErr.textContent = 'Please fill in the highlighted fields.';
+        formErr.hidden = false;
+        var el = formEl.querySelector('[name=' + missing[0] + ']');
+        if (el) el.focus();
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(get('email'))) {
+        formErr.textContent = 'That email address does not look right.';
+        formErr.hidden = false;
+        formEl.querySelector('[name=email]').focus();
+        return;
+      }
+
+      answers = {
+        sku: preSku,
+        name: get('name'),
+        company: get('company') || '—',
+        email: get('email'),
+        phone: get('phone'),
+        country: get('country'),
+        category: get('category'),
+        detail: get('detail'),
+      };
+
+      var sendBtn = formEl.querySelector('.flow-form-send');
+      sendBtn.disabled = true;
+      sendBtn.textContent = 'Sending…';
+
+      // hand back to the transcript, which is where done() draws the result
+      setMode(false);
+      body.innerHTML = '';
+      i = steps.length;
+      submit();
+    });
   }
 
   ask();
