@@ -1154,7 +1154,7 @@
 @media(max-width:760px){
   /* product-card description was the smallest real body copy on the site */
   .sku-desc{font-size:13.5px;line-height:1.5}
-  .sku-std{font-size:12px;padding:5px 10px}
+  .sku-std{font-size:13px;padding:6px 11px}
   .cat-count,.post-meta{font-size:13px}
 
   /* footer navigation: block links need a real hit area */
@@ -1416,7 +1416,10 @@
 .reel-sound[aria-pressed="true"]{background:var(--orange)}
 
 @media(max-width:700px){
-  .reel-sound{width:34px;height:34px;top:11px;right:11px}
+  /* 44px: the smallest target a thumb hits reliably. The button sits on a
+     tile that is itself a link, so a near-miss opens Instagram instead. */
+  .reel-sound{width:44px;height:44px;top:10px;right:10px}
+  .reel-sound svg{width:20px;height:20px}
 }
 @media (prefers-reduced-motion:reduce){
   .reel,.reel-sound{transition:none}

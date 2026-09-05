@@ -732,6 +732,11 @@ table.adm-table tbody tr:hover { background: #fcfcfd; }
   .adm-login-cap span { display: none; }
 }
 @media (max-width: 900px) {
+  /* a thumb-sized reveal button, and a checkbox that is easy to hit */
+  .adm-pw-eye { width: 42px; height: 42px; right: 4px; }
+  .adm-check input { width: 22px; height: 22px; flex: 0 0 22px; }
+  .adm-check { padding: 4px 0; }
+
   .adm-login { grid-template-columns: 1fr; }
   .adm-login-art { display: none; }
   .adm-login-form { padding: 34px 22px; align-content: center; }
