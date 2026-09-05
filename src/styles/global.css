@@ -1391,3 +1391,34 @@
   .exp-two > .flow-col > .flow{flex:1;min-height:0}
   .exp-two > .flow-col .flow-body{flex:1 1 0;min-height:200px;max-height:none}
 }
+
+/* ============ REELS: open on Instagram + per-clip sound ============ */
+/* The link covers the tile so the whole card is clickable; the sound button
+   sits above it in the stack so it doesn't navigate away. */
+.reel-open{position:absolute;inset:0;z-index:3;border-radius:inherit}
+.reel-open:focus-visible{outline:3px solid var(--orange);outline-offset:3px}
+.reel:hover{transform:translateY(-4px)}
+.reel{transition:transform .28s cubic-bezier(.22,1,.36,1)}
+
+.reel-sound{
+  position:absolute;z-index:4;top:13px;right:13px;
+  width:36px;height:36px;border-radius:50%;border:none;cursor:pointer;
+  background:rgba(19,19,18,.55);backdrop-filter:blur(6px);color:#fff;
+  display:grid;place-items:center;
+  transition:background .2s ease,transform .2s ease;
+}
+.reel-sound:hover{background:rgba(19,19,18,.8);transform:scale(1.06)}
+.reel-sound svg{width:18px;height:18px}
+/* one icon or the other, driven by aria-pressed so state lives in the DOM */
+.reel-sound .i-on{display:none}
+.reel-sound[aria-pressed="true"] .i-off{display:none}
+.reel-sound[aria-pressed="true"] .i-on{display:block}
+.reel-sound[aria-pressed="true"]{background:var(--orange)}
+
+@media(max-width:700px){
+  .reel-sound{width:34px;height:34px;top:11px;right:11px}
+}
+@media (prefers-reduced-motion:reduce){
+  .reel,.reel-sound{transition:none}
+  .reel:hover{transform:none}
+}

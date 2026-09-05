@@ -2,8 +2,31 @@
 import Base from '../layouts/Base.astro';
 import WorldMap from '../components/WorldMap.astro';
 import { getCategories, categoryUrl } from '../lib/catalog';
+import { fetchReels } from '../lib/supabase';
 
 const categories = getCategories();
+
+/**
+ * Reels come from the `instagram_posts` table so staff can change them from the
+ * admin panel. Until they add any, the licensed stand-in clips in /assets keep
+ * the section populated.
+ */
+const IG = 'https://www.instagram.com/sbfallprotection/';
+const dbReels = await fetchReels();
+const fallbackReels = [
+  { src: '/assets/reel-1.mp4', poster: '/assets/reel-1.jpg', cap: 'Harness & connector detail', href: IG },
+  { src: '/assets/reel-2.mp4', poster: '/assets/reel-2.jpg', cap: 'Rope access & controlled descent', href: IG },
+  { src: '/assets/reel-3.mp4', poster: '/assets/reel-3.jpg', cap: 'Fall protection in training', href: IG },
+  { src: '/assets/showreel.mp4', poster: '/assets/video-poster.jpg', cap: 'Working at height, protected', href: IG },
+];
+const reels = dbReels.length
+  ? dbReels.map((r) => ({
+      src: r.media_url ?? '',
+      poster: r.thumbnail_url ?? '',
+      cap: r.caption ?? '',
+      href: r.permalink || IG,
+    })).filter((r) => r.src)
+  : fallbackReels;
 
 /** Each home card maps to the category page that actually holds that range. */
 const cardHref: Record<string, string> = {
@@ -494,35 +517,27 @@ const cardHref: Record<string, string> = {
       </a>
     </div>
 
-    <!-- PLACEHOLDER CLIPS: licensed stock stand-ins. Replace with SB's own
-         reels once the Instagram Graph API feed is connected. -->
     <div class="reel-row reveal" id="reelRow">
-      <article class="reel">
-        <video src="/assets/reel-1.mp4" poster="/assets/reel-1.jpg" muted loop playsinline preload="none"
-               aria-label="Harness hardware close-up"></video>
-        <span class="reel-tag"><span class="reel-live"></span> Reel</span>
-        <span class="reel-cap">Harness &amp; connector detail</span>
-      </article>
-      <article class="reel">
-        <video src="/assets/reel-2.mp4" poster="/assets/reel-2.jpg" muted loop playsinline preload="none"
-               aria-label="Working at height on a rope system"></video>
-        <span class="reel-tag"><span class="reel-live"></span> Reel</span>
-        <span class="reel-cap">Rope access &amp; controlled descent</span>
-      </article>
-      <article class="reel">
-        <video src="/assets/reel-3.mp4" poster="/assets/reel-3.jpg" muted loop playsinline preload="none"
-               aria-label="Crew climbing with fall protection equipment"></video>
-        <span class="reel-tag"><span class="reel-live"></span> Reel</span>
-        <span class="reel-cap">Fall protection in training</span>
-      </article>
-      <article class="reel">
-        <video src="/assets/showreel.mp4" poster="/assets/video-poster.jpg" muted loop playsinline preload="none"
-               aria-label="Fall protection equipment in use"></video>
-        <span class="reel-tag"><span class="reel-live"></span> Reel</span>
-        <span class="reel-cap">Working at height, protected</span>
-      </article>
+      {reels.map((r) => (
+        <article class="reel">
+          <video src={r.src} poster={r.poster} muted loop playsinline preload="none"
+                 aria-label={r.cap}></video>
+          <span class="reel-tag"><span class="reel-live"></span> Reel</span>
+          {r.cap && <span class="reel-cap">{r.cap}</span>}
+
+          {/* the whole tile opens the post; the sound button sits above it */}
+          <a class="reel-open" href={r.href} target="_blank" rel="noopener noreferrer"
+             aria-label={`Open on Instagram${r.cap ? `: ${r.cap}` : ''}`}></a>
+          <button class="reel-sound" type="button" aria-pressed="false" aria-label="Unmute this clip">
+            <svg class="i-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5Z"/><path d="m23 9-6 6M17 9l6 6"/></svg>
+            <svg class="i-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>
+          </button>
+        </article>
+      ))}
     </div>
-    <p class="reels-note">Swipe for more · clips play muted and loop automatically</p>
+    <p class="reels-note">Clips play muted — tap the speaker for sound, or the clip to open it on Instagram</p>
   </div>
 </section>
 

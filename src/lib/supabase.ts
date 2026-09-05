@@ -66,3 +66,23 @@ export async function fetchCatalog() {
   );
   return { categories, families, products };
 }
+
+export interface DbReel {
+  id: string;
+  media_type: string | null;
+  media_url: string | null;
+  thumbnail_url: string | null;
+  permalink: string | null;
+  caption: string | null;
+  posted_at: string | null;
+}
+
+/**
+ * Reels shown on the home page. Managed from the admin panel; when the table is
+ * empty the caller falls back to the clips committed in /assets, so the section
+ * is never blank.
+ */
+export async function fetchReels(): Promise<DbReel[]> {
+  const rows = await rest<DbReel>('instagram_posts?select=*&order=posted_at.desc&limit=12');
+  return rows ?? [];
+}

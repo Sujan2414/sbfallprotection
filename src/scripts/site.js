@@ -274,6 +274,56 @@
     });
   }
 
+  /* Per-clip sound. Autoplay is only allowed while muted, so clips start silent
+     and the viewer opts in. Unmuting one mutes the rest — four soundtracks at
+     once is nobody's idea of a good time. */
+  var soundBtns = document.querySelectorAll('.reel-sound');
+  soundBtns.forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      // the tile is wrapped in a link to Instagram; don't follow it
+      e.preventDefault();
+      e.stopPropagation();
+      var vid = btn.closest('.reel').querySelector('video');
+      if (!vid) return;
+      var turningOn = vid.muted;
+
+      soundBtns.forEach(function (other) {
+        if (other === btn) return;
+        var ov = other.closest('.reel').querySelector('video');
+        if (ov) ov.muted = true;
+        other.setAttribute('aria-pressed', 'false');
+        other.setAttribute('aria-label', 'Unmute this clip');
+      });
+
+      vid.muted = !turningOn;
+      btn.setAttribute('aria-pressed', turningOn ? 'true' : 'false');
+      btn.setAttribute('aria-label', turningOn ? 'Mute this clip' : 'Unmute this clip');
+      if (turningOn) {
+        var pr = vid.play();
+        if (pr && pr.catch) pr.catch(function () {});
+      }
+    });
+  });
+
+  /* A clip that scrolls out of view should not keep playing sound. */
+  if (soundBtns.length && 'IntersectionObserver' in window) {
+    var muteObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) return;
+        var v = en.target.querySelector('video');
+        var b = en.target.querySelector('.reel-sound');
+        if (v && !v.muted) {
+          v.muted = true;
+          if (b) {
+            b.setAttribute('aria-pressed', 'false');
+            b.setAttribute('aria-label', 'Unmute this clip');
+          }
+        }
+      });
+    }, { threshold: 0.2 });
+    document.querySelectorAll('.reel').forEach(function (r) { muteObs.observe(r); });
+  }
+
 
   /* inner-page hero: scroll-driven drift + a slow fade of the copy, matching
      the homepage hero treatment. Scroll-linked only, no mouse dependency. */

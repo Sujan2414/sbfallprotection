@@ -302,19 +302,23 @@ document.getElementById('globalSearch').addEventListener('input', (e) => {
 
 /* ─────────────────────────── data ─────────────────────────── */
 
-const db = { categories: [], families: [], products: [], inquiries: [], posts: [] };
+const db = { categories: [], families: [], products: [], inquiries: [], posts: [], reels: [] };
 
 async function loadAll() {
-  const [c, f, p, i, po] = await Promise.all([
+  const [c, f, p, i, po, rl] = await Promise.all([
     sb.from('categories').select('*').order('sort_order'),
     sb.from('families').select('*').order('sort_order'),
     sb.from('products').select('*').order('sort_order').limit(2000),
     sb.from('inquiries').select('*').order('created_at', { ascending: false }).limit(500),
     sb.from('posts').select('*').order('published_at', { ascending: false }),
+    sb.from('instagram_posts').select('*').order('posted_at', { ascending: false }),
   ]);
   for (const r of [c, f, p, i, po]) if (r.error) throw r.error;
   db.categories = c.data; db.families = f.data; db.products = p.data;
   db.inquiries = i.data; db.posts = po.data;
+  // reels are optional — a missing table should not take the whole panel down
+  db.reels = rl.error ? [] : (rl.data || []);
+  if (rl.error) console.warn('[admin] instagram_posts', rl.error.message);
 
   const n = db.inquiries.filter((x) => x.status === 'new').length;
   for (const id of ['inqCount', 'bellDot']) {
@@ -351,7 +355,7 @@ document.querySelectorAll('.adm-navitem[data-tab]').forEach((b) =>
   b.addEventListener('click', () => setTab(b.dataset.tab)));
 
 function render() {
-  ({ overview, products, taxonomy, posts, inquiries, users, settings }[tab] || overview)();
+  ({ overview, products, taxonomy, posts, reels, inquiries, users, settings }[tab] || overview)();
   window.scrollTo({ top: 0 });
 }
 
@@ -809,6 +813,96 @@ function apiError(data, fallback) {
   if (code === 'not_configured') return 'Account management is not switched on yet.';
   if (code === 'forbidden') return data.message || 'You do not have access to do that.';
   return String(code);
+}
+
+
+/**
+ * Reels shown on the home page, held in `instagram_posts`. Videos are linked by
+ * URL rather than uploaded: the clips already live on Instagram or a CDN, and
+ * the site only needs somewhere to point.
+ */
+function reels() {
+  main.innerHTML = pageHead('Reels',
+    '<button class="adm-btn adm-btn-primary" id="newReel">+ Add reel</button>') + `
+    <div class="adm-grid">
+      ${db.reels.map((r) => `<article class="adm-tile">
+        <span class="adm-tile-ph">
+          ${r.thumbnail_url
+            ? `<img src="${esc(r.thumbnail_url)}" alt="" loading="lazy" onerror="this.style.display='none'">`
+            : ICON.img}
+        </span>
+        <div class="adm-tile-body">
+          <span class="adm-tile-meta">${esc(r.media_type || 'VIDEO')} · ${fmtDate(r.posted_at)}</span>
+          <h3>${esc(r.caption || 'Untitled clip')}</h3>
+          <p class="adm-tile-desc">${esc(r.permalink || 'No Instagram link')}</p>
+          <div class="adm-tile-foot">
+            <span class="adm-pill ${r.media_url ? 'green' : 'amber'}">${r.media_url ? 'Live' : 'No video'}</span>
+            <span class="spacer" style="flex:1"></span>
+            <button class="adm-btn adm-btn-soft" data-reel="${esc(r.id)}">Edit</button>
+            <button class="adm-icon-btn danger" data-reel-del="${esc(r.id)}" title="Remove">${ICON.trash}</button>
+          </div>
+        </div>
+      </article>`).join('') ||
+      '<div class="adm-card adm-empty">No reels yet — the home page is showing the built-in clips.</div>'}
+    </div>`;
+
+  main.querySelector('#newReel').addEventListener('click', () => editReel(null));
+  main.querySelectorAll('[data-reel]').forEach((b) =>
+    b.addEventListener('click', () => editReel(b.dataset.reel)));
+  main.querySelectorAll('[data-reel-del]').forEach((b) =>
+    b.addEventListener('click', () => deleteReel(b.dataset.reelDel)));
+}
+
+function editReel(id) {
+  const r = id ? db.reels.find((x) => x.id === id) : {
+    id: '', media_type: 'VIDEO', media_url: '', thumbnail_url: '',
+    permalink: '', caption: '', posted_at: new Date().toISOString(),
+  };
+  openDrawer(id ? 'Edit reel' : 'Add a reel', `
+    <div class="adm-fields">
+      ${field('Caption', 'caption', r.caption || '')}
+      ${field('Video URL (.mp4)', 'media_url', r.media_url || '', 'url')}
+      ${field('Poster image URL', 'thumbnail_url', r.thumbnail_url || '', 'url')}
+      ${field('Instagram link', 'permalink', r.permalink || '', 'url')}
+      ${field('Date', 'posted_at', (r.posted_at || '').slice(0, 10), 'date', '')}
+      ${select('Type', 'media_type', [['VIDEO', 'Video'], ['IMAGE', 'Image']], r.media_type || 'VIDEO', '')}
+    </div>`,
+    async () => {
+      const row = {
+        id: id || `reel-${Date.now()}`,
+        caption: val('caption'),
+        media_url: val('media_url'),
+        thumbnail_url: val('thumbnail_url') || null,
+        permalink: val('permalink') || null,
+        media_type: val('media_type'),
+        posted_at: new Date(val('posted_at') || Date.now()).toISOString(),
+      };
+      if (!row.media_url) throw new Error('A video URL is required.');
+      const { error } = await sb.from('instagram_posts').upsert(row, { onConflict: 'id' });
+      if (error) throw error;
+      await loadAll();
+      reels();
+    });
+}
+
+function deleteReel(id) {
+  const r = db.reels.find((x) => x.id === id);
+  if (!r) return;
+  openDrawer('Remove this reel?', `
+    <p style="font-size:15px;line-height:1.65">
+      <strong>${esc(r.caption || 'This clip')}</strong> will stop showing on the home page
+      at the next publish. The video itself is not deleted — only the link to it.
+    </p>
+    <button class="adm-btn adm-btn-danger" id="confirmDelReel" style="margin-top:22px">
+      Yes, remove it</button>`, null);
+  drawerBody.querySelector('#confirmDelReel').addEventListener('click', async () => {
+    const { error } = await sb.from('instagram_posts').delete().eq('id', id);
+    if (error) return toast(error.message, true);
+    db.reels = db.reels.filter((x) => x.id !== id);
+    closeDrawer();
+    toast('Reel removed');
+    reels();
+  });
 }
 
 /**
