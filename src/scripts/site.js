@@ -364,7 +364,10 @@
 
   /* play() straight after load() rejects on most phones — the element has no
      data yet. Try now; if it refuses, try once more when it can actually play. */
-  function tryPlay(v){
+  /* named distinctly: the showreel block above declares its own tryPlay(), and a
+     block-level function declaration overwrites a same-named outer one when the
+     block runs — so the reels were calling the showreel helper instead. */
+  function playReel(v){
     /* HAVE_CURRENT_DATA or better: safe to play. Below that, play() right after
        load() is rejected with AbortError and nothing retries — so wait for the
        data instead of racing it. */
@@ -385,7 +388,7 @@
   if (reels.length) {
     document.addEventListener('touchstart', function unlock(){
       document.removeEventListener('touchstart', unlock);
-      reels.forEach(function(v){ if (v.dataset.onscreen && v.paused && !reduce) tryPlay(v); });
+      reels.forEach(function(v){ if (v.dataset.onscreen && v.paused && !reduce) playReel(v); });
     }, { passive: true, once: true });
   }
 
@@ -396,7 +399,7 @@
         if (en.isIntersecting) {
           v.dataset.onscreen = '1';
           if (v.preload === 'none') { v.preload = 'auto'; v.load(); }
-          if (!reduce) tryPlay(v);
+          if (!reduce) playReel(v);
         } else {
           delete v.dataset.onscreen;
           v.pause();
