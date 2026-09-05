@@ -20,6 +20,7 @@ reusing the client's own material on the client's own site.
 | `urgent-worker.jpg`, `video-poster.jpg` | Site photography |
 | `avatar-1…4.jpg` | Avatars from the existing site |
 | `team-biju.jpg`, `team-saji.jpg` | Leadership portraits from the existing site |
+| `about-crew.jpg` | Worker in an SB harness, from the client's own media library (`Full-Body-Harness-scaled.jpg`) |
 | `cert-iso-9001.png`, `cert-sedex.jpg` | Certification marks as published by the client (ISO 9001:2015; SEDEX ref. ZS1000032714) |
 | Catalogue product images | Served from the client's WordPress host (`src/data/catalog.json`) |
 
@@ -42,7 +43,7 @@ Covered by the [Pexels licence](https://www.pexels.com/license/).
 | `contact-ropeaccess.jpg` | 21923132 |
 | `hero-about.*` | 2760241 |
 | `hero-export.*` | 3057960 |
-| `about-crew.jpg` | 585419 |
+
 | `admin-login.jpg` (admin console, never public) | 1216581 |
 | `hero-hooks-connectors.*`, `slide-d2.jpg` | 1216583 |
 | `hero-horizontal-lifeline.*` | 21923131 |
