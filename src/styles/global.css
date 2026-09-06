@@ -516,7 +516,7 @@
   /* studio credit: same line as the certifications, pushed to the right edge */
   .f-credit{margin-left:auto;color:rgba(255,255,255,.62)}
   .f-credit a{color:rgba(255,255,255,.92);font-weight:600;display:inline-flex;align-items:center;gap:5px;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.25)}
-  .f-credit a:hover{color:var(--orange);border-color:var(--orange)}
+  .f-credit a:hover{color:#fff;border-color:#fff}   /* the footer is orange; orange-on-hover vanished */
   .f-mark-wrap{overflow:hidden;margin-top:40px}
   .f-mark{display:block;width:100%;height:auto;user-select:none;margin-bottom:0}
   .f-mark text{font-weight:700;font-family:inherit}
