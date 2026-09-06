@@ -513,6 +513,10 @@
   .f-socials a{width:48px;height:48px;border-radius:14px;background:#fff;color:var(--orange);display:grid;place-items:center;transition:transform .15s}
   .f-socials a:hover{transform:translateY(-3px)}
   .f-bar{display:flex;gap:44px;flex-wrap:wrap;padding:26px 0 0;font-size:13.5px;color:rgba(255,255,255,.92)}
+  /* studio credit: same line as the certifications, pushed to the right edge */
+  .f-credit{margin-left:auto;color:rgba(255,255,255,.62)}
+  .f-credit a{color:rgba(255,255,255,.92);font-weight:600;display:inline-flex;align-items:center;gap:5px;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.25)}
+  .f-credit a:hover{color:var(--orange);border-color:var(--orange)}
   .f-mark-wrap{overflow:hidden;margin-top:40px}
   .f-mark{display:block;width:100%;height:auto;user-select:none;margin-bottom:0}
   .f-mark text{font-weight:700;font-family:inherit}
@@ -597,6 +601,7 @@
     .f-tools img:nth-child(2){height:130px}
     .f-tools img:nth-child(3){height:120px}
     .f-bar{gap:8px;flex-direction:column;font-size:12.5px}
+    .f-credit{margin-left:0}   /* stacked bar: line up with the other two */
 
     .fc-item{margin-bottom:20px}
 
