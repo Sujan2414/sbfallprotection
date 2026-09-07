@@ -45,6 +45,11 @@
   .sec{padding:100px 0}
   .sec-head{max-width:620px;margin:0 auto 56px;text-align:center}
   .sec-head.left{margin:0 0 56px;text-align:left}
+  /* a head carrying a chip row lets the row use the full column; the 620px
+     measure moves onto the text so the paragraph still reads as a column */
+  .sec-head.has-qlinks{max-width:none}
+  .sec-head.has-qlinks > :not(.qlinks){max-width:620px}
+  .sec-head.has-qlinks:not(.left) > :not(.qlinks){margin-left:auto;margin-right:auto}
   .sec-head h2{font-size:48px;margin-top:14px}
   .sec-head h2 em{font-style:normal;color:var(--orange)}
   .sec-head p{margin-top:16px;color:var(--gray);font-size:15px;line-height:1.6}
