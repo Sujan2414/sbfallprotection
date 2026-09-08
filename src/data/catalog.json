@@ -160,7 +160,7 @@
         "Shock Absorber reduces blow of jerk and maintains it below 6kN as per standard.",
         "All Lanyards with different combinations of connectors mentioned below are individually certified as per"
       ],
-      "layout": "variant",
+      "layout": "table",
       "source_url": "https://www.sbfallprotection.com/energy-absorbing-webbing-44mm-lanyards/"
     },
     {
@@ -177,7 +177,7 @@
         "Shock Absorber reduces blow of jerk and maintains it below 6kN as per standard.",
         "All Lanyards with different combinations of connectors mentioned below are individually certified as per"
       ],
-      "layout": "variant",
+      "layout": "table",
       "source_url": "https://www.sbfallprotection.com/energy-absorbing-expendable-webbing-44mm-lanyards/"
     },
     {
@@ -193,7 +193,7 @@
         "Variety of hooks and connectors are available for connection of both anchorage and termination end.",
         "All Lanyards with different combinations of connectors mentioned below are individually certified as per EN 354:2010."
       ],
-      "layout": "variant",
+      "layout": "table",
       "source_url": "https://www.sbfallprotection.com/expendable-webbing-44mm-lanyards/"
     },
     {
@@ -208,7 +208,7 @@
         "Variety of hooks and connectors are available for connection of both anchorage and termination end.",
         "All Lanyards with different combinations of connectors mentioned below are individually certified as per EN 354:2010."
       ],
-      "layout": "variant",
+      "layout": "table",
       "source_url": "https://www.sbfallprotection.com/webbing-44mm-restraint-lanyards/"
     },
     {
@@ -227,7 +227,7 @@
         "Shock Absorber reduces blow of jerk and maintains it below 6kN as per standard.",
         "All Lanyards with different combinations of connectors mentioned below are individually certified as per EN 355:2002."
       ],
-      "layout": "variant",
+      "layout": "table",
       "source_url": "https://www.sbfallprotection.com/energy-absorbing-twisted-rope-lanyards/"
     },
     {
@@ -248,7 +248,7 @@
         "Variety of hooks and connectors are available for connection of both anchorage and termination end.",
         "All Lanyards with different combinations of connectors mentioned below are individually certified as per"
       ],
-      "layout": "variant",
+      "layout": "table",
       "source_url": "https://www.sbfallprotection.com/twisted-rope-restraint-lanyards/"
     },
     {
@@ -265,7 +265,7 @@
         "Shock Absorber reduces blow of jerk and maintains it below 6kN as per standards.",
         "All Lanyards with different combinations of connectors mentioned below are individually certified as per EN 355:2002."
       ],
-      "layout": "variant",
+      "layout": "table",
       "source_url": "https://www.sbfallprotection.com/energy-absorbing-kernmantle-rope-lanyards-2/"
     },
     {
@@ -282,7 +282,7 @@
         "Variety of hooks and connectors are available for connection of both anchorage and termination end.",
         "All Lanyards with different combinations of connectors mentioned below are individually certified as per EN 354:2010."
       ],
-      "layout": "variant",
+      "layout": "table",
       "source_url": "https://www.sbfallprotection.com/energy-absorbing-kernmantle-rope-lanyards/"
     },
     {
@@ -293,7 +293,7 @@
       "bullets": [
         "SB FALL PROTECTION provides you with an option to customize your restraint as per your own job specific needs."
       ],
-      "layout": "spec",
+      "layout": "table",
       "source_url": "https://www.sbfallprotection.com/ansi-lanyards/"
     },
     {
@@ -330,7 +330,7 @@
         "In the event of a fall, they are designed to “grab” on to the Anchorage Line on which they move, thus arresting the fall immediately.",
         "The Anchorage line, in conjunction with the given Rope Grab provides the necessary Shock Absorption."
       ],
-      "layout": "variant",
+      "layout": "table",
       "source_url": "https://www.sbfallprotection.com/anchorages/"
     },
     {
@@ -341,7 +341,7 @@
       "bullets": [
         "According to EN 795:2012, Anchor Devices have been classified into various types, names Type A, B, C, D and E. SB FALL PROTECTION offers a range of anchor devices which fall under various such types."
       ],
-      "layout": "spec",
+      "layout": "table",
       "source_url": "https://www.sbfallprotection.com/anchorages-2/"
     },
     {
@@ -350,7 +350,7 @@
       "category": "horizontal-lifeline",
       "intro": "",
       "bullets": [],
-      "layout": "spec",
+      "layout": "table",
       "source_url": "https://www.sbfallprotection.com/temporary-horizontal-lifeline/"
     },
     {
@@ -377,7 +377,7 @@
       "category": "retractable-blocks",
       "intro": "Self-retracting lifelines that pay out and retract as the worker moves, and lock the instant a fall begins. All four lengths share the same construction and differ only in the length of the block.",
       "bullets": [],
-      "layout": "variant",
+      "layout": "table",
       "source_url": "https://www.sbfallprotection.com/retractable-block/"
     },
     {
@@ -905,10 +905,7 @@
         "Stitching Thread": "Polyester",
         "Webbing Width": "44mm",
         "Size": "Universal",
-        "Standards": "IS 3521 (Part 1) 2021 Class E",
-        "CONTACT INFO": "Phone :",
-        "Phone :": "Mail :",
-        "sales@sbfallprotection.com": "Address :"
+        "Standards": "IS 3521 (Part 1) 2021 Class E"
       },
       "attachment": null
     },
@@ -1101,8 +1098,14 @@
       "category": "lanyards",
       "family": "forked-lanyards-with-energy-absorber",
       "family_name": "Forked Lanyards with Energy Absorber",
-      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBL341KRF.jpg",
-      "specs": {},
+      "image": "/assets/products/SBL341KRF.jpg",
+      "specs": {
+        "Type": "Forked Lanyard with Energy Absorber",
+        "Material": "Polyamide Kernmantle Rope",
+        "Available Length": "1.5 m, 1.8 m, 2.0 m",
+        "Attachment Elements": "One karabiner and one energy absorber at the lower end, two scaffold hooks at the other",
+        "Conforms To": "EN 355:2002"
+      },
       "attachment": null
     },
     {
@@ -1110,8 +1113,14 @@
       "category": "lanyards",
       "family": "forked-lanyards-with-energy-absorber",
       "family_name": "Forked Lanyards with Energy Absorber",
-      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBL351TRF.jpg",
-      "specs": {},
+      "image": "/assets/products/SBL351TRF.jpg",
+      "specs": {
+        "Type": "Forked Lanyard with Energy Absorber",
+        "Material": "Polyamide Twisted Rope",
+        "Available Length": "1.5 m, 1.8 m, 2.0 m",
+        "Attachment Elements": "One karabiner and one energy absorber at the lower end, two scaffold hooks at the other",
+        "Conforms To": "EN 355:2002"
+      },
       "attachment": null
     },
     {
@@ -1119,8 +1128,14 @@
       "category": "lanyards",
       "family": "forked-lanyards-with-energy-absorber",
       "family_name": "Forked Lanyards with Energy Absorber",
-      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBL361WLF.jpg",
-      "specs": {},
+      "image": "/assets/products/SBL361WLF.jpg",
+      "specs": {
+        "Type": "Forked Lanyard with Energy Absorber",
+        "Material": "44mm wide Polyester Webbing",
+        "Available Length": "1.5 m, 1.8 m, 2.0 m",
+        "Attachment Elements": "One karabiner and one energy absorber at the lower end, two scaffold hooks at the other",
+        "Conforms To": "EN 355:2002"
+      },
       "attachment": null
     },
     {
@@ -1128,8 +1143,14 @@
       "category": "lanyards",
       "family": "forked-lanyards-with-energy-absorber",
       "family_name": "Forked Lanyards with Energy Absorber",
-      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBL371ELF.jpg",
-      "specs": {},
+      "image": "/assets/products/SBL371ELF.jpg",
+      "specs": {
+        "Type": "Forked Lanyard with Energy Absorber",
+        "Material": "Expandable 44mm wide Polyester Webbing",
+        "Available Length": "Relaxed length 1.5 m, expanded length 2.0 m",
+        "Attachment Elements": "One karabiner and one energy absorber at the lower end, two scaffold hooks at the other",
+        "Conforms To": "EN 355:2002"
+      },
       "attachment": null
     },
     {
@@ -1137,8 +1158,14 @@
       "category": "lanyards",
       "family": "restraint-forked-lanyards",
       "family_name": "Restraint Forked Lanyards",
-      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBL342KRF.jpg",
-      "specs": {},
+      "image": "/assets/products/SBL342KRF.jpg",
+      "specs": {
+        "Type": "Restraint Forked Lanyard",
+        "Material": "Polyamide Kernmantle Rope",
+        "Available Length": "1.5 m, 1.8 m, 2.0 m",
+        "Attachment Elements": "One karabiner at the lower end, two scaffold hooks at the other",
+        "Conforms To": "EN 354:2010"
+      },
       "attachment": null
     },
     {
@@ -1146,8 +1173,14 @@
       "category": "lanyards",
       "family": "restraint-forked-lanyards",
       "family_name": "Restraint Forked Lanyards",
-      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBL352TRF.jpg",
-      "specs": {},
+      "image": "/assets/products/SBL352TRF.jpg",
+      "specs": {
+        "Type": "Restraint Forked Lanyard",
+        "Material": "Polyester Twisted Rope",
+        "Available Length": "1.5 m, 1.8 m, 2.0 m",
+        "Attachment Elements": "One karabiner at the lower end, two scaffold hooks at the other",
+        "Conforms To": "EN 354:2010"
+      },
       "attachment": null
     },
     {
@@ -1155,8 +1188,14 @@
       "category": "lanyards",
       "family": "restraint-forked-lanyards",
       "family_name": "Restraint Forked Lanyards",
-      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBL362WLF.jpg",
-      "specs": {},
+      "image": "/assets/products/SBL362WLF.jpg",
+      "specs": {
+        "Type": "Restraint Forked Lanyard",
+        "Material": "44mm wide Polyester Webbing",
+        "Available Length": "1.5 m, 1.8 m, 2.0 m",
+        "Attachment Elements": "One karabiner at the lower end, two scaffold hooks at the other",
+        "Conforms To": "EN 354:2010"
+      },
       "attachment": null
     },
     {
@@ -1164,8 +1203,14 @@
       "category": "lanyards",
       "family": "restraint-forked-lanyards",
       "family_name": "Restraint Forked Lanyards",
-      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBL372ELF.jpg",
-      "specs": {},
+      "image": "/assets/products/SBL372ELF.jpg",
+      "specs": {
+        "Type": "Restraint Forked Lanyard",
+        "Material": "Expandable 44mm wide Polyester Webbing",
+        "Available Length": "Relaxed length 1.5 m, expanded length 2.0 m",
+        "Attachment Elements": "One karabiner at the lower end, two scaffold hooks at the other",
+        "Conforms To": "EN 354:2010"
+      },
       "attachment": null
     },
     {
@@ -1866,10 +1911,7 @@
         "Stitching Thread": "Polyester",
         "Size": "6ft",
         "Standard": "ANSI Z359.13",
-        "Comes With": "Double Lanyard with Shock Absorber & Both side Snap Hook",
-        "CONTACT INFO": "Phone :",
-        "Phone :": "Mail :",
-        "sales@sbfallprotection.com": "Address :"
+        "Comes With": "Double Lanyard with Shock Absorber & Both side Snap Hook"
       },
       "attachment": null
     },
@@ -1906,7 +1948,15 @@
       "family": "work-positioning-system",
       "family_name": "Work Positioning System",
       "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/SBL241WPL.png",
-      "specs": {},
+      "specs": {
+        "Type": "Work Positioning Lanyard",
+        "Material": "Made of 12mm & 14mm dia Polyester 3-strand Twisted Rope",
+        "Length": "2.0 m, 3.0 m, and customised lengths",
+        "Attachment Elements": "Steel karabiners at both ends",
+        "Adjustment": "Manual ring-type adjuster for work positioning and length adjustment",
+        "Conforms To": "EN 358:2018",
+        "Customised": "Can be customised as per requirements"
+      },
       "attachment": null
     },
     {
@@ -1915,7 +1965,15 @@
       "family": "work-positioning-system",
       "family_name": "Work Positioning System",
       "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/SBL242WPL.png",
-      "specs": {},
+      "specs": {
+        "Type": "Work Positioning Lanyard",
+        "Material": "Made of 12mm & 14mm dia Polyester 3-strand Twisted Rope",
+        "Length": "2.0 m, 3.0 m, and customised lengths",
+        "Attachment Elements": "Steel karabiners at both ends",
+        "Adjustment": "Alloy steel rope-grab adjuster for easy length adjustment and work positioning",
+        "Conforms To": "EN 358:2018",
+        "Customised": "Can be customised as per requirements"
+      },
       "attachment": null
     },
     {
@@ -1924,7 +1982,15 @@
       "family": "work-positioning-system",
       "family_name": "Work Positioning System",
       "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/SBL243WPL.png",
-      "specs": {},
+      "specs": {
+        "Type": "Work Positioning Lanyard",
+        "Material": "Made of 12mm dia Polyester Kernmantle Rope",
+        "Length": "2.0 m, 3.0 m, and customised lengths",
+        "Attachment Elements": "Steel karabiners at both ends",
+        "Adjustment": "Alloy steel rope-grab adjuster for easy length adjustment and work positioning",
+        "Conforms To": "EN 358:2018",
+        "Customised": "Can be customised as per requirements"
+      },
       "attachment": null
     },
     {
@@ -1933,7 +1999,32 @@
       "family": "work-positioning-system",
       "family_name": "Work Positioning System",
       "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/SBL244WPL.png",
-      "specs": {},
+      "specs": {
+        "Type": "Work Positioning Lanyard",
+        "Material": "Made of 30mm Polyester Webbing",
+        "Length": "2.0 m, 3.0 m, and customised lengths",
+        "Attachment Elements": "Steel karabiners at both ends",
+        "Adjustment": "Manual ring-type adjuster for work positioning and length adjustment",
+        "Conforms To": "EN 358:2018",
+        "Customised": "Can be customised as per requirements"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBL245WPL",
+      "category": "work-positioning",
+      "family": "work-positioning-system",
+      "family_name": "Work Positioning System",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2023/11/SBL244WPL.png",
+      "specs": {
+        "Type": "Work Positioning Lanyard",
+        "Material": "Made of 12mm dia Polyester Kernmantle Rope",
+        "Length": "2.0 m, 3.0 m, and customised lengths",
+        "Attachment Elements": "Steel karabiners at both ends",
+        "Adjustment": "Aluminium rope-grab adjuster for easy length adjustment and work positioning",
+        "Conforms To": "EN 358:2018",
+        "Customised": "Can be customised as per requirements"
+      },
       "attachment": null
     },
     {
@@ -1942,34 +2033,15 @@
       "family": "hooks-connectors",
       "family_name": "Hooks & Connectors",
       "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM101SLC.jpg",
-      "specs": {},
-      "attachment": null
-    },
-    {
-      "sku": "SBM102DLC",
-      "category": "hooks-connectors",
-      "family": "hooks-connectors",
-      "family_name": "Hooks & Connectors",
-      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM102DLC.jpg",
-      "specs": {},
-      "attachment": null
-    },
-    {
-      "sku": "SBM104TLC",
-      "category": "hooks-connectors",
-      "family": "hooks-connectors",
-      "family_name": "Hooks & Connectors",
-      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM104TLC.jpg",
-      "specs": {},
-      "attachment": null
-    },
-    {
-      "sku": "SBM105QLC",
-      "category": "hooks-connectors",
-      "family": "hooks-connectors",
-      "family_name": "Hooks & Connectors",
-      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM105QLC.jpg",
-      "specs": {},
+      "specs": {
+        "Type": "Screw Locking Karabiner",
+        "Material": "Mild Steel",
+        "Gate Opening": "17.0mm",
+        "Minimum Breaking Strength": "23 kN",
+        "Net Weight": "185.0 gm",
+        "Finishing": "Trivalent Blue / Yellow Passivation",
+        "Conformity": "EN 362:2004, ANSI Z359.12-2009"
+      },
       "attachment": null
     },
     {
@@ -1978,7 +2050,49 @@
       "family": "hooks-connectors",
       "family_name": "Hooks & Connectors",
       "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM102DLC.jpg",
-      "specs": {},
+      "specs": {
+        "Type": "Twist Lock Karabiner with Pin",
+        "Material": "Mild Steel",
+        "Gate Opening": "17.0mm",
+        "Minimum Breaking Strength": "23 kN",
+        "Net Weight": "215.0 gm",
+        "Finishing": "Trivalent Blue / Yellow Passivation",
+        "Conformity": "EN 362:2004, ANSI Z359.12-2009"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBM104TLC",
+      "category": "hooks-connectors",
+      "family": "hooks-connectors",
+      "family_name": "Hooks & Connectors",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM104TLC.jpg",
+      "specs": {
+        "Type": "Aluminium Twist Locking Karabiner",
+        "Material": "Aluminium",
+        "Gate Opening": "22.0mm",
+        "Minimum Breaking Strength": "23 kN",
+        "Net Weight": "85.0 gm",
+        "Finishing": "Powder Coated",
+        "Conformity": "EN 362:2004, ANSI Z359.12-2009"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBM105QLC",
+      "category": "hooks-connectors",
+      "family": "hooks-connectors",
+      "family_name": "Hooks & Connectors",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM105QLC.jpg",
+      "specs": {
+        "Type": "Quarter Turn Locking Karabiner",
+        "Material": "Mild Steel",
+        "Gate Opening": "20.0mm",
+        "Minimum Breaking Strength": "23 kN",
+        "Net Weight": "350.0 gm",
+        "Finishing": "Trivalent Blue / Yellow Passivation",
+        "Conformity": "EN 362:2004, ANSI Z359.12-2009"
+      },
       "attachment": null
     },
     {
@@ -1987,7 +2101,15 @@
       "family": "hooks-connectors",
       "family_name": "Hooks & Connectors",
       "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM201SNH.jpg",
-      "specs": {},
+      "specs": {
+        "Type": "Snap Hook",
+        "Material": "Alloy Steel",
+        "Gate Opening": "20.0mm",
+        "Minimum Breaking Strength": "23 kN",
+        "Net Weight": "240.0 gm",
+        "Finishing": "Trivalent Blue / Yellow Passivation",
+        "Conformity": "EN 362:2004, ANSI Z359.12-2009"
+      },
       "attachment": null
     },
     {
@@ -1996,7 +2118,15 @@
       "family": "hooks-connectors",
       "family_name": "Hooks & Connectors",
       "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM202SNH.jpg",
-      "specs": {},
+      "specs": {
+        "Type": "Forged Snap Hook",
+        "Material": "Alloy Steel",
+        "Gate Opening": "20.0mm",
+        "Minimum Breaking Strength": "23 kN",
+        "Net Weight": "440.0 gm",
+        "Finishing": "Trivalent Blue / Yellow Passivation",
+        "Conformity": "EN 362:2004, ANSI Z359.12-2009"
+      },
       "attachment": null
     },
     {
@@ -2005,7 +2135,15 @@
       "family": "hooks-connectors",
       "family_name": "Hooks & Connectors",
       "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM203SNH.jpg",
-      "specs": {},
+      "specs": {
+        "Type": "Stamped Snap Hook",
+        "Material": "Mild Steel",
+        "Gate Opening": "20.0mm",
+        "Minimum Breaking Strength": "23 kN",
+        "Net Weight": "350.0 gm",
+        "Finishing": "Trivalent Blue / Yellow Passivation",
+        "Conformity": "EN 362:2004, ANSI Z359.12-2009"
+      },
       "attachment": null
     },
     {
@@ -2014,7 +2152,15 @@
       "family": "hooks-connectors",
       "family_name": "Hooks & Connectors",
       "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM204SNH.jpg",
-      "specs": {},
+      "specs": {
+        "Type": "Swivel Snap Hook",
+        "Material": "Alloy Steel",
+        "Gate Opening": "20.0mm",
+        "Minimum Breaking Strength": "23 kN",
+        "Net Weight": "430.0 gm",
+        "Finishing": "Trivalent Blue / Yellow Passivation",
+        "Conformity": "EN 362:2004, ANSI Z359.12-2009"
+      },
       "attachment": null
     },
     {
@@ -2023,16 +2169,15 @@
       "family": "hooks-connectors",
       "family_name": "Hooks & Connectors",
       "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM205SBH.jpg",
-      "specs": {},
-      "attachment": null
-    },
-    {
-      "sku": "SBM202SBH",
-      "category": "hooks-connectors",
-      "family": "hooks-connectors",
-      "family_name": "Hooks & Connectors",
-      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM202SNH.jpg",
-      "specs": {},
+      "specs": {
+        "Type": "Spring Hook",
+        "Material": "Mild Steel",
+        "Gate Opening": "24.0mm",
+        "Minimum Breaking Strength": "23 kN",
+        "Net Weight": "280.0 gm",
+        "Finishing": "Trivalent Blue / Yellow Passivation",
+        "Conformity": "EN 362:2004, ANSI Z359.12-2009"
+      },
       "attachment": null
     },
     {
@@ -2041,7 +2186,15 @@
       "family": "hooks-connectors",
       "family_name": "Hooks & Connectors",
       "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM206SCH.jpg",
-      "specs": {},
+      "specs": {
+        "Type": "Forged Scaffold Hook",
+        "Material": "Alloy Steel",
+        "Gate Opening": "60.0mm",
+        "Minimum Breaking Strength": "23 kN",
+        "Net Weight": "500.0 gm",
+        "Finishing": "Trivalent Blue / Yellow Passivation",
+        "Conformity": "EN 362:2004, ANSI Z359.12-2009"
+      },
       "attachment": null
     },
     {
@@ -2050,7 +2203,15 @@
       "family": "hooks-connectors",
       "family_name": "Hooks & Connectors",
       "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM207FRH.jpg",
-      "specs": {},
+      "specs": {
+        "Type": "Forged Rebar Hook",
+        "Material": "Alloy Steel",
+        "Gate Opening": "65.0mm",
+        "Minimum Breaking Strength": "23 kN",
+        "Net Weight": "950.0 gm",
+        "Finishing": "Trivalent Blue / Yellow Passivation",
+        "Conformity": "EN 362:2004, ANSI Z359.12-2009"
+      },
       "attachment": null
     },
     {
@@ -2059,7 +2220,15 @@
       "family": "hooks-connectors",
       "family_name": "Hooks & Connectors",
       "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM208SRH.jpg",
-      "specs": {},
+      "specs": {
+        "Type": "Stamped Rebar Hook",
+        "Material": "Alloy Steel",
+        "Gate Opening": "65.0mm",
+        "Minimum Breaking Strength": "23 kN",
+        "Net Weight": "750.0 gm",
+        "Finishing": "Trivalent Blue / Yellow Passivation",
+        "Conformity": "EN 362:2004, ANSI Z359.12-2009"
+      },
       "attachment": null
     },
     {
@@ -2068,7 +2237,15 @@
       "family": "hooks-connectors",
       "family_name": "Hooks & Connectors",
       "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM209SRH.jpg",
-      "specs": {},
+      "specs": {
+        "Type": "Swivel Rebar Hook",
+        "Material": "Alloy Steel",
+        "Gate Opening": "65.0mm",
+        "Minimum Breaking Strength": "23 kN",
+        "Net Weight": "950.0 gm",
+        "Finishing": "Trivalent Blue / Yellow Passivation",
+        "Conformity": "EN 362:2004, ANSI Z359.12-2009"
+      },
       "attachment": null
     },
     {
@@ -2077,7 +2254,15 @@
       "family": "hooks-connectors",
       "family_name": "Hooks & Connectors",
       "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBM211AH.jpg",
-      "specs": {},
+      "specs": {
+        "Type": "Anchorage Hook",
+        "Material": "Stainless Steel",
+        "Gate Opening": "75.0mm",
+        "Minimum Breaking Strength": "23 kN",
+        "Net Weight": "300.0 gm",
+        "Finishing": "Trivalent Blue / Yellow Passivation",
+        "Conformity": "EN 362:2004, ANSI Z359.12-2009"
+      },
       "attachment": null
     },
     {
@@ -2441,7 +2626,10 @@
       "family": "rope-access-rescue",
       "family_name": "Rope Access & Rescue",
       "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SB260PC.jpg",
-      "specs": {},
+      "specs": {
+        "Type": "Pilot Chair",
+        "Standards": "EN 1498:2006"
+      },
       "attachment": "Ergonomic and comfortable working chair for vertical ascent and descent."
     },
     {
@@ -2488,6 +2676,42 @@
       "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SB220RAS.jpg",
       "specs": {},
       "attachment": "Grip Descender"
+    },
+    {
+      "sku": "SB251RS",
+      "category": "rope-access-rescue",
+      "family": "rope-access-rescue",
+      "family_name": "Rope Access & Rescue",
+      "image": "/assets/products/SB251RS.jpg",
+      "specs": {
+        "Type": "Rescue Stretcher",
+        "Description": "Equipped for horizontal or vertical hoisting, with backpack towing harness, horizontal lift slings, removable webbing handles and tow strap. Rolls into the included backpack for storage."
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SB261PC",
+      "category": "rope-access-rescue",
+      "family": "rope-access-rescue",
+      "family_name": "Rope Access & Rescue",
+      "image": "/assets/products/SB261PC.jpg",
+      "specs": {
+        "Type": "Sky Seat",
+        "Description": "High tenacity polyester webbing with lightweight aluminium reinforcement, under 1300 gms. Adjustable straps, three loops beneath for tools, bags and buckets, and a back pad for support."
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SB101STS",
+      "category": "rope-access-rescue",
+      "family": "rope-access-rescue",
+      "family_name": "Rope Access & Rescue",
+      "image": "/assets/products/SB101STS.jpg",
+      "specs": {
+        "Type": "Suspension Trauma Strap",
+        "Description": "High tenacity polyester webbing. Attaches to the harness and relieves the effects of suspension trauma."
+      },
+      "attachment": null
     },
     {
       "sku": "SB006SRL",

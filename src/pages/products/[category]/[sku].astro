@@ -8,10 +8,13 @@ import {
 } from '../../../lib/catalog';
 
 export function getStaticPaths() {
-  return allProducts().map((p) => ({
-    params: { category: p.category, sku: p.sku.toLowerCase() },
-    props: { product: p },
-  }));
+  return allProducts()
+    // ranges shown as a reference table have no page of their own
+    .filter((p) => getFamily(p.family)?.layout !== 'table')
+    .map((p) => ({
+      params: { category: p.category, sku: p.sku.toLowerCase() },
+      props: { product: p },
+    }));
 }
 
 const { product } = Astro.props;

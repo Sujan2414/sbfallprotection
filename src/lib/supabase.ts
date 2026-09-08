@@ -36,7 +36,7 @@ export interface DbCategory {
 }
 export interface DbFamily {
   slug: string; name: string; category: string; intro: string | null;
-  bullets: string[] | null; layout: 'spec' | 'variant'; sort_order: number;
+  bullets: string[] | null; layout: 'spec' | 'variant' | 'table'; sort_order: number;
 }
 export interface DbProduct {
   sku: string; category: string; family: string | null;

@@ -1,4 +1,5 @@
 ---
+import { Fragment } from 'astro/jsx-runtime';
 import Base from '../../layouts/Base.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import {
@@ -14,6 +15,20 @@ const { category } = Astro.params;
 const cat = getCategory(category!)!;
 const families = getFamilies(category!);
 const products = getProducts(category!);
+
+/** Columns for a range shown as a table: its spec keys, else its attachment. */
+function columnsOf(items: { specs: Record<string, string>; attachment: string | null }[]): string[] {
+  const keys: string[] = [];
+  for (const p of items) for (const k of Object.keys(p.specs)) if (!keys.includes(k)) keys.push(k);
+  if (keys.length) return keys.slice(0, 6);
+  return items.some((p) => p.attachment) ? ['Details'] : [];
+}
+
+/** One photo for the whole range, when every code shares it. */
+function sharedPhoto(items: { image: string | null }[]): string | null {
+  const set = new Set(items.map((p) => p.image));
+  return set.size === 1 ? (items[0].image ?? null) : null;
+}
 
 /** The most common standard in a family, used as the card badge. */
 function stdOf(specs: Record<string, string>): string | null {
@@ -60,6 +75,41 @@ function stdOf(specs: Record<string, string>): string | null {
               </div>
             )}
 
+            {f.layout === 'table' ? (
+              <Fragment>
+                {sharedPhoto(items) && (
+                  <div class="fam-photo">
+                    <img src={imageUrl(sharedPhoto(items))} alt={f.name} loading="lazy" width="420" height="420">
+                  </div>
+                )}
+                <div class="fam-table-wrap">
+                  <table class="fam-table">
+                    <thead>
+                      <tr>
+                        <th>Ref. No.</th>
+                        {!sharedPhoto(items) && <th class="fam-th-img"><span class="vh">Photo</span></th>}
+                        {columnsOf(items).map((k) => <th>{k}</th>)}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {items.map((p) => (
+                        <tr>
+                          <td class="fam-ref">{p.sku}</td>
+                          {!sharedPhoto(items) && (
+                            <td class="fam-td-img">
+                              <img src={imageUrl(p.image)} alt={p.sku} loading="lazy" width="64" height="64">
+                            </td>
+                          )}
+                          {columnsOf(items).map((k) => (
+                            <td>{k === 'Details' ? (p.attachment ?? '') : (p.specs[k] ?? '')}</td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </Fragment>
+            ) : (
             <div class="sku-grid">
               {items.map((p) => (
                 <a class="sku-card" href={productUrl(p)}>
@@ -83,6 +133,7 @@ function stdOf(specs: Record<string, string>): string | null {
                 </a>
               ))}
             </div>
+            )}
           </div>
         );
       })}

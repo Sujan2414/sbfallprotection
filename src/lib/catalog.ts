@@ -24,7 +24,7 @@ export interface Family {
   category: string;
   intro: string;
   bullets: string[];
-  layout: 'spec' | 'variant';
+  layout: 'spec' | 'variant' | 'table';
   source_url: string;
 }
 

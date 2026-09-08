@@ -1565,3 +1565,28 @@
 .legal-credit a{color:var(--ink);font-weight:600;text-decoration:none;border-bottom:1px solid var(--line)}
 .legal-credit a:hover{color:var(--orange);border-color:var(--orange)}
 @media(max-width:700px){.legal{padding:44px 0 64px}}
+
+/* ============ RANGE SHOWN AS A REFERENCE TABLE ============ */
+/* Single lanyards, anchorages and the retractable block vary by one column,
+   so the range reads as a table instead of a card per code. */
+.fam-photo{margin:0 0 22px;max-width:320px}
+.fam-photo img{width:100%;height:auto;border-radius:18px;border:1px solid var(--line);background:var(--white)}
+.fam-table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:18px;background:var(--white)}
+.fam-table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:520px}
+.fam-table th,.fam-table td{padding:13px 16px;text-align:left;vertical-align:middle}
+.fam-table thead th{
+  background:var(--ink);color:#fff;font-weight:600;font-size:12.5px;
+  letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;
+}
+.fam-table tbody tr+tr{border-top:1px solid var(--line)}
+.fam-table tbody tr:hover{background:var(--light)}
+.fam-ref{font-weight:600;color:var(--ink);white-space:nowrap}
+.fam-td-img{width:112px}
+.fam-td-img img{width:96px;height:64px;object-fit:contain;display:block}
+.fam-th-img{width:112px}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media(max-width:700px){
+  .fam-table{font-size:13.5px}
+  .fam-table th,.fam-table td{padding:11px 12px}
+  .fam-photo{max-width:220px;margin-bottom:16px}
+}
