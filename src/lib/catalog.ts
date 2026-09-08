@@ -104,8 +104,12 @@ const CATEGORY_META: Record<string, { blurb: string; icon: string }> = {
     blurb: 'Forged snap hooks, scaffold hooks and karabiners — load-rated and gate-tested.',
     icon: 'hook',
   },
+  'temporary-anchorage-line-systems': {
+    blurb: 'Temporary anchorage lines that give a moving worker a certified point to clip into.',
+    icon: 'anchor',
+  },
   anchorages: {
-    blurb: 'Fixed and temporary anchor points that give every system a certified hold.',
+    blurb: 'Fixed anchor points that give every system a certified hold.',
     icon: 'anchor',
   },
   'horizontal-lifeline': {
@@ -121,12 +125,12 @@ const CATEGORY_META: Record<string, { blurb: string; icon: string }> = {
     icon: 'material',
   },
   'rope-access-rescue': {
-    blurb: 'Descenders, rescue kits and confined-space equipment for controlled recovery.',
+    blurb: 'Descenders and rescue kits for working on rope and controlled recovery.',
     icon: 'rescue',
   },
-  'safety-garments': {
-    blurb: 'Hi-vis workwear plus head, eye, ear, face and hand protection.',
-    icon: 'garment',
+  'tripod-winch': {
+    blurb: 'Tripod and winch equipment for confined-space entry, work and recovery.',
+    icon: 'rescue',
   },
 };
 

@@ -1,5 +1,5 @@
 ---
-title: "EN 361, 354, 355, 360: What the Numbers on Your PPE Label Actually Mean"
+title: "EN 361, 355, 360: What the Numbers on Your PPE Label Actually Mean"
 excerpt: "A fall arrest system is a chain of separately certified parts. Here is what each EN number covers, why a harness alone is not a system, and what to check on the label before you buy."
 image: "post-standards"
 imageAlt: "Quality control inspection of finished harness webbing before packing"
@@ -22,10 +22,6 @@ Here is what the common numbers cover.
 **EN 361 — Full body harnesses.** The only body-holding device permitted for fall
 arrest. Defines the attachment points that may be used to arrest a fall, marked with
 a capital **A**. If a point is not marked A, it is not a fall arrest point.
-
-**EN 354 — Lanyards.** The connecting element itself. Important: a lanyard certified
-to EN 354 alone is a *connecting* component. It is not a fall arrest lanyard unless
-combined with energy absorption.
 
 **EN 355 — Energy absorbers.** The part that limits the force transmitted to the body
 during an arrest. This is the standard that caps arrest force at a maximum of **6 kN**.

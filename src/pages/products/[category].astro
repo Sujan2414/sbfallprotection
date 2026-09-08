@@ -68,8 +68,8 @@ function stdOf(specs: Record<string, string>): string | null {
                   </span>
                   <span class="sku-body">
                     <span class="sku-code">{p.sku}</span>
-                    {(p.attachment || p.specs['Usage']) && (
-                      <span class="sku-desc">{p.attachment || p.specs['Usage']}</span>
+                    {(p.specs['Type'] || p.attachment || p.specs['Uses'] || p.specs['Usage']) && (
+                      <span class="sku-desc">{p.specs['Type'] || p.attachment || p.specs['Uses'] || p.specs['Usage']}</span>
                     )}
                     <span class="sku-foot">
                       {stdOf(p.specs)
