@@ -835,18 +835,16 @@
 @media(max-width:560px){.quote-card{padding:22px}}
 
 /* ================= AS SEEN ON REELS ================= */
-.reels{background:var(--ink);color:#fff;overflow:hidden;position:relative}
+.reels{background:var(--light);color:var(--ink);overflow:hidden;position:relative}
 .reels::before{content:"";position:absolute;inset:0;
-  background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);background-size:28px 28px}
+  background-image:radial-gradient(rgba(19,19,18,.05) 1px,transparent 1px);background-size:28px 28px}
 .reels>*{position:relative}
-.reels .sec-head h2{color:#fff}
-.reels .sec-head p{color:rgba(255,255,255,.68)}
 .reels-head{display:flex;justify-content:space-between;align-items:flex-end;gap:28px;flex-wrap:wrap;margin-bottom:38px}
 .reels-head .sec-head{margin:0}
 .ig-btn{display:inline-flex;align-items:center;gap:10px;border-radius:999px;padding:13px 24px;
-  font-size:15px;font-weight:600;color:var(--ink);background:#fff;white-space:nowrap;
+  font-size:15px;font-weight:600;color:#fff;background:var(--ink);white-space:nowrap;
   transition:transform .18s ease,box-shadow .18s ease}
-.ig-btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(0,0,0,.35)}
+.ig-btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(19,19,18,.22)}
 .ig-btn svg{flex:none}
 
 .reel-row{display:flex;gap:18px;overflow-x:auto;padding:4px 0 22px;
@@ -854,17 +852,19 @@
 .reel-row::-webkit-scrollbar{display:none}
 .reel{position:relative;flex:0 0 auto;width:min(258px,62vw);aspect-ratio:9/16;border-radius:20px;
   overflow:hidden;background:#000;scroll-snap-align:start;
-  border:1px solid rgba(255,255,255,.10);transition:transform .25s ease,border-color .25s ease}
+  border:1px solid var(--line);box-shadow:0 10px 30px rgba(19,19,18,.10);
+  transition:transform .25s ease,border-color .25s ease}
 .reel:hover{transform:translateY(-5px);border-color:rgba(254,89,34,.55)}
 .reel video,.reel img.reel-poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .reel::after{content:"";position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(180deg,rgba(19,19,18,.30) 0%,transparent 34%,transparent 58%,rgba(19,19,18,.82) 100%)}
-.reel-cap{position:absolute;z-index:2;left:15px;right:15px;bottom:15px;font-size:14px;font-weight:600;line-height:1.35}
+.reel-cap{position:absolute;z-index:2;left:15px;right:15px;bottom:15px;font-size:14px;font-weight:600;line-height:1.35;
+  color:#fff}   /* sits on the tile's dark gradient, not on the section ground */
 .reel-tag{position:absolute;z-index:2;top:14px;left:14px;display:inline-flex;align-items:center;gap:6px;
   background:rgba(19,19,18,.55);backdrop-filter:blur(6px);border-radius:999px;padding:6px 12px;
   font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.92)}
 .reel-live{width:6px;height:6px;border-radius:50%;background:var(--orange);flex:none}
-.reels-note{margin-top:6px;font-size:13.5px;color:rgba(255,255,255,.5)}
+.reels-note{margin-top:6px;font-size:13.5px;color:var(--gray)}
 @media(max-width:760px){
   .reels-head{margin-bottom:26px}
   .reel{width:min(210px,58vw);border-radius:16px}
