@@ -2266,57 +2266,17 @@
       "attachment": null
     },
     {
-      "sku": "SBA12100KRR3",
-      "category": "temporary-anchorage-line-systems",
-      "family": "anchorages",
-      "family_name": "Temporary Anchorage Line Systems",
-      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA12100KRR3.jpg",
-      "specs": {},
-      "attachment": "The Anchorage Line has one side connector and other side a stop knot."
-    },
-    {
-      "sku": "SBA12100TRR4",
-      "category": "temporary-anchorage-line-systems",
-      "family": "anchorages",
-      "family_name": "Temporary Anchorage Line Systems",
-      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA12100TRR4.jpg",
-      "specs": {},
-      "attachment": "The Anchorage Line has one side connector and other side a stop knot."
-    },
-    {
-      "sku": "SBA12100KR",
-      "category": "temporary-anchorage-line-systems",
-      "family": "anchorages",
-      "family_name": "Temporary Anchorage Line Systems",
-      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA12100KR.jpg",
-      "specs": {},
-      "attachment": "10.5mm and 12mm dia Kernmantle Polyamide Rope."
-    },
-    {
-      "sku": "SBA12100TR",
-      "category": "temporary-anchorage-line-systems",
-      "family": "anchorages",
-      "family_name": "Temporary Anchorage Line Systems",
-      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA12100TR.jpg",
-      "specs": {},
-      "attachment": "3-Strand-14mm and 16mm dia Twisted Polyamide Rope"
-    },
-    {
-      "sku": "SBA203RA",
-      "category": "temporary-anchorage-line-systems",
-      "family": "anchorages",
-      "family_name": "Temporary Anchorage Line Systems",
-      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA203RA.jpg",
-      "specs": {},
-      "attachment": null
-    },
-    {
       "sku": "SBA201R4",
       "category": "temporary-anchorage-line-systems",
       "family": "anchorages",
       "family_name": "Temporary Anchorage Line Systems",
       "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA201R4.jpg",
-      "specs": {},
+      "specs": {
+        "Type": "Rope Grab Fall Arrester",
+        "For Use On": "14mm to 16mm polyester twisted rope anchorage line",
+        "Locking": "Double security locking system",
+        "Conforms To": "EN 353-2:2002"
+      },
       "attachment": null
     },
     {
@@ -2325,108 +2285,133 @@
       "family": "anchorages",
       "family_name": "Temporary Anchorage Line Systems",
       "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA202R4.jpg",
-      "specs": {},
-      "attachment": null
-    },
-    {
-      "sku": "SBAA111",
-      "category": "anchorages",
-      "family": "anchorages-2",
-      "family_name": "Anchorages",
-      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/02/SB0620.jpg",
       "specs": {
-        "Usage": "Extension",
-        "Breaking Strength": "25 KN",
-        "Webbing": "High Tenacity Polyester",
-        "Webbing Width": "44mm",
-        "Stitching Thread": "Polyester",
-        "Size": "Customized",
-        "Standard": "ANSI Z359.1",
-        "Comes With": "Anchor Strap & One side D-ring, Other side Loop"
+        "Type": "Rope Grab Fall Arrester",
+        "For Use On": "14mm to 16mm polyester twisted rope anchorage line",
+        "Locking": "Double security locking system",
+        "Conforms To": "EN 353-2:2002"
       },
       "attachment": null
     },
     {
-      "sku": "SBAA211",
-      "category": "anchorages",
-      "family": "anchorages-2",
-      "family_name": "Anchorages",
-      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/02/SB0641.jpg",
+      "sku": "SBA203RA",
+      "category": "temporary-anchorage-line-systems",
+      "family": "anchorages",
+      "family_name": "Temporary Anchorage Line Systems",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA203RA.jpg",
       "specs": {
-        "Usage": "Extension",
-        "Breaking Strength": "25 KN",
-        "Webbing": "High Tenacity Polyester",
-        "Webbing Width": "44mm",
-        "Stitching Thread": "Polyester",
-        "Size": "Customized",
-        "Standard": "ANSI Z359.1",
-        "Comes With": "Scaffoldhook Choker & One side D-ring"
+        "Type": "Rope Grab with Energy Absorber",
+        "For Use On": "14mm or 16mm polyamide twisted rope anchorage line",
+        "Locking": "Gravity locking with double security locking system",
+        "Connector": "Snap hook",
+        "Conforms To": "EN 353-2:2002"
       },
       "attachment": null
     },
     {
-      "sku": "SBAA122",
-      "category": "anchorages",
-      "family": "anchorages-2",
-      "family_name": "Anchorages",
-      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/03/10720.jpg",
+      "sku": "SBA12100KRR3",
+      "category": "temporary-anchorage-line-systems",
+      "family": "anchorages",
+      "family_name": "Temporary Anchorage Line Systems",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA12100KRR3.jpg",
       "specs": {
-        "Usage": "Extension",
-        "Breaking Strength": "25 KN",
-        "Webbing": "High Tenacity Polyester",
-        "Webbing Width": "44mm",
-        "Stitching Thread": "Polyester",
-        "Size": "Customized",
-        "Standard": "ANSI Z359.1",
-        "Comes With": "Anchor Strap & Both Side Loop"
+        "Type": "Guided Type Fall Arrester with Flexible Kernmantle Rope Anchorage Line",
+        "Material": "12mm dia Kernmantle Polyamide Rope",
+        "Anchorage Line": "One side connector, other side a stop knot",
+        "Length": "5 m to 100 m, customised on request",
+        "Conforms To": "EN 353-2:2002"
       },
       "attachment": null
     },
     {
-      "sku": "SBA222",
-      "category": "anchorages",
-      "family": "anchorages-2",
-      "family_name": "Anchorages",
-      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/03/10787.jpg",
+      "sku": "SBA12100TRR4",
+      "category": "temporary-anchorage-line-systems",
+      "family": "anchorages",
+      "family_name": "Temporary Anchorage Line Systems",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA12100TRR4.jpg",
       "specs": {
-        "Usage": "Extension",
-        "Breaking Strength": "25 KN",
-        "Webbing": "High Tenacity Polyester",
-        "Webbing Width": "80mm",
-        "Stitching Thread": "Polyester",
-        "Size": "Customized",
-        "Standard": "ANSI Z359.1",
-        "Comes With": "Cross Arm Strap & Both side D-ring"
+        "Type": "Guided Type Fall Arrester with Flexible Twisted Rope Anchorage Line",
+        "Material": "14mm dia Twisted Polyester Rope",
+        "Anchorage Line": "One side connector, other side a stop knot",
+        "Length": "5 m to 100 m, customised on request",
+        "Conforms To": "EN 353-2:2002"
       },
       "attachment": null
     },
     {
-      "sku": "SBA223",
-      "category": "anchorages",
-      "family": "anchorages-2",
-      "family_name": "Anchorages",
-      "image": "https://www.sbfallprotection.com/wp-content/uploads/2025/03/10717.jpg",
+      "sku": "SBA12100KR",
+      "category": "temporary-anchorage-line-systems",
+      "family": "anchorages",
+      "family_name": "Temporary Anchorage Line Systems",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA12100KR.jpg",
       "specs": {
-        "Usage": "Extension",
-        "Breaking Strength": "25 KN",
-        "Webbing": "High Tenacity Polyester",
-        "Webbing Width": "44mm",
-        "Stitching Thread": "Polyester",
-        "Size": "Customized",
-        "Standard": "ANSI Z359.1",
-        "Comes With": "Anchor Strap & One side D-ring, Another side Loop"
+        "Type": "Kernmantle Rope Anchorage Line",
+        "Material": "10.5mm and 12mm dia Kernmantle Polyamide Rope",
+        "Fittings": "One side karabiner, other side stop knot",
+        "Length": "10, 20, 30, 40, 50, 100, 150 and 200 m, customised on request"
       },
       "attachment": null
     },
     {
-      "sku": "SBA35100EAS",
+      "sku": "SBA12100TR",
+      "category": "temporary-anchorage-line-systems",
+      "family": "anchorages",
+      "family_name": "Temporary Anchorage Line Systems",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA12100TR.jpg",
+      "specs": {
+        "Type": "Twisted Rope Anchorage Line",
+        "Material": "3-strand 14mm and 16mm dia Twisted Polyamide Rope",
+        "Fittings": "One side karabiner, other side stop knot",
+        "Length": "10, 20, 30, 40, 50, 100, 150 and 200 m, customised on request"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBA31100AS",
       "category": "anchorages",
       "family": "anchorages-2",
       "family_name": "Anchorages",
-      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA35100EAS.jpg",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA31100ASSBA31100AS.jpg",
       "specs": {
-        "Made of 25mm wide Polyester Webbing": "Length : 0.6mtr., 1.0mtr. & 1.5mtr. or as requested",
-        "Strength : Min 18 kN for 3 minutes": "Conforms to EN 795 : 2012 Type B"
+        "Type": "Both Side Loop with Tubular",
+        "Description": "Disposable concrete anchor point strap attached to a structure",
+        "Capacity": "5000 lbs",
+        "Strap": "1-3/4\" x 4\" loop to loop with full length tubular",
+        "Colour": "Orange",
+        "Length": "Various lengths available",
+        "Conforms To": "Meets or exceeds ANSI Z359.1-2007"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBA32100AS",
+      "category": "anchorages",
+      "family": "anchorages-2",
+      "family_name": "Anchorages",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA32100AS.jpg",
+      "specs": {
+        "Type": "One Side D-ring, Other Side Loop with Tubular",
+        "Description": "Disposable concrete anchor strap attached to a structure",
+        "Capacity": "5000 lbs",
+        "Strap": "1-3/4\" wide, loop at one end, large D-ring or loop at the other",
+        "Colour": "Orange",
+        "Length": "Variable lengths available",
+        "Conforms To": "Meets or exceeds ANSI Z359.1-2007 and OSHA"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBA33100CAS",
+      "category": "anchorages",
+      "family": "anchorages-2",
+      "family_name": "Anchorages",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA33100CAS.jpg",
+      "specs": {
+        "Type": "Orange / Blue Cross Arm Strap",
+        "Strap": "3\" wide cross arm strap",
+        "D-rings": "Large D-ring one side, small D-ring the other",
+        "Colour": "Orange and blue, other colours on request",
+        "Conforms To": "Meets or exceeds ANSI Z359.1-2007 and OSHA"
       },
       "attachment": null
     },
@@ -2437,7 +2422,27 @@
       "family_name": "Anchorages",
       "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA34100ES.jpg",
       "specs": {
-        "Made of 44mm wide Polyester Webbing.": "Length : 1.07mtr. or as requested."
+        "Type": "Extension Strap",
+        "Material": "44mm wide Polyester Webbing",
+        "Length": "1.07 m, or as requested",
+        "Fittings": "D-ring at one end, textile loop at the other",
+        "Strength": "Minimum 18 kN for 3 minutes",
+        "Conforms To": "EN 795:2012 Type B"
+      },
+      "attachment": null
+    },
+    {
+      "sku": "SBA35100EAS",
+      "category": "anchorages",
+      "family": "anchorages-2",
+      "family_name": "Anchorages",
+      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA35100EAS.jpg",
+      "specs": {
+        "Type": "Endless Anchor Strap",
+        "Material": "25mm wide Polyester Webbing",
+        "Length": "0.6 m, 1.0 m and 1.5 m, or as requested",
+        "Strength": "Minimum 18 kN for 3 minutes",
+        "Conforms To": "EN 795:2012 Type B"
       },
       "attachment": null
     },
@@ -2448,7 +2453,12 @@
       "family_name": "Anchorages",
       "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA36100WR.jpg",
       "specs": {
-        "Made of PVC coated 8.0mm G. I. Wire Rope.": "The PVC coating allows protection of anchorage surfaces."
+        "Type": "Anchorage Steel Wire Rope Sling",
+        "Material": "PVC coated 8.0mm G.I. wire rope",
+        "Length": "1.0 m, 1.5 m, 1.8 m and 2.0 m, or as requested",
+        "Fittings": "Steel thimbles at both ends",
+        "Minimum Breaking Strength": "5000 lbs / 23 kN",
+        "Conforms To": "EN 795:2012 Type B"
       },
       "attachment": null
     },
@@ -2458,37 +2468,14 @@
       "family": "anchorages-2",
       "family_name": "Anchorages",
       "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA400RA.jpg",
-      "specs": {},
-      "attachment": null
-    },
-    {
-      "sku": "SBA31100AS",
-      "category": "anchorages",
-      "family": "anchorages-2",
-      "family_name": "Anchorages",
-      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA31100ASSBA31100AS.jpg",
-      "specs": {},
-      "attachment": null
-    },
-    {
-      "sku": "SBA33100CAS",
-      "category": "anchorages",
-      "family": "anchorages-2",
-      "family_name": "Anchorages",
-      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA33100CAS.jpg",
       "specs": {
-        "— it is a 3\" wide cross arm strap.": "It comes with a large D-ring on one side and a small Dring on other side.",
-        "It comes with orange and blue combination.": "Other colours are also available on requirement."
+        "Type": "Hinged Steel Roof Anchor",
+        "Material": "Galvanized Steel",
+        "Minimum Breaking Strength": "23 kN",
+        "Finish": "Powder coated or zinc plated",
+        "Weight": "1.14 kg",
+        "Conforms To": "EN 795:2012 Type A and ANSI Z359.1:2007"
       },
-      "attachment": null
-    },
-    {
-      "sku": "SBA32100AS",
-      "category": "anchorages",
-      "family": "anchorages-2",
-      "family_name": "Anchorages",
-      "image": "https://www.sbfallprotection.com/wp-content/uploads/2024/02/SBA32100AS.jpg",
-      "specs": {},
       "attachment": null
     },
     {
