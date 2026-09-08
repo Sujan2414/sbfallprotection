@@ -25,6 +25,7 @@ reusing the client's own material on the client's own site.
 | `admin-login.jpg` (admin console, never public) | The client's own factory-floor photo |
 | `cert-iso-9001.png`, `cert-sedex.jpg` | Certification marks as published by the client (ISO 9001:2015; SEDEX ref. ZS1000032714) |
 | Catalogue product images | Served from the client's WordPress host (`src/data/catalog.json`) |
+| `products/SBH051*.jpg`, `products/SBH3xx.jpg`, `products/SBH5xx.jpg`, `products/SBH621.jpg`, `products/SB2045LB.jpg`, `products/SB2030LB.jpg`, `products/SB1023LB.jpg` | Cut from the client's own SB Fall Protection Catalogue 2026 |
 
 ## 2. Pexels — free for commercial use, no attribution required
 
