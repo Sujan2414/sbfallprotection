@@ -8,7 +8,8 @@
         "full-body-harness-en-standard",
         "full-body-harness-indian-standard",
         "ansi-standard"
-      ]
+      ],
+      "blurb": "Full body, multi-purpose and sit harnesses in EN, BIS and ANSI builds."
     },
     {
       "slug": "lanyards",
@@ -50,7 +51,8 @@
       "intro": "Temporary anchorage lines that give a moving worker a certified point to clip into.",
       "families": [
         "anchorages"
-      ]
+      ],
+      "blurb": "Temporary anchorage lines that give a moving worker a certified point to clip into."
     },
     {
       "slug": "anchorages",
@@ -58,7 +60,8 @@
       "intro": "S. B. FALL PROTECTION Fall Arrester & Temporary Anchorage Line Systems have a wide application of usage in fall arrest while climbing, and in restraint while working on roof tops, platforms and inclined planes.",
       "families": [
         "anchorages-2"
-      ]
+      ],
+      "blurb": "Fixed anchor straps, slings and roof anchors that give every system a hold."
     },
     {
       "slug": "horizontal-lifeline",
@@ -82,7 +85,8 @@
       "intro": "Rope Access technique of movement on a rope should only be used when traditional access systems cannot be installed. The basic rope access equipment should be used with a fall protection system. Rescue technique is used in an emergency hence it is naturally the most sensitive. This intervention can be performed by the user him/herself, if he/she is conscious and has the necessary equipment for selfextraction, or by a helper. In this situation it is necessary to be able to reach the victim, release him/her in complete safety and move the person upwards or downwards.",
       "families": [
         "rope-access-rescue"
-      ]
+      ],
+      "blurb": "Descenders, rescue stretchers and sky seats for controlled recovery."
     },
     {
       "slug": "retractable-blocks",
@@ -90,7 +94,8 @@
       "intro": "SB. FALL PROTECTION Self Retractable Lifelines are special devices equipped with extendable G.I. wire rope which have an inbuilt braking system to arrest potential falls",
       "families": [
         "retractable-block"
-      ]
+      ],
+      "blurb": "Self-retracting lifelines that pay out, retract and lock on a fall."
     },
     {
       "slug": "tripod-winch",
@@ -98,7 +103,8 @@
       "intro": "Tripod and winch equipment for confined-space entry, work and recovery.",
       "families": [
         "confined-space"
-      ]
+      ],
+      "blurb": "Tripod and winch equipment for confined-space entry, work and recovery."
     }
   ],
   "families": [

@@ -89,7 +89,7 @@ const data: Snapshot = await (async (): Promise<Snapshot> => {
 /** Short marketing blurbs + icon keys per category (editorial, not scraped). */
 const CATEGORY_META: Record<string, { blurb: string; icon: string }> = {
   harnesses: {
-    blurb: 'Full body, sit and rescue harnesses in EN, ANSI and Indian standard builds.',
+    blurb: 'Full body, multi-purpose and sit harnesses in EN, BIS and ANSI builds.',
     icon: 'harness',
   },
   lanyards: {
