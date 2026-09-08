@@ -7,3 +7,6 @@ dist
 .astro
 .env
 .env.local
+
+# credentials handover sheet: filled in by hand, never committed
+SB-Fall-Protection-Handover.docx
