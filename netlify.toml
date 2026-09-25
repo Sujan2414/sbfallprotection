@@ -32,6 +32,14 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
+# Browsers reach Supabase through our own domain: several Indian ISPs block
+# supabase.co outright. See SB_BROWSER_PATH in src/lib/supabase.ts.
+[[redirects]]
+  from = "/sb/*"
+  to = "https://basyfxoycdudurvvsisk.supabase.co/:splat"
+  status = 200
+  force = true
+
 [[redirects]]
   from = "/api/users"
   to = "/.netlify/functions/users"
@@ -85,7 +93,7 @@
 
 [[redirects]]
   from = "/safety-garments"
-  to = "/products/safety-garments"
+  to = "/products"
   status = 301
 
 [[redirects]]

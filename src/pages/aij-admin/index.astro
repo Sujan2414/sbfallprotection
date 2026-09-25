@@ -3,7 +3,9 @@ import '../../styles/admin.css';
 
 // The anon key is safe in the browser: RLS restricts every write to an
 // authenticated session, so signing in is what grants edit rights.
-const sbUrl = import.meta.env.SUPABASE_URL ?? process.env.SUPABASE_URL ?? '';
+import { SB_BROWSER_PATH } from '../../lib/supabase';
+// the browser reaches Supabase through our own domain; see SB_BROWSER_PATH
+const sbUrl = (import.meta.env.SUPABASE_URL ?? process.env.SUPABASE_URL) ? SB_BROWSER_PATH : '';
 const sbKey = import.meta.env.SUPABASE_ANON_KEY ?? process.env.SUPABASE_ANON_KEY ?? '';
 
 const nav = [

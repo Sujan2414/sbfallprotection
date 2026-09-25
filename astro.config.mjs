@@ -9,4 +9,16 @@ export default defineConfig({
   build: { format: 'directory' },
   integrations: [sitemap({ filter: (page) => !page.includes('/admin') })],
   devToolbar: { enabled: false },
+  // the host proxies /sb to Supabase in production; mirror it for astro dev
+  vite: {
+    server: {
+      proxy: {
+        '/sb': {
+          target: process.env.SUPABASE_URL || 'https://basyfxoycdudurvvsisk.supabase.co',
+          changeOrigin: true,
+          rewrite: (p) => p.replace(/^\/sb/, ''),
+        },
+      },
+    },
+  },
 });

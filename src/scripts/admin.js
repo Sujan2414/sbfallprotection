@@ -17,7 +17,11 @@
  */
 import { createClient } from '@supabase/supabase-js';
 
-const URL = document.body.dataset.sbUrl;
+// the page carries a same-origin path (/sb) that the host proxies to
+// Supabase; the client library needs it absolute
+const URL = document.body.dataset.sbUrl
+  ? new window.URL(document.body.dataset.sbUrl, location.origin).href.replace(/\/$/, '')
+  : '';
 const KEY = document.body.dataset.sbKey;
 
 const loginView = document.getElementById('admLogin');

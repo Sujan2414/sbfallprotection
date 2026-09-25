@@ -86,3 +86,16 @@ export async function fetchReels(): Promise<DbReel[]> {
   const rows = await rest<DbReel>('instagram_posts?select=*&order=posted_at.desc&limit=12');
   return rows ?? [];
 }
+
+/**
+ * The path browsers use to reach Supabase: the site's own domain, proxied to
+ * the project by a rewrite on the host (vercel.json, netlify.toml).
+ *
+ * Several Indian ISPs block supabase.co outright. ACT Fibernet, for one,
+ * answers DNS for it with its own block server, even for lookups sent to
+ * 1.1.1.1, so a browser there cannot reach the project at all and the admin
+ * sign-in reports "Failed to fetch". Going through our own domain means the
+ * browser never touches supabase.co. Build-time reads and the /api functions
+ * run on the host's servers, which are not blocked, and keep the real URL.
+ */
+export const SB_BROWSER_PATH = '/sb';

@@ -25,5 +25,11 @@
       "path": "/api/keepalive",
       "schedule": "0 18 * * *"
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/sb/:path*",
+      "destination": "https://basyfxoycdudurvvsisk.supabase.co/:path*"
+    }
   ]
 }
