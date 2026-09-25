@@ -1,0 +1,62 @@
+name: Keep Supabase awake
+
+# A free Supabase project is paused after roughly a week without API traffic,
+# and when it goes the admin console goes with it: sign-in reports "Failed to
+# fetch" because the browser cannot reach the database at all. Enquiry forms
+# fall back to opening the visitor's mail client, so enquiries stop arriving in
+# the panel. One cheap read a day counts as traffic and keeps the project up.
+#
+# The job also fails loudly if the project is already down, so GitHub emails
+# the repository owner rather than letting it sit paused unnoticed.
+
+on:
+  schedule:
+    # 06:17 UTC daily. Off the hour because scheduled runs queue behind
+    # everyone else's on-the-hour jobs and can be delayed by 10+ minutes.
+    - cron: '17 6 * * *'
+  workflow_dispatch:
+
+# never let a delayed run overlap the next one
+concurrency:
+  group: supabase-keepalive
+  cancel-in-progress: false
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Read one row from the catalogue
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          set -uo pipefail
+
+          if [ -z "${SUPABASE_URL}" ] || [ -z "${SUPABASE_ANON_KEY}" ]; then
+            echo "::error::SUPABASE_URL or SUPABASE_ANON_KEY is missing from the repository secrets."
+            exit 1
+          fi
+
+          # The anon key may only read the catalogue, so this touches nothing
+          # and changes nothing. Any answered request counts as activity.
+          code=$(curl -sS -o /tmp/body -w '%{http_code}' --max-time 30 \
+            -H "apikey: ${SUPABASE_ANON_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
+            "${SUPABASE_URL}/rest/v1/products?select=sku&limit=1") || code=000
+
+          echo "HTTP ${code}"
+          head -c 300 /tmp/body 2>/dev/null || true
+          echo
+
+          if [ "${code}" = "000" ]; then
+            echo "::error::No answer from Supabase. The project is probably paused and needs restoring from the dashboard."
+            exit 1
+          fi
+
+          if [ "${code}" != "200" ]; then
+            echo "::error::Supabase answered ${code} rather than 200."
+            exit 1
+          fi
+
+          echo "Project is awake."
