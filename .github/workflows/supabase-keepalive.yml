@@ -16,6 +16,13 @@ on:
     - cron: '17 6 * * *'
   workflow_dispatch:
 
+# GitHub switches a schedule off after 60 days without commits in a public
+# repository. Each run re-enables its own workflow through the API, which is
+# the established way to keep a schedule alive without faking commits.
+permissions:
+  actions: write
+  contents: read
+
 # never let a delayed run overlap the next one
 concurrency:
   group: supabase-keepalive
@@ -60,3 +67,11 @@ jobs:
           fi
 
           echo "Project is awake."
+
+      - name: Keep this schedule from being switched off
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api -X PUT "repos/${{ github.repository }}/actions/workflows/supabase-keepalive.yml/enable"
+          echo "Schedule re-armed."
