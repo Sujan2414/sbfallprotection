@@ -208,6 +208,36 @@ export async function handleUsers(req) {
     return reply(200, { removed: id });
   }
 
+  // Setting a new password for someone. A super admin may do it for any admin
+  // and for themselves, but never for another super admin: otherwise one super
+  // admin could take over another's account just by resetting its password.
+  // The panel hides the button too, but this is where the rule is enforced.
+  if (req.method === 'PATCH') {
+    const role = await roleOf(caller.id);
+    if (role !== 'super_admin') {
+      return reply(403, { error: 'forbidden', message: 'Only a super admin can reset passwords.' });
+    }
+    const id = String((req.body && req.body.id) || '').trim();
+    const password = String((req.body && req.body.password) || '');
+    if (!id) return reply(400, { error: 'Which user?' });
+    if (password.length < 8) {
+      return reply(400, { error: 'Use a password of at least 8 characters.' });
+    }
+    if (id !== caller.id && (await roleOf(id)) === 'super_admin') {
+      return reply(403, {
+        error: 'forbidden',
+        message: "Another super admin's password can only be changed by that super admin.",
+      });
+    }
+    const { ok, status, body } = await sbFetch(`/auth/v1/admin/users/${encodeURIComponent(id)}`, {
+      method: 'PUT',
+      headers: admin({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify({ password }),
+    });
+    if (!ok) return reply(status, { error: (body && body.msg) || 'Could not set that password.' });
+    return reply(200, { reset: id });
+  }
+
   return reply(405, { error: 'Method not allowed.' });
 }
 

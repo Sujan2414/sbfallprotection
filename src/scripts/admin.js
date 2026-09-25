@@ -83,6 +83,7 @@ const fmtWhen = (s) =>
   s ? new Date(s).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '—';
 
 const ICON = {
+  key: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4.5"/><path d="m10.7 12.3 9.3-9.3M17 6l3 3M14.5 8.5l2.5 2.5"/></svg>',
   edit: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/><path d="M18.5 2.5a2.1 2.1 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5Z"/></svg>',
   trash: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v5M14 11v5"/></svg>',
   eye: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>',
@@ -124,13 +125,28 @@ const drawer = document.getElementById('drawer');
 const drawerTitle = document.getElementById('drawerTitle');
 const drawerBody = document.getElementById('drawerBody');
 const drawerSave = document.getElementById('drawerSave');
+const drawerDraft = document.getElementById('drawerDraft');
 let onSave = null;
+let drawerOpts = {};
 
-function openDrawer(title, html, save) {
+/*
+ * Three kinds of drawer:
+ *   content  Close, Save as draft, Save and publish. The site is pre-rendered,
+ *            so publishing saves and then rebuilds it; a draft is saved but not
+ *            pushed live. The callback is told which button was pressed, so a
+ *            record with a live flag (products, articles) can set it from that.
+ *   save     Close and one action, for anything that is not site content: an
+ *            enquiry's status, a staff account.
+ *   none     Close only. Confirmation drawers carry their own button.
+ */
+function openDrawer(title, html, save, opts = {}) {
   drawerTitle.textContent = title;
   drawerBody.innerHTML = html;
-  drawerSave.hidden = !save;
   onSave = save || null;
+  drawerOpts = { ...opts, mode: save ? (opts.mode || 'content') : 'none' };
+  drawerSave.hidden = !save;
+  drawerDraft.hidden = drawerOpts.mode !== 'content';
+  drawerSave.textContent = drawerOpts.mode === 'content' ? 'Save and publish' : (opts.saveLabel || 'Save');
   drawer.classList.add('open');
 }
 function closeDrawer() {
@@ -140,21 +156,97 @@ function closeDrawer() {
 drawer.addEventListener('click', (e) => { if (e.target.hasAttribute('data-close')) closeDrawer(); });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDrawer(); });
 
-drawerSave.addEventListener('click', async () => {
+/** Rebuild the public site so saved changes reach visitors. */
+async function publishSite() {
+  const { ok, data } = await api('/api/publish', 'POST');
+  return { ok, message: ok ? '' : apiError(data, 'Could not publish just now') };
+}
+
+async function runSave(publish) {
   if (!onSave) return;
-  drawerSave.disabled = true;
-  drawerSave.textContent = 'Saving…';
+  const { mode, draftNote, doneMsg } = drawerOpts;
+  const btn = publish ? drawerSave : drawerDraft;
+  const label = btn.textContent;
+  drawerSave.disabled = drawerDraft.disabled = true;
+  btn.textContent = publish && mode === 'content' ? 'Publishing…' : 'Saving…';
   try {
-    await onSave();
+    await onSave(publish);
     closeDrawer();
-    toast('Saved');
+    if (mode !== 'content') {
+      toast(doneMsg || 'Saved');
+    } else if (!publish) {
+      toast(draftNote || 'Saved as a draft. It is not on the site.');
+    } else {
+      const r = await publishSite();
+      toast(r.ok ? 'Saved and published. The site updates in a minute or two.'
+        : `Saved, but the site did not rebuild: ${r.message}`, !r.ok);
+    }
   } catch (err) {
     toast(err.message || 'Save failed', true);
   } finally {
-    drawerSave.disabled = false;
-    drawerSave.textContent = 'Save changes';
+    drawerSave.disabled = drawerDraft.disabled = false;
+    btn.textContent = label;
   }
-});
+}
+drawerSave.addEventListener('click', () => runSave(true));
+drawerDraft.addEventListener('click', () => runSave(false));
+
+/*
+ * Files go to Supabase Storage, but the address saved is the site's own /sb
+ * path: several Indian ISPs block supabase.co, and a visitor there could not
+ * load a clip served from it. See SB_BROWSER_PATH in src/lib/supabase.ts.
+ */
+const publicPath = (bucket, path) => `/sb/storage/v1/object/public/${bucket}/${path}`;
+
+async function uploadTo(bucket, path, file) {
+  const { error } = await sb.storage.from(bucket).upload(path, file, {
+    cacheControl: '31536000', contentType: file.type, upsert: true,
+  });
+  if (error) throw new Error(error.message || 'Upload failed');
+  return publicPath(bucket, path);
+}
+
+const safeName = (name) => String(name).toLowerCase().replace(/[^a-z0-9.]+/g, '-').replace(/^-+|-+$/g, '');
+
+/** A URL field with an "Upload from computer" button beside it. */
+const uploadField = (label, name, value, accept) => `
+  <div class="adm-field full"><span>${esc(label)}</span>
+    <div class="adm-upload">
+      <input class="adm-input" name="${name}" value="${esc(value)}" placeholder="Paste a link, or upload a file">
+      <label class="adm-btn adm-btn-soft adm-upload-btn">
+        <input type="file" accept="${accept}" data-upload="${name}" hidden>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"/></svg>
+        Upload from computer
+      </label>
+    </div>
+    <small class="adm-upload-state" data-state="${name}"></small>
+  </div>`;
+
+/** Wire every upload button in the open drawer to a bucket. */
+function wireUploads(bucket, folder = '') {
+  drawerBody.querySelectorAll('[data-upload]').forEach((input) => {
+    input.addEventListener('change', async () => {
+      const file = input.files && input.files[0];
+      if (!file) return;
+      const name = input.dataset.upload;
+      const state = drawerBody.querySelector(`[data-state="${name}"]`);
+      const target = drawerBody.querySelector(`[name="${name}"]`);
+      state.textContent = `Uploading ${file.name}…`;
+      drawerSave.disabled = drawerDraft.disabled = true;
+      try {
+        const path = `${folder}${Date.now()}-${safeName(file.name)}`;
+        target.value = await uploadTo(bucket, path, file);
+        state.textContent = `Uploaded ${file.name}`;
+      } catch (err) {
+        state.textContent = '';
+        toast(err.message, true);
+      } finally {
+        drawerSave.disabled = drawerDraft.disabled = false;
+        input.value = '';
+      }
+    });
+  });
+}
 
 const field = (label, name, value, type = 'text', cls = 'full') => `
   <label class="adm-field ${cls}"><span>${esc(label)}</span>
@@ -255,6 +347,41 @@ if (btnGoogle) {
 
 document.getElementById('btnOut').addEventListener('click', () => sb.auth.signOut());
 
+/* the profile chip: photo or initials, name or email, and the role */
+const initialsOf = (s) => {
+  const words = String(s || '').replace(/@.*/, '').split(/[\s._-]+/).filter(Boolean);
+  return ((words.length > 1 ? words[0][0] + words[1][0] : String(s || 'SB').slice(0, 2)) || 'SB').toUpperCase();
+};
+const avatarHtml = (url, who) => (url ? `<img src="${esc(url)}" alt="">` : esc(initialsOf(who)));
+
+function paintMe(user) {
+  const md = (user && user.user_metadata) || {};
+  const name = String(md.full_name || '').trim();
+  document.getElementById('admWho').textContent = name || me.email;
+  document.getElementById('admInitials').innerHTML = avatarHtml(md.avatar_url, name || me.email);
+}
+function paintRole() {
+  document.getElementById('admRole').textContent =
+    ({ super_admin: 'Super admin', admin: 'Admin' })[me.role] || 'Admin';
+}
+
+const userBtn = document.getElementById('btnUser');
+const userMenu = document.getElementById('userMenu');
+function toggleUserMenu(open) {
+  userMenu.hidden = !open;
+  userBtn.setAttribute('aria-expanded', String(open));
+}
+userBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleUserMenu(userMenu.hidden); });
+document.addEventListener('click', (e) => { if (!userMenu.hidden && !userMenu.contains(e.target)) toggleUserMenu(false); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') toggleUserMenu(false); });
+userMenu.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-menu]');
+  if (!b) return;
+  toggleUserMenu(false);
+  if (b.dataset.menu === 'settings') setTab('settings');
+  else sb.auth.signOut();
+});
+
 /** Signed in, but not staff: say so plainly and end the session. */
 function refuse(email) {
   sb.auth.signOut().finally(() => {
@@ -278,9 +405,7 @@ sb.auth.onAuthStateChange((_evt, session) => {
       last_sign_in_at: session.user.last_sign_in_at || null,
       created_at: session.user.created_at || null,
     };
-    document.getElementById('admWho').textContent = email;
-    document.getElementById('admInitials').textContent =
-      (email.slice(0, 2) || 'SB').toUpperCase();
+    paintMe(session.user);
     /*
      * Signing in is not the same as having access. Supabase will happily
      * authenticate a Google account; whether it may use this panel is decided
@@ -292,6 +417,7 @@ sb.auth.onAuthStateChange((_evt, session) => {
       sb.from('staff').select('user_id').limit(1),
     ]).then(([mine, any]) => {
       if (mine.data && mine.data.role) { me.role = mine.data.role; me.rostered = true; }
+      paintRole();
       const rosterEmpty = !any.error && (any.data || []).length === 0;
       if (!me.rostered && !rosterEmpty) return refuse(email);
       boot();
@@ -541,7 +667,6 @@ function editProduct(id) {
   openDrawer(`Edit ${p.sku}`, `
     <div class="adm-fields">
       ${field('Product code', 'sku', p.sku, 'text', '')}
-      ${select('Status', 'published', [['true', 'Live on site'], ['false', 'Hidden']], String(!!p.published), '')}
       ${field('Short description', 'attachment', p.attachment || '', 'text')}
       ${select('Category', 'category', db.categories.map((c) => [c.slug, c.name]), p.category, '')}
       ${select('Range', 'family', [['', '— none —']].concat(db.families.map((f) => [f.slug, f.name])), p.family || '', '')}
@@ -553,7 +678,7 @@ function editProduct(id) {
         <button type="button" class="adm-btn adm-btn-soft" id="addSpec" style="margin-top:11px">+ Add field</button>
       </div>
     </div>`,
-    async () => {
+    async (publish) => {
       const specs = {};
       drawerBody.querySelectorAll('.spec-row').forEach((r) => {
         const k = r.querySelector('.sk').value.trim();
@@ -562,7 +687,7 @@ function editProduct(id) {
       const patch = {
         sku: val('sku'), attachment: val('attachment') || null,
         category: val('category'), family: val('family') || null,
-        image: val('image') || null, published: val('published') === 'true', specs,
+        image: val('image') || null, published: publish, specs,
       };
       const { error } = await sb.from('products').update(patch).eq('id', id);
       if (error) throw error;
@@ -583,8 +708,8 @@ function deleteProduct(id) {
   if (!p) return;
   openDrawer(`Delete ${p.sku}?`, `
     <p style="font-size:15px;line-height:1.65">
-      This permanently removes <strong>${esc(p.sku)}</strong> from the catalogue.
-      Its page disappears from the site at the next publish.
+      This permanently removes <strong>${esc(p.sku)}</strong> from the catalogue,
+      and its page comes off the site in a minute or two.
     </p>
 <button class="adm-btn adm-btn-danger" id="confirmDel" style="margin-top:22px">
       Yes, delete permanently</button>`, null);
@@ -593,8 +718,10 @@ function deleteProduct(id) {
     if (error) return toast(error.message, true);
     db.products = db.products.filter((x) => x.id !== id);
     closeDrawer();
-    toast(`${p.sku} deleted`);
     products();
+    const r = await publishSite();
+    toast(r.ok ? `${p.sku} deleted. The site updates in a minute or two.`
+      : `${p.sku} deleted, but the site did not rebuild: ${r.message}`, !r.ok);
   });
 }
 
@@ -657,7 +784,7 @@ function editCategory(slug) {
       if (error) throw error;
       Object.assign(c, patch);
       taxonomy();
-    });
+    }, { draftNote: 'Saved. It goes live the next time anything is published.' });
 }
 
 function editFamily(slug) {
@@ -677,7 +804,7 @@ function editFamily(slug) {
       if (error) throw error;
       Object.assign(f, patch);
       taxonomy();
-    });
+    }, { draftNote: 'Saved. It goes live the next time anything is published.' });
 }
 
 /* ─────────────────────────── articles ─────────────────────────── */
@@ -725,16 +852,15 @@ function editPost(slug) {
       ${field('Image alt text', 'image_alt', p.image_alt || '', 'text')}
       ${field('Author', 'author', p.author || '', 'text', '')}
       ${field('Publish date', 'published_at', (p.published_at || '').slice(0, 10), 'date', '')}
-      ${select('Status', 'published', [['true', 'Live'], ['false', 'Draft']], String(!!p.published), '')}
       ${select('Featured', 'featured', [['false', 'No'], ['true', 'Yes']], String(!!p.featured), '')}
       ${field('Body (Markdown)', 'body', p.body || '', 'textarea')}
     </div>`,
-    async () => {
+    async (publish) => {
       const row = {
         slug: val('slug'), title: val('title'), topic: val('topic'), excerpt: val('excerpt'),
         image: val('image'), image_alt: val('image_alt'), author: val('author'),
         read_mins: parseInt(val('read_mins'), 10) || 5,
-        published: val('published') === 'true', featured: val('featured') === 'true',
+        published: publish, featured: val('featured') === 'true',
         published_at: new Date(val('published_at') || Date.now()).toISOString(),
         body: drawerBody.querySelector('[name="body"]').value,
       };
@@ -818,7 +944,7 @@ function openInq(id) {
         if (el) { el.hidden = n === 0; el.textContent = n; }
       }
       render();
-    });
+    }, { mode: 'save', saveLabel: 'Save' });
 }
 
 /* ─────────────────────────── settings & publish ─────────────────────────── */
@@ -884,8 +1010,8 @@ function editReel(id) {
   openDrawer(id ? 'Edit reel' : 'Add a reel', `
     <div class="adm-fields">
       ${field('Caption', 'caption', r.caption || '')}
-      ${field('Video URL (.mp4)', 'media_url', r.media_url || '', 'url')}
-      ${field('Poster image URL', 'thumbnail_url', r.thumbnail_url || '', 'url')}
+      ${uploadField('Video (.mp4)', 'media_url', r.media_url || '', 'video/mp4,video/webm,video/quicktime')}
+      ${uploadField('Poster image', 'thumbnail_url', r.thumbnail_url || '', 'image/jpeg,image/png,image/webp')}
       ${field('Instagram link', 'permalink', r.permalink || '', 'url')}
       ${field('Date', 'posted_at', (r.posted_at || '').slice(0, 10), 'date', '')}
       ${select('Type', 'media_type', [['VIDEO', 'Video'], ['IMAGE', 'Image']], r.media_type || 'VIDEO', '')}
@@ -900,12 +1026,13 @@ function editReel(id) {
         media_type: val('media_type'),
         posted_at: new Date(val('posted_at') || Date.now()).toISOString(),
       };
-      if (!row.media_url) throw new Error('A video URL is required.');
+      if (!row.media_url) throw new Error('Add a video: paste a link or upload one.');
       const { error } = await sb.from('instagram_posts').upsert(row, { onConflict: 'id' });
       if (error) throw error;
       await loadAll();
       reels();
-    });
+    }, { draftNote: 'Saved. It goes live the next time anything is published.' });
+  wireUploads('reels');
 }
 
 function deleteReel(id) {
@@ -913,8 +1040,8 @@ function deleteReel(id) {
   if (!r) return;
   openDrawer('Remove this reel?', `
     <p style="font-size:15px;line-height:1.65">
-      <strong>${esc(r.caption || 'This clip')}</strong> will stop showing on the home page
-      at the next publish. The video itself is not deleted — only the link to it.
+      <strong>${esc(r.caption || 'This clip')}</strong> comes off the home page in a
+      minute or two.
     </p>
     <button class="adm-btn adm-btn-danger" id="confirmDelReel" style="margin-top:22px">
       Yes, remove it</button>`, null);
@@ -923,8 +1050,10 @@ function deleteReel(id) {
     if (error) return toast(error.message, true);
     db.reels = db.reels.filter((x) => x.id !== id);
     closeDrawer();
-    toast('Reel removed');
     reels();
+    const r2 = await publishSite();
+    toast(r2.ok ? 'Reel removed. The site updates in a minute or two.'
+      : `Reel removed, but the site did not rebuild: ${r2.message}`, !r2.ok);
   });
 }
 
@@ -1004,7 +1133,7 @@ async function loadUsers() {
       <span class="adm-td-muted">${rows.length} ${rows.length === 1 ? 'account' : 'accounts'}</span></div>
     <div class="adm-table-scroll">
       <table class="adm-table"><thead><tr>
-        <th>Email</th><th>Access</th><th>Status</th><th>Last sign-in</th><th>Sign-in</th>
+        <th>Email</th><th>Access</th><th>Status</th><th>Last sign-in</th>
         ${canManage ? '<th>Action</th>' : ''}
       </tr></thead><tbody>
       ${rows.map((u) => {
@@ -1017,9 +1146,12 @@ async function loadUsers() {
           <td><span class="adm-pill ${u.confirmed === false ? 'amber' : 'green'}">${
             u.confirmed === false ? 'Unconfirmed' : 'Active'}</span></td>
           <td class="adm-td-muted">${fmtWhen(u.last_sign_in_at)}</td>
-          <td class="adm-td-muted">${esc((u.providers || []).join(', ') || 'password')}</td>
-          ${canManage ? `<td><span class="adm-act">${isMe
-            ? '<span class="adm-td-muted">-</span>'
+          ${canManage ? `<td><span class="adm-act">${
+            // a super admin resets any admin's password and their own, never another super admin's
+            (isMe || u.role !== 'super_admin') && u.id
+              ? `<button class="adm-icon-btn" data-reset-user="${esc(u.id)}"
+                         data-email="${esc(u.email)}" title="Set a new password">${ICON.key}</button>` : ''}${isMe
+            ? ''
             : `<button class="adm-icon-btn danger" data-del-user="${esc(u.id || '')}"
                        data-email="${esc(u.email)}" title="Remove">${ICON.trash}</button>`}</span></td>` : ''}
         </tr>`;
@@ -1029,6 +1161,24 @@ async function loadUsers() {
 
   card.querySelectorAll('[data-del-user]').forEach((b) =>
     b.addEventListener('click', () => removeUser(b.dataset.delUser, b.dataset.email)));
+  card.querySelectorAll('[data-reset-user]').forEach((b) =>
+    b.addEventListener('click', () => resetPassword(b.dataset.resetUser, b.dataset.email)));
+}
+
+function resetPassword(id, email) {
+  openDrawer('Set a new password', `
+    <p class="adm-td-muted" style="margin-bottom:20px;font-weight:600">${esc(email)}</p>
+    <div class="adm-fields">
+      ${field('New password', 'password', '', 'password')}
+      ${field('Type it again', 'password2', '', 'password')}
+    </div>`,
+    async () => {
+      const password = val('password');
+      if (password.length < 8) throw new Error('Use at least 8 characters.');
+      if (password !== val('password2')) throw new Error('The two passwords do not match.');
+      const { ok, data } = await api('/api/users', 'PATCH', { id, password });
+      if (!ok) throw new Error(apiError(data, 'Could not set that password.'));
+    }, { mode: 'save', saveLabel: 'Set password', doneMsg: `New password set for ${email}` });
 }
 
 function addUser() {
@@ -1048,7 +1198,7 @@ function addUser() {
       });
       if (!ok) throw new Error(apiError(data, 'Could not add that account.'));
       await loadUsers();
-    });
+    }, { mode: 'save', saveLabel: 'Create account', doneMsg: 'Account created' });
 }
 
 function removeUser(id, email) {
@@ -1071,32 +1221,119 @@ function removeUser(id, email) {
 /* --------------------------- settings --------------------------- */
 
 function settings() {
-  main.innerHTML = pageHead('Settings') + `
-    <div class="adm-form-card">
-      <span class="adm-label">Signed in as</span>
-      <p style="font-size:16px;font-weight:700">${esc(document.getElementById('admWho').textContent)}</p>
-</div>
-
-    <div class="adm-form-card" style="margin-top:24px">
-      <span class="adm-label">Publishing</span>
-      <p class="adm-td-muted" style="margin-top:8px;line-height:1.65;font-weight:600">
-        The public site is pre-rendered, so your edits reach visitors only after a
-        rebuild. <strong>Publish to site</strong> triggers one. The deploy hook it
-        calls is held on the server, not here.
-      </p>
-    </div>`;
+  sb.auth.getUser().then(({ data }) => profileView((data && data.user) || null));
 }
 
-document.getElementById('btnPublish').addEventListener('click', async () => {
-  const btn = document.getElementById('btnPublish');
-  btn.disabled = true;
-  btn.textContent = 'Publishing...';
-  const { ok, status, data } = await api('/api/publish', 'POST');
-  btn.disabled = false;
-  btn.textContent = 'Publish to site';
-  if (ok) return toast('Rebuild triggered - the site updates in a minute or two');
-  toast(apiError(data, 'Could not publish just now'), true);
-});
+function profileView(user) {
+  const md = (user && user.user_metadata) || {};
+  const email = (user && user.email) || me.email;
+  main.innerHTML = pageHead('Profile settings') + `
+    <div class="adm-form-card">
+      <span class="adm-label">Profile</span>
+      <div class="adm-profile-photo">
+        <span class="adm-avatar adm-avatar-lg" id="profAvatar">${avatarHtml(md.avatar_url, md.full_name || email)}</span>
+        <div class="adm-profile-photo-actions">
+          <label class="adm-btn adm-btn-soft">
+            <input type="file" id="profPhoto" accept="image/jpeg,image/png,image/webp" hidden>
+            Upload photo
+          </label>
+          ${md.avatar_url ? '<button type="button" class="adm-btn adm-btn-ghost" id="profPhotoDel">Remove</button>' : ''}
+        </div>
+      </div>
+      <div class="adm-fields" style="margin-top:26px">
+        ${field('Name', 'full_name', md.full_name || '', 'text', '')}
+        ${field('Phone number', 'phone', md.phone || '', 'tel', '')}
+        ${field('Email address', 'email', email, 'email')}
+      </div>
+      <button class="adm-btn adm-btn-primary" id="profSave" style="margin-top:26px">Save profile</button>
+    </div>
+
+    <div class="adm-form-card" style="margin-top:24px">
+      <span class="adm-label">Change password</span>
+      <div class="adm-fields" style="margin-top:18px">
+        ${field('New password', 'new_password', '', 'password', '')}
+        ${field('Type it again', 'new_password2', '', 'password', '')}
+      </div>
+      <button class="adm-btn adm-btn-primary" id="pwSave" style="margin-top:26px">Update password</button>
+    </div>`;
+
+  const q = (sel) => main.querySelector(sel);
+  const v = (name) => (q(`[name="${name}"]`).value || '').trim();
+
+  q('#profPhoto').addEventListener('change', async (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    try {
+      const small = await shrinkImage(file, 320);
+      const url = await uploadTo('avatars', `${me.id}/${Date.now()}.jpg`, small);
+      const { data, error } = await sb.auth.updateUser({ data: { avatar_url: url } });
+      if (error) throw error;
+      paintMe(data.user);
+      profileView(data.user);
+      toast('Photo updated');
+    } catch (err) {
+      toast(err.message || 'Could not upload that photo', true);
+    }
+  });
+
+  const del = q('#profPhotoDel');
+  if (del) del.addEventListener('click', async () => {
+    const { data, error } = await sb.auth.updateUser({ data: { avatar_url: null } });
+    if (error) return toast(error.message, true);
+    paintMe(data.user);
+    profileView(data.user);
+    toast('Photo removed');
+  });
+
+  q('#profSave').addEventListener('click', async (e) => {
+    const btn = e.currentTarget;
+    const nextEmail = v('email');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(nextEmail)) return toast('That email address does not look right.', true);
+    const patch = { data: { full_name: v('full_name'), phone: v('phone') } };
+    const emailChanged = nextEmail.toLowerCase() !== email.toLowerCase();
+    if (emailChanged) patch.email = nextEmail;
+    btn.disabled = true;
+    const { data, error } = await sb.auth.updateUser(patch);
+    btn.disabled = false;
+    if (error) return toast(error.message, true);
+    paintMe(data.user);
+    toast(emailChanged
+      ? 'Saved. The email changes once you click the confirmation link sent to it.'
+      : 'Profile saved');
+  });
+
+  q('#pwSave').addEventListener('click', async (e) => {
+    const btn = e.currentTarget;
+    const pw = q('[name="new_password"]').value;
+    if (pw.length < 8) return toast('Use at least 8 characters.', true);
+    if (pw !== q('[name="new_password2"]').value) return toast('The two passwords do not match.', true);
+    btn.disabled = true;
+    const { error } = await sb.auth.updateUser({ password: pw });
+    btn.disabled = false;
+    if (error) return toast(error.message, true);
+    q('[name="new_password"]').value = q('[name="new_password2"]').value = '';
+    toast('Password updated');
+  });
+}
+
+/** Scale a photo down in the browser, so an avatar is a few KB, not a few MB. */
+function shrinkImage(file, max) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const scale = Math.min(1, max / Math.max(img.width, img.height));
+      const c = document.createElement('canvas');
+      c.width = Math.round(img.width * scale);
+      c.height = Math.round(img.height * scale);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      c.toBlob((b) => (b ? resolve(new File([b], 'avatar.jpg', { type: 'image/jpeg' })) : reject(new Error('Could not read that image'))),
+        'image/jpeg', 0.88);
+      URL.revokeObjectURL(img.src);
+    };
+    img.onerror = () => reject(new Error('Could not read that image'));
+    img.src = URL.createObjectURL(file);
+  });
+}
 
 /* onAuthStateChange fires with the restored session on load */
 sb.auth.getSession().then(({ data }) => { if (!data.session) loginView.hidden = false; });
