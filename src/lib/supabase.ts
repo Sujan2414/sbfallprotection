@@ -32,7 +32,7 @@ async function rest<T>(path: string): Promise<T[] | null> {
 
 export interface DbCategory {
   slug: string; name: string; intro: string | null;
-  blurb: string | null; icon: string | null; sort_order: number;
+  blurb: string | null; icon: string | null; image: string | null; sort_order: number;
 }
 export interface DbFamily {
   slug: string; name: string; category: string; intro: string | null;
@@ -65,6 +65,32 @@ export async function fetchCatalog() {
     `${families.length} families, ${products.length} products`,
   );
   return { categories, families, products };
+}
+
+export interface SocialLink { platform: string; url: string }
+
+/** The links shown in the footer. Staff edit them under Social links in the panel. */
+export const DEFAULT_SOCIAL: SocialLink[] = [
+  { platform: 'facebook', url: 'https://www.facebook.com/sbfallprotection' },
+  { platform: 'instagram', url: 'https://www.instagram.com/sbfallprotection/' },
+  { platform: 'linkedin', url: 'https://www.linkedin.com/company/sb-leathers-pvt-ltd/' },
+  { platform: 'youtube', url: 'https://www.youtube.com/channel/UCUAbt8J6R7xN4kCow3r2L_g' },
+];
+
+let socialCache: Promise<SocialLink[]> | null = null;
+/** Read once per build, since every page's footer asks for them. */
+export function fetchSocialLinks(): Promise<SocialLink[]> {
+  socialCache ??= (async () => {
+    const rows = await rest<{ value: string }>('settings?select=value&key=eq.social_links');
+    try {
+      const list = rows && rows[0] ? JSON.parse(rows[0].value) : null;
+      if (Array.isArray(list)) {
+        return list.filter((l) => l && typeof l.url === 'string' && /^https?:\/\//.test(l.url));
+      }
+    } catch { /* fall through */ }
+    return DEFAULT_SOCIAL;
+  })();
+  return socialCache;
 }
 
 export interface DbReel {

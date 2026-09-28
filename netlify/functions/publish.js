@@ -27,7 +27,7 @@ export const handler = async (event) => {
   try {
     const r = await fetch(hook, { method: 'POST' });
     if (!r.ok) return json(502, { error: `The deploy hook answered ${r.status}.` });
-    return json(200, { triggered: true, by: caller.email });
+    return json(200, { triggered: true, by: caller.email, triggeredAt: Date.now() });
   } catch {
     return json(502, { error: 'Could not reach the deploy hook.' });
   }

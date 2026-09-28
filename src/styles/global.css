@@ -1620,3 +1620,7 @@
   .fam-td-img{width:120px}
   .fam-td-img img{width:104px;height:70px}
 }
+
+
+/* images placed inside an article from the admin panel */
+.prose img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:16px}

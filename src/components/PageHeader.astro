@@ -16,9 +16,14 @@ const {
   eyebrow, title, accent, lead, crumbs = [],
   image = 'products', imageAlt = '', compact = false,
 } = Astro.props;
+/* an uploaded photo arrives as a path or URL; a bare word names the stock hero set */
+const direct = /[/:]/.test(image);
 ---
 <header class:list={['page-hero', compact && 'is-compact']}>
   <div class="page-hero-media">
+    {direct ? (
+      <img src={image} width="1800" height="720" fetchpriority="high" decoding="async" alt={imageAlt}>
+    ) : (
     <picture>
       <source type="image/webp"
         srcset={`/assets/hero-${image}-sm.webp 1100w, /assets/hero-${image}.webp 1800w`}
@@ -29,6 +34,7 @@ const {
         sizes="100vw" width="1800" height="720"
         fetchpriority="high" decoding="async" alt={imageAlt}>
     </picture>
+    )}
   </div>
   <div class="page-hero-shade"></div>
   <div class="page-hero-glow"></div>

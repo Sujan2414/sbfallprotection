@@ -22,11 +22,13 @@ const related = [
 
 const fmt = (d: Date) =>
   d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+/* a cover uploaded in the panel is a path or URL; older ones name an asset pair */
+const cover = (img: string, kind: 'hero' | 'blog') => (/[/:]/.test(img) ? img : `/assets/${kind}-${img}.jpg`);
 ---
 <Base
   title={`${post.data.title} | SB Fall Protection`}
   description={post.data.excerpt}
-  image={`/assets/hero-${post.data.image}.jpg`}
+  image={cover(post.data.image, 'hero')}
 >
   <PageHeader
     eyebrow={post.data.topic}
@@ -73,7 +75,7 @@ const fmt = (d: Date) =>
             <a class="post-card" href={`/blog/${p.id}`}>
               <span class="post-ph">
                 <span class="post-topic">{p.data.topic}</span>
-                <img src={`/assets/blog-${p.data.image}.jpg`} alt={p.data.imageAlt}
+                <img src={cover(p.data.image, 'blog')} alt={p.data.imageAlt}
                      width="760" height="475" loading="lazy">
               </span>
               <span class="post-body">

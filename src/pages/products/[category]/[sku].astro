@@ -1,4 +1,5 @@
 ---
+import { existsSync } from 'node:fs';
 import Base from '../../../layouts/Base.astro';
 import PageHeader from '../../../components/PageHeader.astro';
 import QuoteFlow from '../../../components/QuoteFlow.astro';
@@ -47,7 +48,7 @@ const mailto = `mailto:sales@sbfallprotection.com?subject=${encodeURIComponent(m
       { label: cat.name, href: categoryUrl(cat.slug) },
       { label: product.sku },
     ]}
-    image={product.category}
+    image={existsSync(`public/assets/hero-${product.category}.jpg`) ? product.category : (cat.image || 'products')}
     imageAlt={`${cat.name} range`}
     compact={true}
   />

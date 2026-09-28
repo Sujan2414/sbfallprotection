@@ -36,7 +36,8 @@ export default async function handler(req, res) {
     if (!r.ok) {
       return res.status(502).json({ error: `The deploy hook answered ${r.status}.` });
     }
-    return res.status(200).json({ triggered: true, by: caller.email });
+    // the server's clock, so the panel can tell when a build newer than this is live
+    return res.status(200).json({ triggered: true, by: caller.email, triggeredAt: Date.now() });
   } catch {
     return res.status(502).json({ error: 'Could not reach the deploy hook.' });
   }

@@ -159,8 +159,63 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDrawe
 /** Rebuild the public site so saved changes reach visitors. */
 async function publishSite() {
   const { ok, data } = await api('/api/publish', 'POST');
+  if (ok) watchPublish(data.triggeredAt || Date.now());
   return { ok, message: ok ? '' : apiError(data, 'Could not publish just now') };
 }
+
+/*
+ * The publishing indicator. Every build writes /build.json with the moment it
+ * ran; once that is newer than the moment we asked for a rebuild, the change is
+ * live. Both times come from servers, so a wrong clock on this computer cannot
+ * fool it. The state survives a reload, so leaving the page loses nothing.
+ */
+const pubEl = document.getElementById('pubState');
+const PUB_KEY = 'sb-admin-publishing';
+const PUB_LIMIT = 6 * 60 * 1000;
+let pubTimer = null;
+
+function pubShow(state, text) {
+  pubEl.hidden = false;
+  pubEl.dataset.state = state;
+  pubEl.querySelector('.txt').textContent = text;
+}
+
+function watchPublish(at) {
+  try { localStorage.setItem(PUB_KEY, String(at)); } catch { /* private mode */ }
+  clearInterval(pubTimer);
+  const started = Date.now();
+  const stop = () => {
+    clearInterval(pubTimer);
+    try { localStorage.removeItem(PUB_KEY); } catch { /* private mode */ }
+  };
+  const tick = async () => {
+    try {
+      const r = await fetch(`/build.json?t=${Date.now()}`, { cache: 'no-store' });
+      const j = await r.json();
+      if (j && j.builtAt > at) {
+        stop();
+        pubShow('live', 'Live on the site');
+        setTimeout(() => { if (pubEl.dataset.state === 'live') pubEl.hidden = true; }, 9000);
+        return;
+      }
+    } catch { /* not built yet, or offline for a moment */ }
+    if (Date.now() - at > PUB_LIMIT) {
+      stop();
+      pubShow('slow', 'Publishing is taking longer than usual');
+      return;
+    }
+    const secs = Math.max(1, Math.round((Date.now() - Math.min(at, started)) / 1000));
+    pubShow('busy', `Publishing… ${secs}s`);
+  };
+  pubShow('busy', 'Publishing…');
+  pubTimer = setInterval(tick, 6000);
+  tick();
+}
+pubEl.addEventListener('click', () => { if (pubEl.dataset.state !== 'busy') pubEl.hidden = true; });
+try {
+  const at = Number(localStorage.getItem(PUB_KEY));
+  if (at && Date.now() - at < PUB_LIMIT) watchPublish(at);
+} catch { /* private mode */ }
 
 async function runSave(publish) {
   if (!onSave) return;
@@ -178,7 +233,7 @@ async function runSave(publish) {
       toast(draftNote || 'Saved as a draft. It is not on the site.');
     } else {
       const r = await publishSite();
-      toast(r.ok ? 'Saved and published. The site updates in a minute or two.'
+      toast(r.ok ? 'Saved. Publishing to the site now.'
         : `Saved, but the site did not rebuild: ${r.message}`, !r.ok);
     }
   } catch (err) {
@@ -205,6 +260,19 @@ async function uploadTo(bucket, path, file) {
   if (error) throw new Error(error.message || 'Upload failed');
   return publicPath(bucket, path);
 }
+
+/** A URL-safe slug from a name, for new categories and ranges. */
+const slugify = (t) => String(t || '').toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '-')
+  .replace(/^-+|-+$/g, '').slice(0, 60);
+
+/** The next sort position after every existing row. */
+const nextOrder = (rows) => rows.reduce((m, r) => Math.max(m, Number(r.sort_order) || 0), 0) + 1;
+
+/** Postgres' duplicate-key error, said plainly. */
+const dupe = (err, what) => (err && err.code === '23505' ? new Error(`${what} already exists.`) : err);
+
+/** An article cover is an upload (a path or URL) or, for older ones, an asset key. */
+const coverSrc = (img) => (/[/:]/.test(img || '') ? img : `/assets/blog-${img}.jpg`);
 
 const safeName = (name) => String(name).toLowerCase().replace(/[^a-z0-9.]+/g, '-').replace(/^-+|-+$/g, '');
 
@@ -504,7 +572,7 @@ document.querySelectorAll('.adm-navitem[data-tab]').forEach((b) =>
   b.addEventListener('click', () => setTab(b.dataset.tab)));
 
 function render() {
-  ({ overview, products, taxonomy, posts, reels, inquiries, users, settings }[tab] || overview)();
+  ({ overview, products, taxonomy, posts, reels, inquiries, social, users, settings }[tab] || overview)();
   window.scrollTo({ top: 0 });
 }
 
@@ -587,7 +655,8 @@ function products() {
   const from = (prodPage - 1) * PER;
   const rows = all.slice(from, from + PER);
 
-  main.innerHTML = pageHead('Products') + `
+  main.innerHTML = pageHead('Products',
+    '<button class="adm-btn adm-btn-primary" id="newProduct">+ Add product</button>') + `
     <div class="adm-table-card">
       <div class="adm-table-head">
         <h2>Product Stock</h2>
@@ -651,6 +720,7 @@ function products() {
   main.querySelector('#pNext').addEventListener('click', () => { prodPage++; products(); });
   main.querySelectorAll('[data-edit]').forEach((b) =>
     b.addEventListener('click', () => editProduct(b.dataset.edit)));
+  main.querySelector('#newProduct').addEventListener('click', () => editProduct(null));
   main.querySelectorAll('[data-del]').forEach((b) =>
     b.addEventListener('click', () => deleteProduct(b.dataset.del)));
 }
@@ -662,18 +732,23 @@ const specRow = (k = '', v = '') => `<div class="spec-row">
 </div>`;
 
 function editProduct(id) {
-  const p = db.products.find((x) => x.id === id);
+  const adding = !id;
+  const p = adding
+    ? { sku: '', attachment: '', category: prodCat || (db.categories[0] || {}).slug, family: '', image: '', specs: {} }
+    : db.products.find((x) => x.id === id);
   if (!p) return;
-  openDrawer(`Edit ${p.sku}`, `
+  const famOptions = (cat) => [['', '— none —']].concat(
+    db.families.filter((f) => f.category === cat).map((f) => [f.slug, f.name]));
+  openDrawer(adding ? 'Add a product' : `Edit ${p.sku}`, `
     <div class="adm-fields">
       ${field('Product code', 'sku', p.sku, 'text', '')}
-      ${field('Short description', 'attachment', p.attachment || '', 'text')}
+      ${field('Short description', 'attachment', p.attachment || '', 'text', '')}
       ${select('Category', 'category', db.categories.map((c) => [c.slug, c.name]), p.category, '')}
-      ${select('Range', 'family', [['', '— none —']].concat(db.families.map((f) => [f.slug, f.name])), p.family || '', '')}
-      ${field('Image URL', 'image', p.image || '', 'text')}
+      ${select('Range', 'family', famOptions(p.category), p.family || '', '')}
+      ${uploadField('Product photo', 'image', p.image || '', 'image/jpeg,image/png,image/webp')}
       <div class="adm-field full"><span>Specifications</span>
         <div class="spec-rows" id="specRows">
-          ${Object.entries(p.specs || {}).map(([k, v]) => specRow(k, v)).join('') || specRow()}
+          ${Object.entries(p.specs || {}).map(([k, v]) => specRow(k, v)).join('') || specRow('Type', '')}
         </div>
         <button type="button" class="adm-btn adm-btn-soft" id="addSpec" style="margin-top:11px">+ Add field</button>
       </div>
@@ -684,17 +759,32 @@ function editProduct(id) {
         const k = r.querySelector('.sk').value.trim();
         if (k) specs[k] = r.querySelector('.sv').value.trim();
       });
-      const patch = {
-        sku: val('sku'), attachment: val('attachment') || null,
+      const row = {
+        sku: val('sku').toUpperCase(), attachment: val('attachment') || null,
         category: val('category'), family: val('family') || null,
         image: val('image') || null, published: publish, specs,
       };
-      const { error } = await sb.from('products').update(patch).eq('id', id);
-      if (error) throw error;
-      Object.assign(p, patch);
+      if (!row.sku) throw new Error('Give the product a code.');
+      if (!row.category) throw new Error('Choose a category.');
+      if (adding) {
+        row.sort_order = nextOrder(db.products);
+        const { error } = await sb.from('products').insert(row);
+        if (error) throw dupe(error, `${row.sku} in that range`);
+        await loadAll();
+      } else {
+        const { error } = await sb.from('products').update(row).eq('id', id);
+        if (error) throw dupe(error, `${row.sku} in that range`);
+        Object.assign(p, row);
+      }
       products();
     });
 
+  wireUploads('media', 'products/');
+  // the range list follows the chosen category
+  drawerBody.querySelector('[name="category"]').addEventListener('change', (e) => {
+    drawerBody.querySelector('[name="family"]').innerHTML = famOptions(e.target.value)
+      .map(([v, t]) => `<option value="${esc(v)}">${esc(t)}</option>`).join('');
+  });
   const rows = drawerBody.querySelector('#specRows');
   drawerBody.querySelector('#addSpec').addEventListener('click', () =>
     rows.insertAdjacentHTML('beforeend', specRow()));
@@ -728,26 +818,33 @@ function deleteProduct(id) {
 /* ─────────────────────────── categories & ranges ─────────────────────────── */
 
 function taxonomy() {
+  const count = (fn) => db.products.filter(fn).length;
   main.innerHTML = pageHead('Categories') + `
     <div class="adm-table-card">
-      <div class="adm-table-head"><h2>Categories</h2></div>
+      <div class="adm-table-head"><h2>Categories</h2><span class="spacer"></span>
+        <button class="adm-btn adm-btn-primary" id="newCat">+ Add category</button></div>
       <div class="adm-table-scroll">
         <table class="adm-table"><thead><tr>
-          <th>Name</th><th>Slug</th><th>Card blurb</th><th>Products</th><th>Action</th>
+          <th>Name</th><th>Slug</th><th>Card blurb</th><th>Ranges</th><th>Products</th><th>Action</th>
         </tr></thead><tbody>
         ${db.categories.map((c) => `<tr>
           <td><span class="adm-code">${esc(c.name)}</span></td>
           <td class="adm-td-muted">${esc(c.slug)}</td>
           <td class="adm-td-muted">${esc((c.blurb || '—').slice(0, 60))}${(c.blurb || '').length > 60 ? '…' : ''}</td>
-          <td class="adm-td-muted">${db.products.filter((p) => p.category === c.slug).length}</td>
-          <td><span class="adm-act"><button class="adm-icon-btn" data-cat="${esc(c.slug)}">${ICON.edit}</button></span></td>
+          <td class="adm-td-muted">${db.families.filter((f) => f.category === c.slug).length}</td>
+          <td class="adm-td-muted">${count((p) => p.category === c.slug)}</td>
+          <td><span class="adm-act">
+            <button class="adm-icon-btn" data-cat="${esc(c.slug)}" title="Edit">${ICON.edit}</button>
+            <button class="adm-icon-btn danger" data-cat-del="${esc(c.slug)}" title="Delete">${ICON.trash}</button>
+          </span></td>
         </tr>`).join('')}
         </tbody></table>
       </div>
     </div>
 
     <div class="adm-table-card" style="margin-top:24px">
-      <div class="adm-table-head"><h2>Ranges</h2></div>
+      <div class="adm-table-head"><h2>Ranges</h2><span class="spacer"></span>
+        <button class="adm-btn adm-btn-primary" id="newFam">+ Add range</button></div>
       <div class="adm-table-scroll">
         <table class="adm-table"><thead><tr>
           <th>Name</th><th>Category</th><th>Layout</th><th>Notes</th><th>Products</th><th>Action</th>
@@ -755,10 +852,13 @@ function taxonomy() {
         ${db.families.map((f) => `<tr>
           <td><span class="adm-code">${esc(f.name)}</span></td>
           <td class="adm-td-muted">${esc((db.categories.find((c) => c.slug === f.category) || {}).name || f.category)}</td>
-          <td><span class="adm-pill ${f.layout === 'spec' ? 'blue' : 'grey'}">${esc(f.layout)}</span></td>
+          <td><span class="adm-pill ${f.layout === 'table' ? 'blue' : 'grey'}">${esc(LAYOUT_LABEL[f.layout] || f.layout)}</span></td>
           <td class="adm-td-muted">${(f.bullets || []).length}</td>
-          <td class="adm-td-muted">${db.products.filter((p) => p.family === f.slug).length}</td>
-          <td><span class="adm-act"><button class="adm-icon-btn" data-fam="${esc(f.slug)}">${ICON.edit}</button></span></td>
+          <td class="adm-td-muted">${count((p) => p.family === f.slug)}</td>
+          <td><span class="adm-act">
+            <button class="adm-icon-btn" data-fam="${esc(f.slug)}" title="Edit">${ICON.edit}</button>
+            <button class="adm-icon-btn danger" data-fam-del="${esc(f.slug)}" title="Delete">${ICON.trash}</button>
+          </span></td>
         </tr>`).join('')}
         </tbody></table>
       </div>
@@ -766,45 +866,144 @@ function taxonomy() {
 
   main.querySelectorAll('[data-cat]').forEach((b) => b.addEventListener('click', () => editCategory(b.dataset.cat)));
   main.querySelectorAll('[data-fam]').forEach((b) => b.addEventListener('click', () => editFamily(b.dataset.fam)));
+  main.querySelectorAll('[data-cat-del]').forEach((b) => b.addEventListener('click', () => deleteCategory(b.dataset.catDel)));
+  main.querySelectorAll('[data-fam-del]').forEach((b) => b.addEventListener('click', () => deleteFamily(b.dataset.famDel)));
+  main.querySelector('#newCat').addEventListener('click', () => editCategory(null));
+  main.querySelector('#newFam').addEventListener('click', () => editFamily(null));
 }
 
+const LAYOUT_LABEL = { variant: 'Cards', spec: 'Cards', table: 'Table' };
+
 function editCategory(slug) {
-  const c = db.categories.find((x) => x.slug === slug);
-  openDrawer(`Edit ${c.name}`, `
+  const adding = !slug;
+  const c = adding ? { name: '', blurb: '', intro: '', icon: '', image: '' }
+    : db.categories.find((x) => x.slug === slug);
+  openDrawer(adding ? 'Add a category' : `Edit ${c.name}`, `
     <div class="adm-fields">
       ${field('Name', 'name', c.name)}
       ${field('Card blurb (products page)', 'blurb', c.blurb || '', 'textarea')}
       ${field('Intro (category page)', 'intro', c.intro || '', 'textarea')}
-      ${field('Icon key', 'icon', c.icon || '', 'text')}
-    </div>
-`,
+      ${uploadField('Tile photo (products page)', 'image', c.image || '', 'image/jpeg,image/png,image/webp')}
+    </div>`,
     async () => {
-      const patch = { name: val('name'), blurb: val('blurb'), intro: val('intro'), icon: val('icon') };
-      const { error } = await sb.from('categories').update(patch).eq('slug', slug);
-      if (error) throw error;
-      Object.assign(c, patch);
+      const row = { name: val('name'), blurb: val('blurb') || null, intro: val('intro') || null,
+                    image: val('image') || null };
+      if (!row.name) throw new Error('Give the category a name.');
+      if (adding) {
+        row.slug = slugify(row.name);
+        if (!row.slug) throw new Error('That name needs at least one letter or number.');
+        row.sort_order = nextOrder(db.categories);
+        const { error } = await sb.from('categories').insert(row);
+        if (error) throw dupe(error, 'A category with that name');
+        await loadAll();
+      } else {
+        const { error } = await sb.from('categories').update(row).eq('slug', slug);
+        if (error) throw error;
+        Object.assign(c, row);
+      }
       taxonomy();
     }, { draftNote: 'Saved. It goes live the next time anything is published.' });
+  wireUploads('media', 'categories/');
 }
 
 function editFamily(slug) {
-  const f = db.families.find((x) => x.slug === slug);
-  openDrawer(`Edit ${f.name}`, `
+  const adding = !slug;
+  const f = adding ? { name: '', category: (db.categories[0] || {}).slug, intro: '', bullets: [], layout: 'variant' }
+    : db.families.find((x) => x.slug === slug);
+  openDrawer(adding ? 'Add a range' : `Edit ${f.name}`, `
     <div class="adm-fields">
       ${field('Name', 'name', f.name)}
+      ${select('Category', 'category', db.categories.map((c) => [c.slug, c.name]), f.category, '')}
+      ${select('Layout', 'layout', [['variant', 'Cards, a page for each code'], ['table', 'Table, no page per code']],
+        f.layout === 'table' ? 'table' : 'variant', '')}
       ${field('Intro', 'intro', f.intro || '', 'textarea')}
       ${field('Shared spec notes (one per line)', 'bullets', (f.bullets || []).join('\n'), 'textarea')}
     </div>`,
     async () => {
-      const patch = {
-        name: val('name'), intro: val('intro'),
-        bullets: val('bullets').split('\n').map((s) => s.trim()).filter(Boolean),
+      const row = {
+        name: val('name'), category: val('category'), layout: val('layout'), intro: val('intro') || null,
+        bullets: val('bullets').split('\n').map((t) => t.trim()).filter(Boolean),
       };
-      const { error } = await sb.from('families').update(patch).eq('slug', slug);
-      if (error) throw error;
-      Object.assign(f, patch);
+      if (!row.name) throw new Error('Give the range a name.');
+      if (adding) {
+        row.slug = slugify(row.name);
+        if (!row.slug) throw new Error('That name needs at least one letter or number.');
+        row.sort_order = nextOrder(db.families);
+        const { error } = await sb.from('families').insert(row);
+        if (error) throw dupe(error, 'A range with that name');
+        await loadAll();
+      } else {
+        const { error } = await sb.from('families').update(row).eq('slug', slug);
+        if (error) throw error;
+        // its products follow the range into its new category
+        if (row.category !== f.category) {
+          const moved = await sb.from('products').update({ category: row.category }).eq('family', slug);
+          if (moved.error) throw moved.error;
+          db.products.forEach((p) => { if (p.family === slug) p.category = row.category; });
+        }
+        Object.assign(f, row);
+      }
       taxonomy();
     }, { draftNote: 'Saved. It goes live the next time anything is published.' });
+}
+
+/*
+ * Deleting refuses anything still in use. A category's ranges and a range's
+ * products would otherwise be orphaned or, through the database's cascade,
+ * silently deleted with it.
+ */
+function blockedDrawer(title, what, used) {
+  openDrawer(title, `<p style="font-size:15px;line-height:1.65">
+    <strong>${esc(what)}</strong> still has ${used}. Move or delete those first, then delete it.</p>`, null);
+}
+
+function deleteCategory(slug) {
+  const c = db.categories.find((x) => x.slug === slug);
+  const ranges = db.families.filter((f) => f.category === slug).length;
+  const items = db.products.filter((p) => p.category === slug).length;
+  if (ranges || items) {
+    return blockedDrawer('This category is in use', c.name,
+      [ranges && `${ranges} range${ranges > 1 ? 's' : ''}`, items && `${items} product${items > 1 ? 's' : ''}`]
+        .filter(Boolean).join(' and '));
+  }
+  confirmDelete(`Delete ${c.name}?`, `The category comes off the site in a minute or two.`, async () => {
+    const { error } = await sb.from('categories').delete().eq('slug', slug);
+    if (error) throw error;
+    db.categories = db.categories.filter((x) => x.slug !== slug);
+    taxonomy();
+  }, `${c.name} deleted`);
+}
+
+function deleteFamily(slug) {
+  const f = db.families.find((x) => x.slug === slug);
+  const items = db.products.filter((p) => p.family === slug).length;
+  if (items) return blockedDrawer('This range is in use', f.name, `${items} product${items > 1 ? 's' : ''}`);
+  confirmDelete(`Delete ${f.name}?`, 'The range comes off the site in a minute or two.', async () => {
+    const { error } = await sb.from('families').delete().eq('slug', slug);
+    if (error) throw error;
+    db.families = db.families.filter((x) => x.slug !== slug);
+    taxonomy();
+  }, `${f.name} deleted`);
+}
+
+/** A confirmation drawer whose button deletes, then publishes. */
+function confirmDelete(title, note, run, doneMsg) {
+  openDrawer(title, `
+    <p style="font-size:15px;line-height:1.65">${esc(note)}</p>
+    <button class="adm-btn adm-btn-danger" id="confirmDelete" style="margin-top:22px">Yes, delete permanently</button>`, null);
+  const btn = drawerBody.querySelector('#confirmDelete');
+  btn.addEventListener('click', async () => {
+    btn.disabled = true;
+    try {
+      await run();
+      closeDrawer();
+      const r = await publishSite();
+      toast(r.ok ? `${doneMsg}. Publishing to the site now.` : `${doneMsg}, but the site did not rebuild: ${r.message}`, !r.ok);
+    } catch (err) {
+      btn.disabled = false;
+      toast(err.message || 'Could not delete that', true);
+    }
+  });
 }
 
 /* ─────────────────────────── articles ─────────────────────────── */
@@ -815,29 +1014,60 @@ function posts() {
     <div class="adm-grid">
       ${db.posts.map((p) => `<article class="adm-tile">
         <span class="adm-tile-ph">
-          <img src="/assets/blog-${esc(p.image)}.jpg" alt="" loading="lazy"
-               onerror="this.style.display='none'">
+          <img src="${esc(coverSrc(p.image))}" alt="" loading="lazy" onerror="this.style.display='none'">
         </span>
         <div class="adm-tile-body">
           <span class="adm-tile-meta">${esc(p.topic || '—')} · ${p.read_mins} min</span>
           <h3>${esc(p.title)}</h3>
           <p class="adm-tile-desc">${esc(p.excerpt || '')}</p>
           <div class="adm-tile-foot">
-            <span class="adm-pill ${p.published ? 'green' : 'grey'}">${p.published ? 'Live' : 'Draft'}</span>
+            <button class="adm-switch ${p.published ? 'on' : ''}" data-live="${esc(p.slug)}" role="switch"
+                    aria-checked="${p.published ? 'true' : 'false'}" title="${p.published ? 'Unpublish' : 'Publish'}">
+              <i></i><span>${p.published ? 'Live' : 'Unpublished'}</span>
+            </button>
             <span class="spacer" style="flex:1"></span>
             <button class="adm-btn adm-btn-soft" data-post="${esc(p.slug)}">Edit</button>
+            <button class="adm-icon-btn danger" data-post-del="${esc(p.slug)}" title="Delete">${ICON.trash}</button>
           </div>
         </div>
       </article>`).join('') || '<div class="adm-card adm-empty">No articles yet.</div>'}
     </div>
 `;
   main.querySelectorAll('[data-post]').forEach((b) => b.addEventListener('click', () => editPost(b.dataset.post)));
+  main.querySelectorAll('[data-post-del]').forEach((b) => b.addEventListener('click', () => deletePost(b.dataset.postDel)));
+  main.querySelectorAll('[data-live]').forEach((b) => b.addEventListener('click', () => togglePost(b.dataset.live, b)));
   main.querySelector('#newPost').addEventListener('click', () => editPost(null));
+}
+
+/** Live and unpublished both need a rebuild: one adds the article, the other takes it down. */
+async function togglePost(slug, btn) {
+  const p = db.posts.find((x) => x.slug === slug);
+  if (!p) return;
+  btn.disabled = true;
+  const next = !p.published;
+  const { error } = await sb.from('posts').update({ published: next }).eq('slug', slug);
+  if (error) { btn.disabled = false; return toast(error.message, true); }
+  p.published = next;
+  posts();
+  const r = await publishSite();
+  toast(r.ok ? `${next ? 'Published' : 'Unpublished'}. Updating the site now.`
+    : `Saved, but the site did not rebuild: ${r.message}`, !r.ok);
+}
+
+function deletePost(slug) {
+  const p = db.posts.find((x) => x.slug === slug);
+  if (!p) return;
+  confirmDelete(`Delete "${p.title}"?`, 'The article is removed for good and comes off the site in a minute or two.', async () => {
+    const { error } = await sb.from('posts').delete().eq('slug', slug);
+    if (error) throw error;
+    db.posts = db.posts.filter((x) => x.slug !== slug);
+    posts();
+  }, 'Article deleted');
 }
 
 function editPost(slug) {
   const p = slug ? db.posts.find((x) => x.slug === slug) : {
-    slug: '', title: '', excerpt: '', body: '', image: 'post-standards', image_alt: '',
+    slug: '', title: '', excerpt: '', body: '', image: '', image_alt: '',
     topic: '', author: 'SB Fall Protection', read_mins: 5, featured: false, published: false,
     published_at: new Date().toISOString(),
   };
@@ -847,18 +1077,28 @@ function editPost(slug) {
       ${field('URL slug', 'slug', p.slug, 'text', '')}
       ${field('Topic', 'topic', p.topic || '', 'text', '')}
       ${field('Excerpt', 'excerpt', p.excerpt || '', 'textarea')}
-      ${field('Image key', 'image', p.image || '', 'text', '')}
+      ${uploadField('Cover image', 'image', p.image || '', 'image/jpeg,image/png,image/webp')}
+      ${field('Image alt text', 'image_alt', p.image_alt || '', 'text', '')}
       ${field('Read time (min)', 'read_mins', p.read_mins, 'number', '')}
-      ${field('Image alt text', 'image_alt', p.image_alt || '', 'text')}
       ${field('Author', 'author', p.author || '', 'text', '')}
       ${field('Publish date', 'published_at', (p.published_at || '').slice(0, 10), 'date', '')}
       ${select('Featured', 'featured', [['false', 'No'], ['true', 'Yes']], String(!!p.featured), '')}
-      ${field('Body (Markdown)', 'body', p.body || '', 'textarea')}
+      <div class="adm-field full"><span>Body (Markdown)</span>
+        <div class="adm-md-bar">
+          <label class="adm-btn adm-btn-soft">
+            <input type="file" id="bodyImg" accept="image/jpeg,image/png,image/webp" hidden>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 17-5-5-9 8"/></svg>
+            Insert image
+          </label>
+          <small class="adm-upload-state" id="bodyImgState"></small>
+        </div>
+        <textarea name="body">${esc(p.body || '')}</textarea>
+      </div>
     </div>`,
     async (publish) => {
       const row = {
-        slug: val('slug'), title: val('title'), topic: val('topic'), excerpt: val('excerpt'),
-        image: val('image'), image_alt: val('image_alt'), author: val('author'),
+        slug: slugify(val('slug') || val('title')), title: val('title'), topic: val('topic'), excerpt: val('excerpt'),
+        image: val('image') || 'post-standards', image_alt: val('image_alt'), author: val('author'),
         read_mins: parseInt(val('read_mins'), 10) || 5,
         published: publish, featured: val('featured') === 'true',
         published_at: new Date(val('published_at') || Date.now()).toISOString(),
@@ -870,7 +1110,32 @@ function editPost(slug) {
       await loadAll();
       posts();
     });
-  drawerBody.querySelector('[name="body"]').style.minHeight = '340px';
+  wireUploads('media', 'blog/');
+
+  const body = drawerBody.querySelector('[name="body"]');
+  body.style.minHeight = '340px';
+  // an image inside the article goes in as Markdown where the cursor is
+  drawerBody.querySelector('#bodyImg').addEventListener('change', async (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const state = drawerBody.querySelector('#bodyImgState');
+    state.textContent = `Uploading ${file.name}…`;
+    try {
+      const url = await uploadTo('media', `blog/${Date.now()}-${safeName(file.name)}`, file);
+      const alt = file.name.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' ');
+      const at = body.selectionStart ?? body.value.length;
+      const snippet = `\n\n![${alt}](${url})\n\n`;
+      body.value = body.value.slice(0, at) + snippet + body.value.slice(at);
+      body.focus();
+      body.setSelectionRange(at + snippet.length, at + snippet.length);
+      state.textContent = `Inserted ${file.name}`;
+    } catch (err) {
+      state.textContent = '';
+      toast(err.message, true);
+    } finally {
+      e.target.value = '';
+    }
+  });
 }
 
 /* ─────────────────────────── enquiries ─────────────────────────── */
@@ -894,13 +1159,53 @@ function inqTable(rows) {
   </tr>`).join('')}</tbody></table>`;
 }
 
+let inqFrom = '';
+let inqTo = '';
+let inqQuery = '';
+
 function inquiries() {
+  const q = inqQuery.trim().toLowerCase();
+  const from = inqFrom ? new Date(`${inqFrom}T00:00:00`) : null;
+  const to = inqTo ? new Date(`${inqTo}T23:59:59.999`) : null;
+  const rows = db.inquiries.filter((r) => {
+    const t = new Date(r.created_at);
+    if (from && t < from) return false;
+    if (to && t > to) return false;
+    if (!q) return true;
+    return ['name', 'company', 'email', 'phone', 'country', 'category', 'sku', 'message']
+      .some((k) => String(r[k] || '').toLowerCase().includes(q));
+  });
+  const filtered = Boolean(q || from || to);
+
   main.innerHTML = pageHead('Enquiries') + `
     <div class="adm-table-card">
-      <div class="adm-table-head"><h2>Inbox</h2><span class="spacer"></span>
-        <span class="adm-td-muted">${db.inquiries.length} total</span></div>
-      <div class="adm-table-scroll">${inqTable(db.inquiries)}</div>
+      <div class="adm-table-head adm-inq-tools">
+        <h2>Inbox</h2><span class="spacer"></span>
+        <label class="adm-date"><span>From</span><input type="date" id="iFrom" value="${esc(inqFrom)}"></label>
+        <label class="adm-date"><span>To</span><input type="date" id="iTo" value="${esc(inqTo)}"></label>
+        <div class="adm-search" style="flex:0 1 260px">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="iQ" placeholder="Search name, company, email…" value="${esc(inqQuery)}">
+        </div>
+        ${filtered ? '<button class="adm-btn adm-btn-ghost" id="iClear">Clear</button>' : ''}
+        <span class="adm-td-muted">${filtered ? `${rows.length} of ${db.inquiries.length}` : `${db.inquiries.length} total`}</span>
+      </div>
+      <div class="adm-table-scroll">${rows.length || !filtered ? inqTable(rows)
+        : '<div class="adm-empty">No enquiries match those filters.</div>'}</div>
     </div>`;
+
+  const qi = main.querySelector('#iQ');
+  qi.addEventListener('input', () => {
+    inqQuery = qi.value;
+    const at = qi.selectionStart;
+    inquiries();
+    const n = main.querySelector('#iQ');
+    n.focus(); n.setSelectionRange(at, at);
+  });
+  main.querySelector('#iFrom').addEventListener('change', (e) => { inqFrom = e.target.value; inquiries(); });
+  main.querySelector('#iTo').addEventListener('change', (e) => { inqTo = e.target.value; inquiries(); });
+  const clear = main.querySelector('#iClear');
+  if (clear) clear.addEventListener('click', () => { inqFrom = inqTo = inqQuery = ''; inquiries(); });
   wireInq();
 }
 
@@ -1111,6 +1416,8 @@ async function loadUsers() {
       last_sign_in_at: u.last_sign_in_at,
       created_at: u.created_at,
       providers: u.providers,
+      first_name: u.first_name,
+      last_name: u.last_name,
     }));
 
   // you are always in the list, whatever else failed
@@ -1133,12 +1440,15 @@ async function loadUsers() {
       <span class="adm-td-muted">${rows.length} ${rows.length === 1 ? 'account' : 'accounts'}</span></div>
     <div class="adm-table-scroll">
       <table class="adm-table"><thead><tr>
-        <th>Email</th><th>Access</th><th>Status</th><th>Last sign-in</th>
+        <th>Name</th><th>Email</th><th>Access</th><th>Status</th><th>Last sign-in</th>
         ${canManage ? '<th>Action</th>' : ''}
       </tr></thead><tbody>
       ${rows.map((u) => {
         const isMe = String(u.email).toLowerCase() === me.email.toLowerCase();
         return `<tr>
+          <td>${[u.first_name, u.last_name].filter(Boolean).length
+            ? `<span class="adm-code">${esc([u.first_name, u.last_name].filter(Boolean).join(' '))}</span>`
+            : '<span class="adm-td-muted">—</span>'}</td>
           <td><span class="adm-code">${esc(u.email)}</span>
               ${isMe ? '<span class="adm-sub">this is you</span>' : ''}</td>
           <td><span class="adm-pill ${u.role === 'super_admin' ? 'blue' : u.role ? 'grey' : 'red'}">${
@@ -1149,7 +1459,9 @@ async function loadUsers() {
           ${canManage ? `<td><span class="adm-act">${
             // a super admin resets any admin's password and their own, never another super admin's
             (isMe || u.role !== 'super_admin') && u.id
-              ? `<button class="adm-icon-btn" data-reset-user="${esc(u.id)}"
+              ? `<button class="adm-icon-btn" data-name-user="${esc(u.id)}" data-email="${esc(u.email)}"
+                         data-first="${esc(u.first_name || '')}" data-last="${esc(u.last_name || '')}"
+                         title="Edit name">${ICON.edit}</button><button class="adm-icon-btn" data-reset-user="${esc(u.id)}"
                          data-email="${esc(u.email)}" title="Set a new password">${ICON.key}</button>` : ''}${isMe
             ? ''
             : `<button class="adm-icon-btn danger" data-del-user="${esc(u.id || '')}"
@@ -1163,6 +1475,23 @@ async function loadUsers() {
     b.addEventListener('click', () => removeUser(b.dataset.delUser, b.dataset.email)));
   card.querySelectorAll('[data-reset-user]').forEach((b) =>
     b.addEventListener('click', () => resetPassword(b.dataset.resetUser, b.dataset.email)));
+  card.querySelectorAll('[data-name-user]').forEach((b) =>
+    b.addEventListener('click', () => renameUser(b.dataset.nameUser, b.dataset.email, b.dataset.first, b.dataset.last)));
+}
+
+function renameUser(id, email, first, last) {
+  openDrawer('Edit name', `
+    <p class="adm-td-muted" style="margin-bottom:20px;font-weight:600">${esc(email)}</p>
+    <div class="adm-fields">
+      ${field('First name', 'first_name', first || '', 'text', '')}
+      ${field('Last name', 'last_name', last || '', 'text', '')}
+    </div>`,
+    async () => {
+      const { ok, data } = await api('/api/users', 'PATCH', { id, first_name: val('first_name'), last_name: val('last_name') });
+      if (!ok) throw new Error(apiError(data, 'Could not change that name.'));
+      if (id === me.id) sb.auth.refreshSession().then(({ data: d }) => d && d.user && paintMe(d.user));
+      await loadUsers();
+    }, { mode: 'save', saveLabel: 'Save name', doneMsg: 'Name saved' });
 }
 
 function resetPassword(id, email) {
@@ -1184,6 +1513,8 @@ function resetPassword(id, email) {
 function addUser() {
   openDrawer('Add a staff account', `
     <div class="adm-fields">
+      ${field('First name', 'first_name', '', 'text', '')}
+      ${field('Last name', 'last_name', '', 'text', '')}
       ${field('Email address', 'email', '', 'email')}
       ${field('Password', 'password', '', 'text')}
       ${select('Access level', 'role',
@@ -1195,6 +1526,8 @@ function addUser() {
         email: val('email'),
         password: val('password'),
         role: val('role'),
+        first_name: val('first_name'),
+        last_name: val('last_name'),
       });
       if (!ok) throw new Error(apiError(data, 'Could not add that account.'));
       await loadUsers();
@@ -1241,7 +1574,8 @@ function profileView(user) {
         </div>
       </div>
       <div class="adm-fields" style="margin-top:26px">
-        ${field('Name', 'full_name', md.full_name || '', 'text', '')}
+        ${field('First name', 'first_name', md.first_name || (md.full_name || '').split(' ')[0] || '', 'text', '')}
+        ${field('Last name', 'last_name', md.last_name || (md.full_name || '').split(' ').slice(1).join(' '), 'text', '')}
         ${field('Phone number', 'phone', md.phone || '', 'tel', '')}
         ${field('Email address', 'email', email, 'email')}
       </div>
@@ -1289,7 +1623,10 @@ function profileView(user) {
     const btn = e.currentTarget;
     const nextEmail = v('email');
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(nextEmail)) return toast('That email address does not look right.', true);
-    const patch = { data: { full_name: v('full_name'), phone: v('phone') } };
+    const first = v('first_name');
+    const last = v('last_name');
+    const patch = { data: { first_name: first, last_name: last,
+                            full_name: [first, last].filter(Boolean).join(' '), phone: v('phone') } };
     const emailChanged = nextEmail.toLowerCase() !== email.toLowerCase();
     if (emailChanged) patch.email = nextEmail;
     btn.disabled = true;
@@ -1338,3 +1675,107 @@ function shrinkImage(file, max) {
 
 /* onAuthStateChange fires with the restored session on load */
 sb.auth.getSession().then(({ data }) => { if (!data.session) loginView.hidden = false; });
+
+/* ─────────────────────────── social links ─────────────────────────── */
+
+/*
+ * The footer's social links, kept as one JSON list in the settings table. The
+ * public site may read this one key and nothing else in settings.
+ */
+const SOCIAL = [
+  ['facebook', 'Facebook'], ['instagram', 'Instagram'], ['linkedin', 'LinkedIn'], ['youtube', 'YouTube'],
+  ['x', 'X (Twitter)'], ['whatsapp', 'WhatsApp'], ['pinterest', 'Pinterest'], ['link', 'Other website'],
+];
+const SOCIAL_LABEL = Object.fromEntries(SOCIAL);
+let socialLinks = null;
+
+async function loadSocial() {
+  const { data, error } = await sb.from('settings').select('value').eq('key', 'social_links').maybeSingle();
+  if (error) throw error;
+  try { socialLinks = JSON.parse((data && data.value) || '[]'); } catch { socialLinks = []; }
+  if (!Array.isArray(socialLinks)) socialLinks = [];
+}
+
+async function saveSocial(list) {
+  const { error } = await sb.from('settings')
+    .upsert({ key: 'social_links', value: JSON.stringify(list) }, { onConflict: 'key' });
+  if (error) throw error;
+  socialLinks = list;
+}
+
+async function social() {
+  main.innerHTML = pageHead('Social links') + '<div class="adm-card adm-empty">Loading…</div>';
+  try {
+    if (!socialLinks) await loadSocial();
+  } catch (err) {
+    main.innerHTML = pageHead('Social links') +
+      `<div class="adm-card adm-empty">Could not load the links.<br><span style="font-size:13px">${esc(err.message)}</span></div>`;
+    return;
+  }
+  main.innerHTML = pageHead('Social links',
+    '<button class="adm-btn adm-btn-primary" id="newSocial">+ Add link</button>') + `
+    <div class="adm-table-card">
+      <div class="adm-table-head"><h2>Shown in the footer</h2><span class="spacer"></span>
+        <span class="adm-td-muted">${socialLinks.length} ${socialLinks.length === 1 ? 'link' : 'links'}</span></div>
+      <div class="adm-table-scroll">
+      ${socialLinks.length ? `<table class="adm-table"><thead><tr>
+        <th>Platform</th><th>Link</th><th>Order</th><th>Action</th></tr></thead><tbody>
+        ${socialLinks.map((l, i) => `<tr>
+          <td><span class="adm-code">${esc(SOCIAL_LABEL[l.platform] || l.platform)}</span></td>
+          <td class="adm-td-muted"><a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.url)}</a></td>
+          <td><span class="adm-act">
+            <button class="adm-icon-btn" data-soc-up="${i}" title="Move up" ${i === 0 ? 'disabled' : ''}>↑</button>
+            <button class="adm-icon-btn" data-soc-down="${i}" title="Move down" ${i === socialLinks.length - 1 ? 'disabled' : ''}>↓</button>
+          </span></td>
+          <td><span class="adm-act">
+            <button class="adm-icon-btn" data-soc="${i}" title="Edit">${ICON.edit}</button>
+            <button class="adm-icon-btn danger" data-soc-del="${i}" title="Delete">${ICON.trash}</button>
+          </span></td>
+        </tr>`).join('')}</tbody></table>` : '<div class="adm-empty">No social links yet.</div>'}
+      </div>
+    </div>`;
+
+  main.querySelector('#newSocial').addEventListener('click', () => editSocial(-1));
+  main.querySelectorAll('[data-soc]').forEach((b) => b.addEventListener('click', () => editSocial(Number(b.dataset.soc))));
+  main.querySelectorAll('[data-soc-del]').forEach((b) => b.addEventListener('click', () => {
+    const i = Number(b.dataset.socDel);
+    const l = socialLinks[i];
+    confirmDelete(`Remove the ${SOCIAL_LABEL[l.platform] || l.platform} link?`,
+      'It comes off the footer in a minute or two.', async () => {
+        await saveSocial(socialLinks.filter((_, j) => j !== i));
+        social();
+      }, 'Link removed');
+  }));
+  const move = async (i, by) => {
+    const list = socialLinks.slice();
+    [list[i], list[i + by]] = [list[i + by], list[i]];
+    try {
+      await saveSocial(list);
+      social();
+      const r = await publishSite();
+      if (!r.ok) toast(`Saved, but the site did not rebuild: ${r.message}`, true);
+    } catch (err) { toast(err.message, true); }
+  };
+  main.querySelectorAll('[data-soc-up]').forEach((b) => b.addEventListener('click', () => move(Number(b.dataset.socUp), -1)));
+  main.querySelectorAll('[data-soc-down]').forEach((b) => b.addEventListener('click', () => move(Number(b.dataset.socDown), 1)));
+}
+
+function editSocial(i) {
+  const adding = i < 0;
+  const l = adding ? { platform: 'instagram', url: '' } : socialLinks[i];
+  openDrawer(adding ? 'Add a social link' : `Edit the ${SOCIAL_LABEL[l.platform] || l.platform} link`, `
+    <div class="adm-fields">
+      ${select('Platform', 'platform', SOCIAL, l.platform, '')}
+      ${field('Link', 'url', l.url, 'url')}
+    </div>`,
+    async () => {
+      let url = val('url');
+      if (url && !/^https?:\/\//i.test(url)) url = `https://${url}`;
+      if (!/^https?:\/\/[^\s.]+\.[^\s]+$/i.test(url)) throw new Error('That does not look like a web address.');
+      const next = { platform: val('platform'), url };
+      const list = socialLinks.slice();
+      if (adding) list.push(next); else list[i] = next;
+      await saveSocial(list);
+      social();
+    }, { draftNote: 'Saved. It goes live the next time anything is published.' });
+}

@@ -1,5 +1,6 @@
 ---
 import { Fragment } from 'astro/jsx-runtime';
+import { existsSync } from 'node:fs';
 import Base from '../../layouts/Base.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import {
@@ -12,6 +13,9 @@ export function getStaticPaths() {
 }
 
 const { category } = Astro.params;
+/* a category added in the panel has no stock header photo, so use its own or the generic one */
+const heroFor = (slug: string, own?: string) =>
+  existsSync(`public/assets/hero-${slug}.jpg`) ? slug : (own || 'products');
 const cat = getCategory(category!)!;
 const families = getFamilies(category!);
 const products = getProducts(category!);
@@ -66,7 +70,7 @@ const rangeOf = (slug: string) => (split ? split.find((r) => r.has(slug))?.key :
     title={cat.name}
     lead={cat.blurb}
     crumbs={[{ label: 'Products', href: '/products' }, { label: cat.name }]}
-    image={cat.slug}
+    image={heroFor(cat.slug, cat.image)}
     imageAlt={`${cat.name} in use on site`}
   />
 

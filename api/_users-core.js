@@ -50,9 +50,12 @@ function allowed(email) {
 }
 
 /** Only fields the panel needs — never tokens, never identities payloads. */
+const meta = (u) => (u && u.user_metadata) || {};
 const publicUser = (u) => ({
   id: u.id,
   email: u.email,
+  first_name: meta(u).first_name || '',
+  last_name: meta(u).last_name || '',
   created_at: u.created_at,
   last_sign_in_at: u.last_sign_in_at,
   confirmed: Boolean(u.email_confirmed_at || u.confirmed_at),
@@ -100,6 +103,13 @@ async function setRole(userId, email, role) {
   });
 }
 
+/** First and last name from a request, plus the full name the panel shows. */
+function names(body) {
+  const first = String((body && body.first_name) || '').trim().slice(0, 60);
+  const last = String((body && body.last_name) || '').trim().slice(0, 60);
+  return { first_name: first, last_name: last, full_name: [first, last].filter(Boolean).join(' ') };
+}
+
 /**
  * @param {{method: string, token: string, body: any}} req
  */
@@ -129,13 +139,16 @@ export async function handleUsers(req) {
   }
 
   if (req.method === 'GET') {
-    const callerRole = await roleOf(caller.id);
-    if (callerRole === null && !(await rosterIsEmpty())) {
+    // the roster check and the list are independent, so fetch them together
+    const [callerRole, empty, listed] = await Promise.all([
+      roleOf(caller.id),
+      rosterIsEmpty(),
+      sbFetch('/auth/v1/admin/users?per_page=200', { headers: admin() }),
+    ]);
+    if (callerRole === null && !empty) {
       return reply(403, { error: 'forbidden', message: 'This account is not on the staff list.' });
     }
-    const { ok, status, body } = await sbFetch('/auth/v1/admin/users?per_page=200', {
-      headers: admin(),
-    });
+    const { ok, status, body } = listed;
     if (!ok) return reply(status, { error: (body && body.msg) || 'Could not list users.' });
     const users = (body.users || []).map(publicUser);
     users.sort((a, b) => String(a.email).localeCompare(String(b.email)));
@@ -178,7 +191,7 @@ export async function handleUsers(req) {
       headers: admin({ 'Content-Type': 'application/json' }),
       // confirmed immediately: this is a staff account created by a colleague,
       // not a public sign-up that needs to prove it owns the mailbox
-      body: JSON.stringify({ email, password, email_confirm: true }),
+      body: JSON.stringify({ email, password, email_confirm: true, user_metadata: names(req.body) }),
     });
     if (!ok) return reply(status, { error: (body && (body.msg || body.error_description)) || 'Could not create that user.' });
 
@@ -212,30 +225,37 @@ export async function handleUsers(req) {
   // and for themselves, but never for another super admin: otherwise one super
   // admin could take over another's account just by resetting its password.
   // The panel hides the button too, but this is where the rule is enforced.
+  // Also renames. The same rule covers both: a super admin may change any
+  // admin's details and their own, never another super admin's.
   if (req.method === 'PATCH') {
     const role = await roleOf(caller.id);
     if (role !== 'super_admin') {
-      return reply(403, { error: 'forbidden', message: 'Only a super admin can reset passwords.' });
+      return reply(403, { error: 'forbidden', message: 'Only a super admin can change staff accounts.' });
     }
     const id = String((req.body && req.body.id) || '').trim();
-    const password = String((req.body && req.body.password) || '');
     if (!id) return reply(400, { error: 'Which user?' });
-    if (password.length < 8) {
+    const hasPassword = req.body && typeof req.body.password === 'string' && req.body.password !== '';
+    const hasNames = req.body && ('first_name' in req.body || 'last_name' in req.body);
+    if (!hasPassword && !hasNames) return reply(400, { error: 'Nothing to change.' });
+    if (hasPassword && req.body.password.length < 8) {
       return reply(400, { error: 'Use a password of at least 8 characters.' });
     }
     if (id !== caller.id && (await roleOf(id)) === 'super_admin') {
       return reply(403, {
         error: 'forbidden',
-        message: "Another super admin's password can only be changed by that super admin.",
+        message: "Another super admin's account can only be changed by that super admin.",
       });
     }
+    const change = {};
+    if (hasPassword) change.password = req.body.password;
+    if (hasNames) change.user_metadata = names(req.body);    // merged, so a photo is kept
     const { ok, status, body } = await sbFetch(`/auth/v1/admin/users/${encodeURIComponent(id)}`, {
       method: 'PUT',
       headers: admin({ 'Content-Type': 'application/json' }),
-      body: JSON.stringify({ password }),
+      body: JSON.stringify(change),
     });
-    if (!ok) return reply(status, { error: (body && body.msg) || 'Could not set that password.' });
-    return reply(200, { reset: id });
+    if (!ok) return reply(status, { error: (body && body.msg) || 'Could not update that account.' });
+    return reply(200, { updated: id, user: publicUser(body) });
   }
 
   return reply(405, { error: 'Method not allowed.' });

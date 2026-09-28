@@ -15,8 +15,10 @@ const nav = [
   { id: 'posts',     label: 'Articles',  icon: 'file' },
   { id: 'reels',     label: 'Reels',     icon: 'play' },
   { id: 'inquiries', label: 'Enquiries', icon: 'inbox', count: true },
+  { id: 'social',    label: 'Social links', icon: 'share' },
 ];
 const icons: Record<string, string> = {
+  share:  '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/>',
   grid:   '<rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/>',
   box:    '<path d="M21 8.4v7.2a2 2 0 0 1-1 1.73l-6.5 3.6a2 2 0 0 1-2 0L5 17.33a2 2 0 0 1-1-1.73V8.4a2 2 0 0 1 1-1.73l6.5-3.6a2 2 0 0 1 2 0l6.5 3.6A2 2 0 0 1 21 8.4Z"/><path d="m4.3 7.3 7.7 4.3 7.7-4.3M12 20.5v-8.9"/>',
   layers: '<path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5M3 17.5l9 5 9-5"/>',
@@ -158,6 +160,10 @@ const icons: Record<string, string> = {
         <input id="globalSearch" placeholder="Search products, articles or enquiries…" aria-label="Search">
       </div>
       <span class="spacer"></span>
+      <!-- shows while a publish is building, then "Live" -->
+      <button class="adm-pub" id="pubState" type="button" hidden aria-live="polite">
+        <i class="dot"></i><span class="txt">Publishing…</span>
+      </button>
       <button class="adm-bell" id="btnBell" type="button" title="New enquiries" aria-label="New enquiries">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
         <span class="dot" id="bellDot" hidden>0</span>

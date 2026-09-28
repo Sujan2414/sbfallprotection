@@ -16,6 +16,8 @@ export interface Category {
   families: string[];
   blurb?: string;
   icon?: string;
+  /** a photo uploaded in the panel; otherwise /assets/cat-<slug>.jpg */
+  image?: string;
 }
 
 export interface Family {
@@ -64,6 +66,7 @@ const data: Snapshot = await (async (): Promise<Snapshot> => {
       families: live.families.filter((f) => f.category === c.slug).map((f) => f.slug),
       blurb: c.blurb ?? undefined,
       icon: c.icon ?? undefined,
+      image: c.image ?? undefined,
     })) as Category[],
     families: live.families.map((f) => ({
       slug: f.slug,
