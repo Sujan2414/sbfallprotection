@@ -1328,10 +1328,11 @@ function shrinkImage(file, max) {
       c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
       c.toBlob((b) => (b ? resolve(new File([b], 'avatar.jpg', { type: 'image/jpeg' })) : reject(new Error('Could not read that image'))),
         'image/jpeg', 0.88);
-      URL.revokeObjectURL(img.src);
+      window.URL.revokeObjectURL(img.src);
     };
     img.onerror = () => reject(new Error('Could not read that image'));
-    img.src = URL.createObjectURL(file);
+    // window.URL: this file declares its own URL (the Supabase address) at the top
+    img.src = window.URL.createObjectURL(file);
   });
 }
 
