@@ -31,5 +31,8 @@
       "source": "/sb/:path*",
       "destination": "https://basyfxoycdudurvvsisk.supabase.co/:path*"
     }
+  ],
+  "regions": [
+    "syd1"
   ]
 }
