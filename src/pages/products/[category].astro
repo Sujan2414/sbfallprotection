@@ -1,4 +1,6 @@
 ---
+import { getContact, tel, waLink, addressLines, addressOneLine, phones } from '../../lib/contact';
+const ct = await getContact();
 import { Fragment } from 'astro/jsx-runtime';
 import { existsSync } from 'node:fs';
 import Base from '../../layouts/Base.astro';
@@ -189,7 +191,7 @@ const rangeOf = (slug: string) => (split ? split.find((r) => r.has(slug))?.key :
           <p>Send us the product codes and quantities you need — we reply with specifications, MOQs and pricing within one business day.</p>
           <div class="btns">
             <a class="btn btn-orange" href="/contact">Request a Quote</a>
-            <a class="btn btn-white" href="tel:+915122406728">Call Now</a>
+            <a class="btn btn-white" href={tel(ct.phone)}>Call Now</a>
           </div>
         </div>
       </div>

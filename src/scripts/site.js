@@ -168,7 +168,7 @@
       if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
 
       function mailFallback() {
-        location.href = 'mailto:sales@sbfallprotection.com?subject=' +
+        location.href = 'mailto:' + (f.getAttribute('data-email') || 'sales@sbfallprotection.com') + '?subject=' +
           encodeURIComponent('Quote request — ' + type) +
           '&body=' + encodeURIComponent(lines.join('\n'));
       }

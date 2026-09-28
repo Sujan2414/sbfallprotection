@@ -1,4 +1,6 @@
 ---
+import { getContact, tel, waLink, addressLines, addressOneLine, phones } from '../lib/contact';
+const ct = await getContact();
 import Base from '../layouts/Base.astro';
 import WorldMap from '../components/WorldMap.astro';
 import { getCategories, categoryUrl } from '../lib/catalog';
@@ -71,7 +73,7 @@ const cardHref: Record<string, string> = {
     <p class="hero-desc">From full body harnesses to complete rescue kits, we manufacture and export certified height-safety equipment — engineered, tested and packed in our 195,000 sq ft facility in Kanpur, India.</p>
     <div class="hero-btns">
       <a class="btn btn-orange" href="/contact">Get Your Free Quote</a>
-      <a class="btn btn-white" href="tel:+915122406728">
+      <a class="btn btn-white" href={tel(ct.phone)}>
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg>
         Call Now</a>
     </div>
@@ -316,8 +318,8 @@ const cardHref: Record<string, string> = {
       <div class="urgent-copy">
         <span class="u-badge"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18v-6a5 5 0 0 1 10 0v6"/><path d="M5 18h14v2H5v-2Z"/><path d="M12 3v2M4.5 6.5 6 8M19.5 6.5 18 8"/></svg> Urgent Requirement</span>
         <h2>Need Certified Gear on a Deadline?</h2>
-        <p class="sub"><span class="u-clock"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span> Sales team available Mon – Sat, 9:00 – 18:00 IST</p>
-        <a class="btn btn-white" href="tel:+915122406728">
+        <p class="sub"><span class="u-clock"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span> Sales team available {ct.hours}</p>
+        <a class="btn btn-white" href={tel(ct.phone)}>
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg>
           Call Now <span class="arr">→</span></a>
       </div>
@@ -454,13 +456,13 @@ const cardHref: Record<string, string> = {
         <div class="cc-info">
           <h3>Contact Info</h3>
           <div class="cc-rows">
-            <div class="cc-row"><span class="cc-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg></span><div><b>Phone Number</b><span>+91 512 240 6728 · +91 512 240 6947</span></div></div>
-            <div class="cc-row"><span class="cc-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><div><b>Email Address</b><span>sales@sbfallprotection.com</span></div></div>
-            <div class="cc-row"><span class="cc-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 21s-7-5.6-7-11a7 7 0 0 1 14 0c0 5.4-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg></span><div><b>Physical Address</b><span>Plot C-17 to C-19, UPSIDC Industrial Area, Rooma, Kanpur — 208008, India</span></div></div>
+            <div class="cc-row"><span class="cc-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg></span><div><b>Phone Number</b><span>{phones(ct).join(' · ')}</span></div></div>
+            <div class="cc-row"><span class="cc-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><div><b>Email Address</b><span>{ct.email}</span></div></div>
+            <div class="cc-row"><span class="cc-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 21s-7-5.6-7-11a7 7 0 0 1 14 0c0 5.4-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg></span><div><b>Physical Address</b><span>{addressOneLine(ct)}</span></div></div>
           </div>
         </div>
       </div>
-      <form class="cc-form" id="quoteForm" data-sb-url={sbUrl} data-sb-key={sbKey}>
+      <form class="cc-form" id="quoteForm" data-sb-url={sbUrl} data-sb-key={sbKey} data-email={ct.email}>
         <h3>Request a <em>Free Quote</em></h3>
         <p class="respond">We typically respond within one business day.</p>
         <div class="f-fields">
@@ -507,7 +509,7 @@ const cardHref: Record<string, string> = {
       <details class="faq reveal"><summary>How is quality controlled? <span class="fx">+</span></summary>
         <p class="a">Dedicated quality controllers inspect at every stage — incoming materials, in-process stitching and hardware, and finished goods — with stringent batch testing before dispatch.</p></details>
       <details class="faq reveal"><summary>How do I get the full catalogue? <span class="fx">+</span></summary>
-        <p class="a">Email sales@sbfallprotection.com or submit the quote form and the team will send the latest edition with current specifications.</p></details>
+        <p class="a">Email {ct.email} or submit the quote form and the team will send the latest edition with current specifications.</p></details>
     </div>
     </div>
   </div>
@@ -567,7 +569,7 @@ const cardHref: Record<string, string> = {
         <p>From single product lines to complete fall-protection programmes, our team delivers certified gear you can trust. Get in touch today for a free, no-obligation quotation.</p>
         <div class="btns">
           <a class="btn btn-orange" href="#contact">Get Free Quote</a>
-          <a class="btn btn-white" href="tel:+915122406728"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg> Call Now</a>
+          <a class="btn btn-white" href={tel(ct.phone)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg> Call Now</a>
         </div>
       </div>
     </div>

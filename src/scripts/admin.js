@@ -572,7 +572,7 @@ document.querySelectorAll('.adm-navitem[data-tab]').forEach((b) =>
   b.addEventListener('click', () => setTab(b.dataset.tab)));
 
 function render() {
-  ({ overview, products, taxonomy, posts, reels, inquiries, social, users, settings }[tab] || overview)();
+  ({ overview, products, taxonomy, posts, reels, inquiries, contact: social, users, settings }[tab] || overview)();
   window.scrollTo({ top: 0 });
 }
 
@@ -1688,6 +1688,61 @@ const SOCIAL = [
 ];
 const SOCIAL_LABEL = Object.fromEntries(SOCIAL);
 let socialLinks = null;
+let contactInfo = null;
+
+/* the site's contact details: phones, email, WhatsApp, address, hours and map pin */
+const CONTACT_FIELDS = [
+  ['phone', 'Main phone'], ['phone2', 'Second phone'], ['email', 'Email'], ['whatsapp', 'WhatsApp number'],
+  ['address', 'Address'], ['hours', 'Business hours'], ['map', 'Map location'],
+];
+
+async function loadContact() {
+  const { data, error } = await sb.from('settings').select('value').eq('key', 'contact').maybeSingle();
+  if (error) throw error;
+  try { contactInfo = JSON.parse((data && data.value) || '{}'); } catch { contactInfo = {}; }
+}
+
+/** A Google Maps link or plain "lat, lng" becomes "lat,lng". */
+function mapPoint(v) {
+  const t = String(v || '').trim();
+  const m = t.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/) || t.match(/[?&]q=(-?\d+\.?\d*),\s*(-?\d+\.?\d*)/)
+    || t.match(/^(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)$/);
+  return m ? `${m[1]},${m[2]}` : null;
+}
+
+function editContact() {
+  const c = contactInfo || {};
+  openDrawer('Edit contact details', `
+    <div class="adm-fields">
+      ${field('Main phone', 'phone', c.phone || '', 'tel', '')}
+      ${field('Second phone', 'phone2', c.phone2 || '', 'tel', '')}
+      ${field('Email', 'email', c.email || '', 'email', '')}
+      ${field('WhatsApp number', 'whatsapp', c.whatsapp || '', 'tel', '')}
+      ${field('Address (one line per row)', 'address', c.address || '', 'textarea')}
+      ${field('Business hours', 'hours', c.hours || '', 'text')}
+      ${field('Map location (latitude, longitude or a Google Maps link)', 'map', c.map || '', 'text')}
+    </div>`,
+    async () => {
+      const next = {
+        phone: val('phone'), phone2: val('phone2'), email: val('email'), whatsapp: val('whatsapp'),
+        address: drawerBody.querySelector('[name="address"]').value.trim(), hours: val('hours'), map: val('map'),
+      };
+      if (!next.phone.replace(/\D/g, '')) throw new Error('Add the main phone number.');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(next.email)) throw new Error('That email address does not look right.');
+      if (next.whatsapp && next.whatsapp.replace(/\D/g, '').length < 8) throw new Error('That WhatsApp number looks too short.');
+      if (!next.address) throw new Error('Add the address.');
+      if (next.map) {
+        const point = mapPoint(next.map);
+        if (!point) throw new Error('For the map, give "latitude, longitude" or paste a Google Maps link.');
+        next.map = point;
+      }
+      const { error } = await sb.from('settings')
+        .upsert({ key: 'contact', value: JSON.stringify(next) }, { onConflict: 'key' });
+      if (error) throw error;
+      contactInfo = next;
+      social();
+    }, { draftNote: 'Saved. It goes live the next time anything is published.' });
+}
 
 async function loadSocial() {
   const { data, error } = await sb.from('settings').select('value').eq('key', 'social_links').maybeSingle();
@@ -1704,19 +1759,31 @@ async function saveSocial(list) {
 }
 
 async function social() {
-  main.innerHTML = pageHead('Social links') + '<div class="adm-card adm-empty">Loading…</div>';
+  main.innerHTML = pageHead('Contact') + '<div class="adm-card adm-empty">Loading…</div>';
   try {
-    if (!socialLinks) await loadSocial();
+    await Promise.all([socialLinks ? null : loadSocial(), contactInfo ? null : loadContact()]);
   } catch (err) {
-    main.innerHTML = pageHead('Social links') +
-      `<div class="adm-card adm-empty">Could not load the links.<br><span style="font-size:13px">${esc(err.message)}</span></div>`;
+    main.innerHTML = pageHead('Contact') +
+      `<div class="adm-card adm-empty">Could not load the contact details.<br><span style="font-size:13px">${esc(err.message)}</span></div>`;
     return;
   }
-  main.innerHTML = pageHead('Social links',
-    '<button class="adm-btn adm-btn-primary" id="newSocial">+ Add link</button>') + `
+  const c = contactInfo || {};
+  main.innerHTML = pageHead('Contact') + `
     <div class="adm-table-card">
-      <div class="adm-table-head"><h2>Shown in the footer</h2><span class="spacer"></span>
-        <span class="adm-td-muted">${socialLinks.length} ${socialLinks.length === 1 ? 'link' : 'links'}</span></div>
+      <div class="adm-table-head"><h2>Contact details</h2><span class="spacer"></span>
+        <button class="adm-btn adm-btn-primary" id="editContact">Edit details</button></div>
+      <dl class="adm-dl">
+        ${CONTACT_FIELDS.map(([k, label]) => `<div><dt>${esc(label)}</dt><dd>${
+          k === 'map' && c.map
+            ? `<a href="https://www.google.com/maps?q=${esc(c.map)}" target="_blank" rel="noopener">${esc(c.map)}</a>`
+            : esc(c[k] || '—').replace(/\n/g, '<br>')}</dd></div>`).join('')}
+      </dl>
+    </div>
+
+    <div class="adm-table-card" style="margin-top:24px">
+      <div class="adm-table-head"><h2>Social links</h2><span class="spacer"></span>
+        <span class="adm-td-muted">${socialLinks.length} ${socialLinks.length === 1 ? 'link' : 'links'}</span>
+        <button class="adm-btn adm-btn-primary" id="newSocial">+ Add link</button></div>
       <div class="adm-table-scroll">
       ${socialLinks.length ? `<table class="adm-table"><thead><tr>
         <th>Platform</th><th>Link</th><th>Order</th><th>Action</th></tr></thead><tbody>
@@ -1736,6 +1803,7 @@ async function social() {
     </div>`;
 
   main.querySelector('#newSocial').addEventListener('click', () => editSocial(-1));
+  main.querySelector('#editContact').addEventListener('click', editContact);
   main.querySelectorAll('[data-soc]').forEach((b) => b.addEventListener('click', () => editSocial(Number(b.dataset.soc))));
   main.querySelectorAll('[data-soc-del]').forEach((b) => b.addEventListener('click', () => {
     const i = Number(b.dataset.socDel);

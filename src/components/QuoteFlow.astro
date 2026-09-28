@@ -1,4 +1,6 @@
 ---
+import { getContact, tel, waLink, addressLines, addressOneLine, phones } from '../lib/contact';
+const ct = await getContact();
 import { getCategories } from '../lib/catalog';
 const categories = getCategories();
 /** Optional: pre-selects the category and mentions a SKU (product pages). */
@@ -12,7 +14,7 @@ const sbUrl = (import.meta.env.SUPABASE_URL ?? process.env.SUPABASE_URL) ? SB_BR
 const sbKey = import.meta.env.SUPABASE_ANON_KEY ?? process.env.SUPABASE_ANON_KEY ?? '';
 ---
 <div class="flow" id="quoteFlow" data-sku={sku} data-category={category}
-     data-sb-url={sbUrl} data-sb-key={sbKey}>
+     data-sb-url={sbUrl} data-sb-key={sbKey} data-email={ct.email} data-wa={ct.whatsapp.replace(/\D/g, '')}>
   <div class="flow-top">
     <span class="flow-avatar">
       <img src="/assets/sb-logo.png" alt="" width="30" height="30">
@@ -60,8 +62,8 @@ const sbKey = import.meta.env.SUPABASE_ANON_KEY ?? process.env.SUPABASE_ANON_KEY
 
 <noscript>
   <p style="margin-top:16px;font-size:14.5px;color:var(--gray)">
-    Email <a href="mailto:sales@sbfallprotection.com" style="color:var(--orange);font-weight:600">sales@sbfallprotection.com</a>
-    or call <a href="tel:+915122406728" style="color:var(--orange);font-weight:600">+91 512 240 6728</a> for a quotation.
+    Email <a href={`mailto:${ct.email}`} style="color:var(--orange);font-weight:600">{ct.email}</a>
+    or call <a href={tel(ct.phone)} style="color:var(--orange);font-weight:600">{ct.phone}</a> for a quotation.
   </p>
 </noscript>
 

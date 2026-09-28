@@ -844,3 +844,11 @@ table.adm-table tbody tr:hover { background: #fcfcfd; }
   .adm-pub { padding: 9px; }
   .adm-inq-tools .adm-search { flex: 1 1 100% !important; }
 }
+
+
+/* ─────────────────────────── contact details list ─────────────────────────── */
+.adm-dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 30px; margin: 4px 0 0; }
+.adm-dl > div { padding: 14px 0; border-top: 1px solid var(--a-line); }
+.adm-dl dt { font-size: 12.5px; font-weight: 700; color: var(--a-muted); margin-bottom: 5px; }
+.adm-dl dd { margin: 0; font-size: 14.5px; font-weight: 600; color: var(--a-ink); line-height: 1.55; overflow-wrap: anywhere; }
+@media (max-width: 760px) { .adm-dl { grid-template-columns: 1fr; } }

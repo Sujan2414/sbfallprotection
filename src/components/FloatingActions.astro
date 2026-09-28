@@ -1,7 +1,9 @@
 ---
+import { getContact, tel, waLink, addressLines, addressOneLine, phones } from '../lib/contact';
+const ct = await getContact();
 // WhatsApp / call / back-to-top, present on every page.
-const phone = '+915122406728';
-const wa = '919544070143'; // WhatsApp business number, digits only
+const phone = tel(ct.phone).slice(4);
+const wa = ct.whatsapp.replace(/\D/g, ''); // WhatsApp business number, digits only
 const waText = encodeURIComponent(
   "Hi SB Fall Protection — I'd like a quote on your fall protection equipment.",
 );

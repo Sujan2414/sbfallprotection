@@ -1,4 +1,6 @@
 ---
+import { getContact, tel, waLink, addressLines, addressOneLine, phones } from '../../../lib/contact';
+const ct = await getContact();
 import { existsSync } from 'node:fs';
 import Base from '../../../layouts/Base.astro';
 import PageHeader from '../../../components/PageHeader.astro';
@@ -33,7 +35,7 @@ const sharedNotes = specEntries.length === 0 ? (fam?.bullets ?? []) : [];
 
 const mailSubject = `Quote request — ${product.sku}`;
 const mailBody = `Hello SB Fall Protection team,\n\nPlease send pricing, MOQ and lead time for:\n\nProduct code: ${product.sku}\nRange: ${product.family_name}\nQuantity required: \n\nDelivery destination: \nCompany: \nContact number: \n\nThank you.`;
-const mailto = `mailto:sales@sbfallprotection.com?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+const mailto = `mailto:${ct.email}?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
 ---
 <Base
   title={`${product.sku} — ${product.family_name} | SB Fall Protection`}

@@ -225,9 +225,9 @@
         '\nEmail: ' + (answers.email || '-') +
         '\nCategory: ' + (answers.category || '-') +
         '\n\n' + message;
-      var mailto = 'mailto:sales@sbfallprotection.com?subject=' +
+      var mailto = 'mailto:' + (root.getAttribute('data-email') || 'sales@sbfallprotection.com') + '?subject=' +
         encodeURIComponent(subject) + '&body=' + encodeURIComponent(mailBody);
-      var wa = 'https://wa.me/919544070143?text=' + encodeURIComponent(subject + '\n\n' + mailBody);
+      var wa = 'https://wa.me/' + (root.getAttribute('data-wa') || '919544070143') + '?text=' + encodeURIComponent(subject + '\n\n' + mailBody);
 
       root.querySelector('.flow-body').innerHTML =
         '<div class="flow-done">' +

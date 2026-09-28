@@ -1,4 +1,6 @@
 ---
+import { getContact, tel, waLink, addressLines, addressOneLine, phones } from '../lib/contact';
+const ct = await getContact();
 const { home = false } = Astro.props;
 const a = (hash: string) => (home ? hash : `/${hash}`);
 import { fetchSocialLinks } from '../lib/supabase';
@@ -55,11 +57,11 @@ const ICON: Record<string, string> = {
         <a href="/terms/">Terms of Service</a>
       </div>
       <div>
-        <div class="fc-item"><span class="fc-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg></span><div><b>Phone Number</b><span>+91 512 240 6728<br>+91 512 240 6947</span></div></div>
-        <div class="fc-item"><span class="fc-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><div><b>Email Address</b><span>sales@sbfallprotection.com</span></div></div>
+        <div class="fc-item"><span class="fc-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg></span><div><b>Phone Number</b><span>{phones(ct).map((p, i) => <Fragment>{i > 0 && <br />}{p}</Fragment>)}</span></div></div>
+        <div class="fc-item"><span class="fc-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><div><b>Email Address</b><span>{ct.email}</span></div></div>
       </div>
       <div>
-        <div class="fc-item"><span class="fc-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 21s-7-5.6-7-11a7 7 0 0 1 14 0c0 5.4-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg></span><div><b>Physical Address</b><span>Plot C-17 to C-19, UPSIDC Industrial Area, Rooma, Kanpur — 208008, UP, India</span></div></div>
+        <div class="fc-item"><span class="fc-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 21s-7-5.6-7-11a7 7 0 0 1 14 0c0 5.4-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg></span><div><b>Physical Address</b><span>{addressOneLine(ct)}</span></div></div>
         <div class="f-socials">
           {social.map((l) => (
             <a href={l.url} target="_blank" rel="noopener" aria-label={LABEL[l.platform] ?? 'Social link'}>

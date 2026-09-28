@@ -1,4 +1,6 @@
 ---
+import { getContact, tel, waLink, addressLines, addressOneLine, phones } from '../lib/contact';
+const ct = await getContact();
 import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
 ---
@@ -31,7 +33,7 @@ import PageHeader from '../components/PageHeader.astro';
         <h2>Governing law</h2>
         <p>These terms are governed by the laws of India. Disputes are subject to the jurisdiction of the courts at Kanpur, Uttar Pradesh.</p>
         <h2>Contact</h2>
-        <p>Questions about these terms can be sent to <a href="mailto:sales@sbfallprotection.com">sales@sbfallprotection.com</a>.</p>
+        <p>Questions about these terms can be sent to <a href={`mailto:${ct.email}`}>{ct.email}</a>.</p>
       </div>
       <p class="legal-credit">This website was designed and developed by
         <a href="https://aijugaad.co/ig" target="_blank" rel="noopener">AI Jugaad</a>.</p>

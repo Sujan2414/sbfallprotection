@@ -1,4 +1,6 @@
 ---
+import { getContact, tel, waLink, addressLines, addressOneLine, phones } from '../lib/contact';
+const ct = await getContact();
 import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
 ---
@@ -31,9 +33,9 @@ import PageHeader from '../components/PageHeader.astro';
         <h2>How long we keep it</h2>
         <p>Enquiry records are kept for as long as they are useful to the business relationship, and are deleted on request.</p>
         <h2>Your rights</h2>
-        <p>You may ask us at any time to show you the information we hold about you, correct it, or delete it. Write to <a href="mailto:sales@sbfallprotection.com">sales@sbfallprotection.com</a> and we will respond within a reasonable period.</p>
+        <p>You may ask us at any time to show you the information we hold about you, correct it, or delete it. Write to <a href={`mailto:${ct.email}`}>{ct.email}</a> and we will respond within a reasonable period.</p>
         <h2>Contact</h2>
-        <p>SB International, Plot C-17 to C-19, UPSIDC Industrial Area, Textile Zone, Rooma, Kanpur 208008, Uttar Pradesh, India.</p>
+        <p>SB International, {addressOneLine(ct)}.</p>
       </div>
       <p class="legal-credit">This website was designed and developed by
         <a href="https://aijugaad.co/ig" target="_blank" rel="noopener">AI Jugaad</a>.</p>
