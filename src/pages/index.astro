@@ -1,6 +1,8 @@
 ---
 import { getContact, tel, waLink, addressLines, addressOneLine, phones } from '../lib/contact';
 const ct = await getContact();
+import { getFaqs } from '../lib/content';
+const faqs = await getFaqs(ct.email);
 import Base from '../layouts/Base.astro';
 import WorldMap from '../components/WorldMap.astro';
 import { getCategories, categoryUrl } from '../lib/catalog';
@@ -498,18 +500,10 @@ const cardHref: Record<string, string> = {
         <p>Answers to common questions about certifications, custom manufacturing, MOQs and export.</p>
       </div>
       <div class="faq-list">
-      <details class="faq reveal"><summary>Do you manufacture custom or private-label gear? <span class="fx">+</span></summary>
-        <p class="a">Yes. In-house designers and pattern masters develop products to buyer specifications — from adjusted webbing configurations to fully private-labelled ranges with your branding and packaging.</p></details>
-      <details class="faq reveal"><summary>Which certifications and audits do you hold? <span class="fx">+</span></summary>
-        <p class="a">Our quality system is certified to ISO 9001:2015 and production is SEDEX-audited for ethical practices. SB International is also a Government of India recognised Export House. Product-level test documentation is shared with quotations on request.</p></details>
-      <details class="faq reveal"><summary>Where do you export? <span class="fx">+</span></summary>
-        <p class="a">The United States is our largest market, alongside customers worldwide. Export documentation, labelling and packing are all handled in-house.</p></details>
-      <details class="faq reveal"><summary>What are your MOQs and lead times? <span class="fx">+</span></summary>
-        <p class="a">Both vary by product and configuration. Send your requirement through the quote form and you'll receive MOQ, lead time and pricing together in one response.</p></details>
-      <details class="faq reveal"><summary>How is quality controlled? <span class="fx">+</span></summary>
-        <p class="a">Dedicated quality controllers inspect at every stage — incoming materials, in-process stitching and hardware, and finished goods — with stringent batch testing before dispatch.</p></details>
-      <details class="faq reveal"><summary>How do I get the full catalogue? <span class="fx">+</span></summary>
-        <p class="a">Email {ct.email} or submit the quote form and the team will send the latest edition with current specifications.</p></details>
+      {faqs.map((f) => (
+        <details class="faq reveal"><summary>{f.q} <span class="fx">+</span></summary>
+          <p class="a">{f.a}</p></details>
+      ))}
     </div>
     </div>
   </div>

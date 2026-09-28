@@ -15,9 +15,13 @@ const nav = [
   { id: 'posts',     label: 'Articles',  icon: 'file' },
   { id: 'reels',     label: 'Reels',     icon: 'play' },
   { id: 'inquiries', label: 'Enquiries', icon: 'inbox', count: true },
+  { id: 'about',     label: 'About Us',  icon: 'info' },
+  { id: 'faqs',      label: 'FAQs',      icon: 'help' },
   { id: 'contact',   label: 'Contact',   icon: 'phone' },
 ];
 const icons: Record<string, string> = {
+  info:   '<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5h.01"/>',
+  help:   '<circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.8M12 17h.01"/>',
   phone:  '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/>',
   share:  '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/>',
   grid:   '<rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/>',

@@ -1,53 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
+import { getAbout } from '../lib/content';
 
-const figures = [
-  { n: '2003', l: 'Founded in Kanpur, Uttar Pradesh' },
-  { n: '195,000', l: 'Sq ft integrated facility' },
-  { n: '290+', l: 'Skilled professionals on the floor' },
-  { n: '232+', l: 'Product codes in the catalogue' },
-];
-
-const leadership = [
-  {
-    name: 'Mr. Biju Abraham',
-    role: 'Managing Partner',
-    photo: '/assets/team-biju.jpg',
-    bio: 'Over two decades in product design and marketing for personal protective equipment, leading the design direction and export business.',
-  },
-  {
-    name: 'Mr. Saji Thomas',
-    role: 'Partner',
-    photo: '/assets/team-saji.jpg',
-    bio: 'Oversees financial management, strategic planning and regulatory compliance across the manufacturing and export operation.',
-  },
-];
-
-/**
- * Only ISO 9001 and SEDEX exist as marks; the export recognitions are held by
- * the company but published without a logo, so they render as typographic
- * badges rather than an invented lockup.
- */
-const certs = [
-  {
-    logo: '/assets/cert-iso-9001.png',
-    alt: 'ISO 9001:2015 certified company',
-    name: 'ISO 9001:2015',
-    note: 'Quality management system certified across design, manufacturing and dispatch.',
-  },
-  {
-    logo: '/assets/cert-sedex.jpg',
-    alt: 'SEDEX certified company, reference ZS1000032714',
-    name: 'SEDEX Member',
-    note: 'Ethical trade audit on labour standards, health and safety, and environment.',
-  },
-];
-const recognitions = [
-  { name: 'Govt. of India Recognised Export House', note: 'Directorate General of Foreign Trade' },
-  { name: 'Council for Leather Exports', note: 'Registered member and certified exporter' },
-  { name: 'EN & ANSI Type-Tested', note: 'Third-party tested to European and American standards' },
-];
+// edited under About Us in the admin panel
+const ab = await getAbout();
+const { figures, leadership, certs, recognitions } = ab;
 ---
 <Base
   title="About SB Fall Protection — Manufacturer & Exporter Since 2003"
@@ -57,7 +15,7 @@ const recognitions = [
     eyebrow="About Our Company"
     title="Built on Trust."
     accent="Driven by Quality."
-    lead="An Indian manufacturer of certified height-safety equipment, supplying distributors, EPC contractors and safety companies worldwide from a single integrated facility."
+    lead={ab.heroLead}
     crumbs={[{ label: 'About' }]}
     image="about"
     imageAlt="Stitching floor at the SB International facility in Kanpur"
@@ -66,41 +24,14 @@ const recognitions = [
   <section class="sec">
     <div class="wrap about-g">
       <div class="about-fig reveal">
-        <img class="main" src="/assets/about-factory.jpg" alt="SB stitching floor in Kanpur, staff working with orange harness webbing" width="760" height="836">
-        <div class="float-card fc-a"><div class="big">20+</div><small>Years of Experience</small></div>
+        <img class="main" src={ab.photo} alt="SB stitching floor in Kanpur, staff working with orange harness webbing" width="760" height="836">
+        <div class="float-card fc-a"><div class="big">{ab.years}</div><small>Years of Experience</small></div>
         <div class="float-card fc-b"><div class="big">ISO 9001:2015 · SEDEX</div><small>Certified &amp; Audited</small></div>
       </div>
       <div class="reveal">
-        <p class="ab-lead">
-          Safety applies with equal force to the individual, to the family, to the
-          employer and to the state.
-        </p>
+        <p class="ab-lead">{ab.quote}</p>
         <div class="ab-body">
-          <p>
-            SB International was established in 2003 and grew from precision leather
-            craft into one of India's dedicated fall-protection manufacturers. What
-            began as an equestrian and personal protective equipment workshop is today
-            a 195,000 sq ft integrated plant in Kanpur, Uttar Pradesh.
-          </p>
-          <p>
-            SB International runs four units today, and SB Fall Protection has grown
-            into one of India's leading manufacturing hubs for fall-protection
-            equipment. Because webbing, stitching, hardware assembly, finishing and
-            packing all happen in-house, quality control never leaves the building —
-            and custom or private-label products can be developed to a buyer's exact
-            specification.
-          </p>
-          <p>
-            The plant has its own testing facility and laboratory, where any product
-            can be tested against BIS, CE, ANSI or other international PPE standards
-            before it ships.
-          </p>
-          <p>
-            The company is a Government of India recognised Export House, certified by
-            the Council for Leather Exports. The United States is our largest market,
-            alongside customers across Europe, the Middle East, Africa, Latin America
-            and Asia-Pacific.
-          </p>
+          {ab.paragraphs.map((p) => <p>{p}</p>)}
         </div>
         <div class="cert-strip">
           <span class="cert-chip">
@@ -159,7 +90,7 @@ const recognitions = [
       <div class="cert-grid">
         {certs.map((c) => (
           <div class="cert-card reveal">
-            <span class="cert-mark"><img src={c.logo} alt={c.alt} loading="lazy"></span>
+            <span class="cert-mark"><img src={c.logo} alt={c.alt || c.name} loading="lazy"></span>
             <div class="cert-text">
               <b>{c.name}</b>
               <p>{c.note}</p>

@@ -572,7 +572,7 @@ document.querySelectorAll('.adm-navitem[data-tab]').forEach((b) =>
   b.addEventListener('click', () => setTab(b.dataset.tab)));
 
 function render() {
-  ({ overview, products, taxonomy, posts, reels, inquiries, contact: social, users, settings }[tab] || overview)();
+  ({ overview, products, taxonomy, posts, reels, inquiries, about, faqs, contact: social, users, settings }[tab] || overview)();
   window.scrollTo({ top: 0 });
 }
 
@@ -1846,4 +1846,208 @@ function editSocial(i) {
       await saveSocial(list);
       social();
     }, { draftNote: 'Saved. It goes live the next time anything is published.' });
+}
+
+/* ─────────────────────────── About Us and FAQs ─────────────────────────── */
+
+/*
+ * Each is one JSON document in settings: 'about' holds the page's text, photo
+ * and lists, 'faqs' the questions on the home page. The layout stays in code;
+ * only the words and pictures are edited here.
+ */
+const docs = {};
+
+async function loadDoc(key, empty) {
+  const { data, error } = await sb.from('settings').select('value').eq('key', key).maybeSingle();
+  if (error) throw error;
+  let v;
+  try { v = JSON.parse((data && data.value) || 'null'); } catch { v = null; }
+  docs[key] = v && typeof v === 'object' ? v : empty;
+}
+
+async function saveDoc(key, value) {
+  const { error } = await sb.from('settings')
+    .upsert({ key, value: JSON.stringify(value) }, { onConflict: 'key' });
+  if (error) throw error;
+  docs[key] = value;
+}
+
+/** Load a document for a tab, or show why it could not be. */
+async function docPage(title, key, empty) {
+  main.innerHTML = pageHead(title) + '<div class="adm-card adm-empty">Loading…</div>';
+  try {
+    if (!docs[key]) await loadDoc(key, empty);
+    return true;
+  } catch (err) {
+    main.innerHTML = pageHead(title) +
+      `<div class="adm-card adm-empty">Could not load this.<br><span style="font-size:13px">${esc(err.message)}</span></div>`;
+    return false;
+  }
+}
+
+/*
+ * A list inside a document: a table with reorder, edit and delete, and a
+ * drawer for one item. `get` and `put` read and replace the list, so the same
+ * code serves the FAQs (the whole document) and the lists on the About page.
+ */
+function listCard(cfg, list, first = false) {
+  const cell = (item, [k, kind]) => kind === 'image'
+    ? `<td>${item[k] ? `<img class="adm-thumb" src="${esc(item[k])}" alt="" loading="lazy">` : `<span class="adm-thumb-ph">${ICON.img}</span>`}</td>`
+    : `<td class="${kind === 'muted' ? 'adm-td-muted adm-clip' : ''}">${esc(item[k] || '—')}</td>`;
+  return `
+    <div class="adm-table-card"${first ? '' : ' style="margin-top:24px"'}>
+      <div class="adm-table-head"><h2>${esc(cfg.title)}</h2><span class="spacer"></span>
+        <span class="adm-td-muted">${list.length}</span>
+        <button class="adm-btn adm-btn-primary" data-l-add="${cfg.id}">+ Add ${esc(cfg.item)}</button></div>
+      <div class="adm-table-scroll">
+      ${list.length ? `<table class="adm-table"><thead><tr>
+        ${cfg.cols.map(([, , h]) => `<th>${esc(h)}</th>`).join('')}<th>Order</th><th>Action</th></tr></thead><tbody>
+        ${list.map((item, i) => `<tr>${cfg.cols.map((c) => cell(item, c)).join('')}
+          <td><span class="adm-act">
+            <button class="adm-icon-btn" data-l-move="${cfg.id}:${i}:-1" title="Move up" ${i === 0 ? 'disabled' : ''}>↑</button>
+            <button class="adm-icon-btn" data-l-move="${cfg.id}:${i}:1" title="Move down" ${i === list.length - 1 ? 'disabled' : ''}>↓</button>
+          </span></td>
+          <td><span class="adm-act">
+            <button class="adm-icon-btn" data-l-edit="${cfg.id}:${i}" title="Edit">${ICON.edit}</button>
+            <button class="adm-icon-btn danger" data-l-del="${cfg.id}:${i}" title="Delete">${ICON.trash}</button>
+          </span></td></tr>`).join('')}</tbody></table>` : '<div class="adm-empty">Nothing here yet.</div>'}
+      </div>
+    </div>`;
+}
+
+function wireLists(cfgs, rerender) {
+  const byId = Object.fromEntries(cfgs.map((c) => [c.id, c]));
+  const at = (s) => { const [id, i, by] = s.split(':'); return [byId[id], Number(i), Number(by)]; };
+  main.querySelectorAll('[data-l-add]').forEach((b) => b.addEventListener('click', () =>
+    editListItem(byId[b.dataset.lAdd], -1, rerender)));
+  main.querySelectorAll('[data-l-edit]').forEach((b) => b.addEventListener('click', () => {
+    const [cfg, i] = at(b.dataset.lEdit);
+    editListItem(cfg, i, rerender);
+  }));
+  main.querySelectorAll('[data-l-del]').forEach((b) => b.addEventListener('click', () => {
+    const [cfg, i] = at(b.dataset.lDel);
+    const list = cfg.get();
+    const label = list[i][cfg.cols.find((c) => c[1] !== 'image')[0]] || '';
+    confirmDelete(`Delete this ${cfg.item}?`, `“${label}” comes off the site in a minute or two.`,
+      async () => { await cfg.put(list.filter((_, j) => j !== i)); rerender(); }, 'Deleted');
+  }));
+  main.querySelectorAll('[data-l-move]').forEach((b) => b.addEventListener('click', async () => {
+    const [cfg, i, by] = at(b.dataset.lMove);
+    const list = cfg.get().slice();
+    [list[i], list[i + by]] = [list[i + by], list[i]];
+    try {
+      await cfg.put(list);
+      rerender();
+      const r = await publishSite();
+      if (!r.ok) toast(`Saved, but the site did not rebuild: ${r.message}`, true);
+    } catch (err) { toast(err.message, true); }
+  }));
+}
+
+function editListItem(cfg, i, rerender) {
+  const adding = i < 0;
+  const item = adding ? {} : cfg.get()[i];
+  openDrawer(adding ? `Add ${/^[AEIOUF]/.test(cfg.item) ? 'an' : 'a'} ${cfg.item}` : `Edit ${cfg.item}`, `
+    <div class="adm-fields">
+      ${cfg.fields.map(([k, label, kind]) => kind === 'image'
+        ? uploadField(label, k, item[k] || '', 'image/*')
+        : field(label, k, item[k] || '', kind || 'text')).join('')}
+    </div>`,
+    async () => {
+      const next = { ...item };
+      for (const [k, label] of cfg.fields) {
+        next[k] = val(k);
+        if (!next[k] && !(cfg.optional || []).includes(k)) throw new Error(`Add the ${label.split(' (')[0].toLowerCase()}.`);
+      }
+      const list = cfg.get().slice();
+      if (adding) list.push(next); else list[i] = next;
+      await cfg.put(list);
+      rerender();
+    }, { draftNote: 'Saved. It goes live the next time anything is published.' });
+  wireUploads('media', 'about/');
+}
+
+const aboutDoc = () => docs.about || {};
+const ABOUT_LISTS = [
+  { id: 'figures', title: 'Figures', item: 'figure',
+    cols: [['n', '', 'Figure'], ['l', 'muted', 'Label']],
+    fields: [['n', 'Figure', 'text'], ['l', 'Label', 'text']] },
+  { id: 'leadership', title: 'Leadership', item: 'person', optional: ['photo'],
+    cols: [['photo', 'image', 'Photo'], ['name', '', 'Name'], ['role', 'muted', 'Role']],
+    fields: [['name', 'Name', 'text'], ['role', 'Role', 'text'], ['photo', 'Photo', 'image'], ['bio', 'Bio', 'textarea']] },
+  { id: 'certs', title: 'Certifications', item: 'certification',
+    cols: [['logo', 'image', 'Logo'], ['name', '', 'Name'], ['note', 'muted', 'Note']],
+    fields: [['name', 'Name', 'text'], ['logo', 'Logo', 'image'], ['note', 'Note', 'textarea']] },
+  { id: 'recognitions', title: 'Recognitions', item: 'recognition',
+    cols: [['name', '', 'Name'], ['note', 'muted', 'Note']],
+    fields: [['name', 'Name', 'text'], ['note', 'Note', 'text']] },
+].map((c) => ({
+  ...c,
+  get: () => aboutDoc()[c.id] || [],
+  put: (list) => saveDoc('about', { ...aboutDoc(), [c.id]: list }),
+}));
+
+const STORY_FIELDS = [
+  ['heroLead', 'Intro under the title'], ['quote', 'Highlighted line'], ['paragraphs', 'Company story'],
+  ['years', 'Years of experience badge'], ['photo', 'Main photo'],
+];
+
+async function about() {
+  if (!(await docPage('About Us', 'about', {}))) return;
+  const a = aboutDoc();
+  main.innerHTML = pageHead('About Us',
+    '<a class="adm-btn adm-btn-soft" href="/about" target="_blank" rel="noopener">View page</a>') + `
+    <div class="adm-table-card">
+      <div class="adm-table-head"><h2>Page text</h2><span class="spacer"></span>
+        <button class="adm-btn adm-btn-primary" id="editStory">Edit text</button></div>
+      <dl class="adm-dl adm-dl-wide">
+        ${STORY_FIELDS.map(([k, label]) => `<div><dt>${esc(label)}</dt><dd>${
+          k === 'photo' && a.photo ? `<img class="adm-dl-img" src="${esc(a.photo)}" alt="">`
+          : k === 'paragraphs' ? (a.paragraphs || []).map((p) => `<p>${esc(p)}</p>`).join('') || '—'
+          : esc(a[k] || '—')}</dd></div>`).join('')}
+      </dl>
+    </div>
+    ${ABOUT_LISTS.map((c) => listCard(c, c.get())).join('')}`;
+  main.querySelector('#editStory').addEventListener('click', editStory);
+  wireLists(ABOUT_LISTS, about);
+}
+
+function editStory() {
+  const a = aboutDoc();
+  openDrawer('Edit page text', `
+    <div class="adm-fields">
+      ${field('Intro under the title', 'heroLead', a.heroLead || '', 'textarea')}
+      ${field('Highlighted line', 'quote', a.quote || '', 'textarea')}
+      ${field('Company story (a blank line between paragraphs)', 'paragraphs', (a.paragraphs || []).join('\n\n'), 'textarea')}
+      ${field('Years of experience badge', 'years', a.years || '', 'text')}
+      ${uploadField('Main photo', 'photo', a.photo || '', 'image/*')}
+    </div>`,
+    async () => {
+      const paragraphs = drawerBody.querySelector('[name="paragraphs"]').value
+        .split(/\n\s*\n/).map((p) => p.replace(/\s+/g, ' ').trim()).filter(Boolean);
+      const next = { ...a, heroLead: val('heroLead'), quote: val('quote'), paragraphs, years: val('years'), photo: val('photo') };
+      if (!next.heroLead || !next.quote || !paragraphs.length) throw new Error('The intro, highlighted line and story are all needed.');
+      if (!next.years) throw new Error('Add the years of experience.');
+      if (!next.photo) throw new Error('Add the main photo.');
+      await saveDoc('about', next);
+      about();
+    }, { draftNote: 'Saved. It goes live the next time anything is published.' });
+  drawerBody.querySelector('[name="paragraphs"]').rows = 14;
+  wireUploads('media', 'about/');
+}
+
+const FAQ_LIST = {
+  id: 'faqs', title: 'Questions on the home page', item: 'FAQ',
+  cols: [['q', '', 'Question'], ['a', 'muted', 'Answer']],
+  fields: [['q', 'Question', 'text'], ['a', 'Answer ({email} shows the contact email)', 'textarea']],
+  get: () => (Array.isArray(docs.faqs) ? docs.faqs : []),
+  put: (list) => saveDoc('faqs', list),
+};
+
+async function faqs() {
+  if (!(await docPage('FAQs', 'faqs', []))) return;
+  main.innerHTML = pageHead('FAQs',
+    '<a class="adm-btn adm-btn-soft" href="/#faqs" target="_blank" rel="noopener">View on site</a>')
+    + listCard(FAQ_LIST, FAQ_LIST.get(), true);
+  wireLists([FAQ_LIST], faqs);
 }
