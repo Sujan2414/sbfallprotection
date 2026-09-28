@@ -27,7 +27,7 @@ const total = allProducts().length;
         {categories.map((c) => (
           <a class="cat-card" href={categoryUrl(c.slug)}>
             <span class="cat-media">
-              <img src={`/assets/cat-${c.slug}.jpg`} alt={`${c.name} from the SB Fall Protection range`}
+              <img src={`/assets/cat-${c.slug}.jpg?v=2`} alt={`${c.name} from the SB Fall Protection range`}
                    width="640" height="427" loading="lazy" decoding="async">
               <span class="cat-ic"><CatIcon name={c.icon} /></span>
             </span>

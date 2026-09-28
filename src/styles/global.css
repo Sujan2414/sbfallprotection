@@ -760,7 +760,7 @@
 /* auto margin pushes the badge to the card floor, so badges align across a row */
 .sku-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:14px}
 .sku-std{font-size:11px;font-weight:600;letter-spacing:.04em;color:var(--orange);
-  background:var(--cream);border-radius:6px;padding:4px 9px;white-space:nowrap}
+  background:var(--cream);border-radius:6px;padding:4px 9px;line-height:1.4}
 .sku-arrow{width:26px;height:26px;flex:none;border-radius:50%;background:var(--light);color:var(--gray);
   display:grid;place-items:center;transition:background .2s ease,color .2s ease,transform .2s ease}
 .sku-card:hover .sku-arrow{background:var(--orange);color:#fff;transform:translateX(2px)}
@@ -1581,12 +1581,42 @@
 .fam-table tbody tr+tr{border-top:1px solid var(--line)}
 .fam-table tbody tr:hover{background:var(--light)}
 .fam-ref{font-weight:600;color:var(--ink);white-space:nowrap}
-.fam-td-img{width:112px}
-.fam-td-img img{width:96px;height:64px;object-fit:contain;display:block}
-.fam-th-img{width:112px}
+.fam-td-img{width:170px}
+.fam-td-img img{width:150px;height:100px;object-fit:contain;display:block;background:#fff;border-radius:10px}
+.fam-th-img{width:170px}
+.fam-zoom{display:block;cursor:zoom-in;border-radius:10px;transition:box-shadow .2s ease}
+.fam-zoom:hover,.fam-zoom:focus-visible{box-shadow:0 0 0 2px var(--orange)}
 .vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media(max-width:700px){
   .fam-table{font-size:13.5px}
   .fam-table th,.fam-table td{padding:11px 12px}
   .fam-photo{max-width:220px;margin-bottom:16px}
+}
+
+
+/* ============ LARGE PHOTO PREVIEW FOR RANGE TABLES ============ */
+.fam-preview{position:fixed;left:0;top:0;z-index:60;width:380px;height:380px;padding:14px;
+  background:#fff;border-radius:18px;box-shadow:0 24px 60px rgba(19,19,18,.22);
+  opacity:0;pointer-events:none;transition:opacity .15s ease}
+.fam-preview.on{opacity:1}
+.fam-preview img{width:100%;height:100%;object-fit:contain}
+.family[hidden]{display:none}
+
+/* ============ RANGE CHOOSER (lanyards: EN or ANSI) ============ */
+.range-pick{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:0 0 54px}
+.range-card{display:flex;flex-direction:column;gap:10px;padding:26px 28px;border-radius:20px;
+  border:1.5px solid var(--line);background:var(--white);text-decoration:none;color:var(--ink);
+  transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease}
+.range-card:hover{border-color:var(--orange);transform:translateY(-2px);box-shadow:0 14px 34px rgba(19,19,18,.08)}
+.range-card.on{border-color:var(--orange);background:var(--cream);box-shadow:0 14px 34px rgba(254,89,34,.12)}
+.range-card-label{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.range-card-blurb{font-size:14.5px;line-height:1.55;color:var(--gray)}
+.range-card-count{display:inline-flex;align-items:center;gap:8px;margin-top:auto;padding-top:6px;
+  font-size:13.5px;font-weight:600;color:var(--orange)}
+@media(max-width:700px){
+  .range-pick{grid-template-columns:1fr;gap:12px;margin-bottom:36px}
+  .range-card{padding:20px 22px}
+  .range-card-label{font-size:19px}
+  .fam-td-img{width:120px}
+  .fam-td-img img{width:104px;height:70px}
 }

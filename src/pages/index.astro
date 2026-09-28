@@ -38,9 +38,9 @@ const reels = dbReels.length
 /** Each home card maps to the category page that actually holds that range. */
 const cardHref: Record<string, string> = {
   'Full Body Harnesses': '/products/harnesses/',
-  'Lanyards &amp; Energy Absorbers': '/products/lanyards/',
-  'Fall Arresters &amp; Rope Grabs': '/products/retractable-blocks/',
-  'Anchorages &amp; Lifelines': '/products/anchorages/',
+  'Lanyards': '/products/lanyards/',
+  'Self-Retractable Lifeline': '/products/retractable-blocks/',
+  'Anchorage': '/products/anchorages/',
   'Hooks &amp; Connectors': '/products/hooks-connectors/',
   'Rope Access &amp; Rescue': '/products/rope-access-rescue/',
 };
@@ -138,11 +138,11 @@ const cardHref: Record<string, string> = {
         <div class="ph"><img src="/assets/prod-lanyard.jpg" alt="SB twin-leg energy-absorbing lanyard">
           <span class="svc-ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v3M6 6c0 4 4 3 4 7 0 2.5-2 3-2 5"/><path d="M8 18c0 1.7 1.3 3 3 3s3-1.3 3-3-1.3-3-3-3"/><path d="M14 6.5 18 3M15.5 8l4-3.5"/></svg></span></div>
         <figcaption class="svc-body">
-          <h3>Lanyards &amp; Energy Absorbers</h3>
+          <h3>Lanyards</h3>
           <p>Single and twin-leg webbing or rope lanyards with shock absorbers that cap arrest forces before they reach the body.</p>
           <div class="svc-foot">
             <a class="svc-link" href="/products/lanyards/">View Range</a>
-            <a class="svc-go" href="/products/lanyards/" aria-label="View the Lanyards &amp; Energy Absorbers range">
+            <a class="svc-go" href="/products/lanyards/" aria-label="View the Lanyards range">
               <svg class="a1" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>
               <svg class="a2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>
             </a>
@@ -150,14 +150,14 @@ const cardHref: Record<string, string> = {
         </figcaption>
       </figure>
       <figure class="svc-card reveal" style="margin:0">
-        <div class="ph"><img src="/assets/prod-arrester.jpg" alt="SB guided fall arrester with carabiner">
+        <div class="ph"><img src="/assets/home-srl.jpg" alt="SB self-retractable lifeline">
           <span class="svc-ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5a7 7 0 1 1-7 7"/><path d="M12 5.8a3.7 3.7 0 1 0 3.7 3.7"/><path d="M12 13.2v5"/><circle cx="12" cy="20" r="1.8"/></svg></span></div>
         <figcaption class="svc-body">
-          <h3>Fall Arresters &amp; Rope Grabs</h3>
-          <p>Guided-type fall arresters that travel the lifeline with the worker — and lock the instant a fall begins.</p>
+          <h3>Self-Retractable Lifeline</h3>
+          <p>Self-retracting lifelines that pay out and retract as the worker moves, and lock the instant a fall begins.</p>
           <div class="svc-foot">
             <a class="svc-link" href="/products/retractable-blocks/">View Range</a>
-            <a class="svc-go" href="/products/retractable-blocks/" aria-label="View the Fall Arresters &amp; Rope Grabs range">
+            <a class="svc-go" href="/products/retractable-blocks/" aria-label="View the Self-Retractable Lifeline range">
               <svg class="a1" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>
               <svg class="a2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>
             </a>
@@ -165,14 +165,14 @@ const cardHref: Record<string, string> = {
         </figcaption>
       </figure>
       <figure class="svc-card reveal" style="margin:0">
-        <div class="ph"><img src="/assets/prod-lifeline.jpg" alt="SB horizontal lifeline kit with anchorage strap">
+        <div class="ph"><img src="/assets/home-anchor-strap.jpg" alt="SB cross arm anchor strap">
           <span class="svc-ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16M6 20v-3h12v3"/><circle cx="12" cy="9" r="4"/><path d="M12 13v4"/></svg></span></div>
         <figcaption class="svc-body">
-          <h3>Anchorages &amp; Lifelines</h3>
-          <p>Fixed and temporary anchor points, slings and horizontal lifelines that give every system a certified place to hold.</p>
+          <h3>Anchorage</h3>
+          <p>Anchor straps, slings and roof anchors that give every system a certified place to hold.</p>
           <div class="svc-foot">
             <a class="svc-link" href="/products/anchorages/">View Range</a>
-            <a class="svc-go" href="/products/anchorages/" aria-label="View the Anchorages &amp; Lifelines range">
+            <a class="svc-go" href="/products/anchorages/" aria-label="View the Anchorage range">
               <svg class="a1" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>
               <svg class="a2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>
             </a>
@@ -180,7 +180,7 @@ const cardHref: Record<string, string> = {
         </figcaption>
       </figure>
       <figure class="svc-card reveal" style="margin:0">
-        <div class="ph"><img src="/assets/prod-hook.jpg" alt="SB forged steel snap hook">
+        <div class="ph"><img src="/assets/home-carabiner.jpg" alt="SB quarter turn locking carabiner">
           <span class="svc-ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.8c3.8 0 6.5 3 6.5 7.2s-2.7 11.2-6.5 11.2S5.5 14.2 5.5 10 8.2 2.8 12 2.8Z"/><path d="m16.6 6.2 1.9 2.6"/><path d="M8.5 10.5v3.5"/></svg></span></div>
         <figcaption class="svc-body">
           <h3>Hooks &amp; Connectors</h3>
@@ -195,7 +195,7 @@ const cardHref: Record<string, string> = {
         </figcaption>
       </figure>
       <figure class="svc-card reveal" style="margin:0">
-        <div class="ph"><img src="/assets/cat-rope-access-rescue.jpg" alt="Rope access technician on a descender">
+        <div class="ph"><img src="/assets/home-rescue.jpg" alt="SB rescue stretcher">
           <span class="svc-ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4 5 6v14h14V6l-4-2-1 2h-4L9 4Z"/><path d="M5 11h14M5 15h14"/></svg></span></div>
         <figcaption class="svc-body">
           <h3>Rope Access &amp; Rescue</h3>
@@ -247,12 +247,12 @@ const cardHref: Record<string, string> = {
         <div class="why-card reveal">
           <div class="why-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21h16M6 21V9l6-5 6 5v12M10 21v-6h4v6"/></svg></div>
           <h3>In-House Manufacturing</h3>
-          <p>Webbing, stitching, hardware and packing run under one 195,000 sq ft roof — no outsourced steps, no blind spots.</p>
+          <p>Weaving, colouring, assembling, finishing and packing run under one 195,000 sq ft roof — no outsourced steps, no blind spots.</p>
         </div>
         <div class="why-card reveal">
           <div class="why-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3h4M10 3v6l-5 9.2A2 2 0 0 0 6.8 21h10.4a2 2 0 0 0 1.8-2.8L14 9V3"/><path d="M7.6 15h8.8"/></svg></div>
           <h3>In-House Testing Facility</h3>
-          <p>Our own laboratory tests to BIS, CE, ANSI and other international PPE standards, so results do not wait on an outside queue.</p>
+          <p>Our in-house testing facility tests and checks every fall protection product to BIS, CE, ANSI, CSA and other international PPE standards, so results do not wait on an outside queue.</p>
         </div>
         <div class="why-card reveal">
           <div class="why-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3.5 9h17M3.5 15h17M12 3c-2.5 2.4-4 5.4-4 9s1.5 6.6 4 9c2.5-2.4 4-5.4 4-9s-1.5-6.6-4-9Z"/></svg></div>
@@ -346,12 +346,16 @@ const cardHref: Record<string, string> = {
         <figcaption>Inspection &amp; packing</figcaption>
       </figure>
       <figure class="fac-card">
-        <img src="/assets/fac-campus.jpg" alt="SB International factory campus in Kanpur">
-        <figcaption>SB International — Kanpur campus</figcaption>
+        <img src="/assets/fac-aerial-1.jpg" alt="SB International plant in Kanpur, seen from above">
+        <figcaption>SB International — Kanpur</figcaption>
       </figure>
       <figure class="fac-card">
-        <img src="/assets/fac-building.jpg" alt="SB International headquarters building">
-        <figcaption>Head office &amp; design studio</figcaption>
+        <img src="/assets/fac-aerial-2.jpg" alt="The SB International factory building from the air">
+        <figcaption>195,000 sq ft integrated facility</figcaption>
+      </figure>
+      <figure class="fac-card">
+        <img src="/assets/fac-aerial-3.jpg" alt="SB International factory front and campus">
+        <figcaption>Manufacturing &amp; testing under one roof</figcaption>
       </figure>
     </div>
   </div>
@@ -466,12 +470,8 @@ const cardHref: Record<string, string> = {
           <input name="email" type="email" required autocomplete="email" placeholder="Email Address" aria-label="Email Address">
           <select name="type" class="full" required aria-label="Product type">
             <option value="" selected disabled>Select Product Type…</option>
-            <option>Full Body Harnesses</option>
-            <option>Lanyards &amp; Energy Absorbers</option>
-            <option>Fall Arresters &amp; Rope Grabs</option>
-            <option>Anchorages &amp; Lifelines</option>
-            <option>Hooks &amp; Connectors</option>
-            <option>Safety Garments &amp; PPE</option>
+            {/* the live category list, so a renamed or removed range never lingers here */}
+            {categories.map((c) => <option>{c.name}</option>)}
             <option>Other (please mention in message)</option>
           </select>
           <textarea name="msg" class="full" placeholder="Write your message here" required aria-label="Message"></textarea>

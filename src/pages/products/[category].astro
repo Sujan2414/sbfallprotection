@@ -20,7 +20,7 @@ const products = getProducts(category!);
 function columnsOf(items: { specs: Record<string, string>; attachment: string | null }[]): string[] {
   const keys: string[] = [];
   for (const p of items) for (const k of Object.keys(p.specs)) if (!keys.includes(k)) keys.push(k);
-  if (keys.length) return keys.slice(0, 6);
+  if (keys.length) return keys.slice(0, 8);
   return items.some((p) => p.attachment) ? ['Details'] : [];
 }
 
@@ -30,14 +30,32 @@ function sharedPhoto(items: { image: string | null }[]): string | null {
   return set.size === 1 ? (items[0].image ?? null) : null;
 }
 
-/** The most common standard in a family, used as the card badge. */
+/** Every standard a product carries, for the card badge. */
 function stdOf(specs: Record<string, string>): string | null {
-  const key = Object.keys(specs).find((k) => /standard|conformity/i.test(k));
+  const key = Object.keys(specs).find((k) => /standard|conformity|conforms/i.test(k));
   if (!key) return null;
-  const v = specs[key];
-  const m = v.match(/(EN|ANSI|IS)\s?[\d.:\-\s]+/i);
-  return (m ? m[0] : v).trim().slice(0, 22) || null;
+  const v = String(specs[key] || '').trim();
+  if (!v || /not applicable/i.test(v)) return null;
+  return v;
 }
+
+/*
+ * Categories that open on a choice between ranges. Lanyards come in an EN range
+ * and an ANSI range, and the client wants that choice to be the first thing
+ * seen. Without JavaScript every range simply shows, one after another.
+ */
+const SPLITS: Record<string, { key: string; label: string; blurb: string; has: (slug: string) => boolean }[]> = {
+  lanyards: [
+    { key: 'en', label: 'EN Range Lanyards',
+      blurb: 'Forked and single lanyards in webbing, twisted rope and kernmantle rope, certified to EN 355 and EN 354.',
+      has: (s) => s !== 'ansi-lanyards' },
+    { key: 'ansi', label: 'ANSI Range Lanyards',
+      blurb: 'Lanyards with shock absorbers for the North American market, certified to ANSI Z359.13.',
+      has: (s) => s === 'ansi-lanyards' },
+  ],
+};
+const split = SPLITS[category!] ?? null;
+const rangeOf = (slug: string) => (split ? split.find((r) => r.has(slug))?.key : undefined);
 ---
 <Base
   title={`${cat.name} — SB Fall Protection`}
@@ -54,11 +72,25 @@ function stdOf(specs: Record<string, string>): string | null {
 
   <section class="sec">
     <div class="wrap">
+      {split && (
+        <div class="range-pick" data-range-pick>
+          {split.map((r) => (
+            <a class="range-card" href={`#${r.key}`} data-range-btn={r.key}>
+              <span class="range-card-label">{r.label}</span>
+              <span class="range-card-blurb">{r.blurb}</span>
+              <span class="range-card-count">
+                {products.filter((p) => r.has(p.family)).length} codes
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </span>
+            </a>
+          ))}
+        </div>
+      )}
       {families.map((f) => {
         const items = getProducts(category!, f.slug);
         if (items.length === 0) return null;
         return (
-          <div class="family">
+          <div class="family" data-range={rangeOf(f.slug)}>
             <div class="family-head">
               <div>
                 <h2>{f.name}</h2>
@@ -70,7 +102,7 @@ function stdOf(specs: Record<string, string>): string | null {
             {f.bullets.length > 0 && (
               <div class="fam-notes">
                 <ul>
-                  {f.bullets.slice(0, 5).map((b) => <li>{b}</li>)}
+                  {f.bullets.map((b) => <li>{b}</li>)}
                 </ul>
               </div>
             )}
@@ -78,9 +110,10 @@ function stdOf(specs: Record<string, string>): string | null {
             {f.layout === 'table' ? (
               <Fragment>
                 {sharedPhoto(items) && (
-                  <div class="fam-photo">
+                  <a class="fam-photo fam-zoom" href={imageUrl(sharedPhoto(items))} target="_blank" rel="noopener"
+                     aria-label={`Open the ${f.name} photo`}>
                     <img src={imageUrl(sharedPhoto(items))} alt={f.name} loading="lazy" width="420" height="420">
-                  </div>
+                  </a>
                 )}
                 <div class="fam-table-wrap">
                   <table class="fam-table">
@@ -97,7 +130,10 @@ function stdOf(specs: Record<string, string>): string | null {
                           <td class="fam-ref">{p.sku}</td>
                           {!sharedPhoto(items) && (
                             <td class="fam-td-img">
-                              <img src={imageUrl(p.image)} alt={p.sku} loading="lazy" width="64" height="64">
+                              <a class="fam-zoom" href={imageUrl(p.image)} target="_blank" rel="noopener"
+                                 aria-label={`Open the ${p.sku} photo`}>
+                                <img src={imageUrl(p.image)} alt={p.sku} loading="lazy" width="150" height="100">
+                              </a>
                             </td>
                           )}
                           {columnsOf(items).map((k) => (
@@ -155,4 +191,45 @@ function stdOf(specs: Record<string, string>): string | null {
       </div>
     </div>
   </section>
+  <script is:inline>
+    (function () {
+      /* EN / ANSI choice: the hash picks the range, EN by default */
+      var pick = document.querySelector('[data-range-pick]');
+      if (pick) {
+        var fams = [].slice.call(document.querySelectorAll('.family[data-range]'));
+        var btns = [].slice.call(pick.querySelectorAll('[data-range-btn]'));
+        var keys = btns.map(function (b) { return b.getAttribute('data-range-btn'); });
+        var show = function () {
+          var k = location.hash.slice(1);
+          if (keys.indexOf(k) < 0) k = keys[0];
+          fams.forEach(function (f) { f.hidden = f.getAttribute('data-range') !== k; });
+          btns.forEach(function (b) {
+            var on = b.getAttribute('data-range-btn') === k;
+            b.classList.toggle('on', on);
+            b.setAttribute('aria-current', on ? 'true' : 'false');
+          });
+        };
+        window.addEventListener('hashchange', show);
+        show();
+      }
+
+      /* table photos: a large preview follows the pointer; a click opens the full image */
+      if (!window.matchMedia('(hover: hover)').matches) return;
+      var box = document.createElement('div');
+      box.className = 'fam-preview';
+      box.innerHTML = '<img alt="">';
+      document.body.appendChild(box);
+      var img = box.firstChild;
+      document.querySelectorAll('.fam-td-img .fam-zoom').forEach(function (a) {
+        a.addEventListener('mouseenter', function () { img.src = a.href; box.classList.add('on'); });
+        a.addEventListener('mouseleave', function () { box.classList.remove('on'); });
+        a.addEventListener('mousemove', function (e) {
+          var w = 380, x = e.clientX + 24, y = e.clientY - w / 2;
+          if (x + w > innerWidth - 12) x = e.clientX - w - 24;
+          y = Math.max(12, Math.min(y, innerHeight - w - 12));
+          box.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+        });
+      });
+    })();
+  </script>
 </Base>
