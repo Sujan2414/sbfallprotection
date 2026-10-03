@@ -39,6 +39,8 @@ export interface About {
   paragraphs: string[];
   photo: string;
   years: string;
+  badge: string;
+  badgeNote: string;
   figures: Figure[];
   leadership: Leader[];
   certs: Cert[];
@@ -56,6 +58,8 @@ export const DEFAULT_ABOUT: About = {
   ],
   photo: '/assets/about-factory.jpg',
   years: '20+',
+  badge: 'ISO 9001:2015 · SEDEX',
+  badgeNote: 'Certified & Audited',
   figures: [
     { n: '2003', l: 'Founded in Kanpur, Uttar Pradesh' },
     { n: '195,000', l: 'Sq ft integrated facility' },
@@ -119,4 +123,32 @@ export async function getFaqs(email: string): Promise<Faq[]> {
   const saved = await setting<Faq[]>('faqs');
   const list = Array.isArray(saved) ? saved.filter((f) => f && f.q && f.a) : DEFAULT_FAQS;
   return list.map((f) => ({ q: String(f.q), a: String(f.a).replaceAll('{email}', email) }));
+}
+
+export interface MenuItem { label: string; href: string }
+
+/** The links in the top bar and the mobile menu; Contact Now stays fixed beside them. */
+export const DEFAULT_MENU: MenuItem[] = [
+  { label: 'Products', href: '/products' },
+  { label: 'About', href: '/about' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'Export Markets', href: '/export-markets' },
+];
+
+export async function getMenu(): Promise<MenuItem[]> {
+  const saved = await setting<MenuItem[]>('menu');
+  if (!Array.isArray(saved)) return DEFAULT_MENU;
+  return saved.filter((m) => m && m.label && m.href).map((m) => ({ label: String(m.label), href: String(m.href) }));
+}
+
+export interface Brand { logo: string; favicon: string }
+export const DEFAULT_BRAND: Brand = { logo: '/assets/sb-logo.png', favicon: '/assets/sb-logo.png' };
+
+export async function getBrand(): Promise<Brand> {
+  const saved = await setting<Partial<Brand>>('brand');
+  const out = { ...DEFAULT_BRAND };
+  if (saved && typeof saved === 'object') {
+    for (const k of ['logo', 'favicon'] as const) if (typeof saved[k] === 'string' && saved[k]!.trim()) out[k] = saved[k]!.trim();
+  }
+  return out;
 }

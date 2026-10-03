@@ -276,6 +276,37 @@ const coverSrc = (img) => (/[/:]/.test(img || '') ? img : `/assets/blog-${img}.j
 
 const safeName = (name) => String(name).toLowerCase().replace(/[^a-z0-9.]+/g, '-').replace(/^-+|-+$/g, '');
 
+/*
+ * Photos straight off a camera or phone are often 5–15 MB, or a type the
+ * site cannot show. Anything over 2000 px or 1.5 MB is redrawn in the browser
+ * at 2000 px as WebP (JPEG where WebP cannot be made), which keeps
+ * transparency for logos. Videos, GIFs and SVGs go up untouched.
+ */
+async function prepImage(file, max = 2000) {
+  if (!/^image\//.test(file.type) || /gif|svg/.test(file.type)) return file;
+  const img = await new Promise((resolve, reject) => {
+    const i = new Image();
+    i.onload = () => resolve(i);
+    i.onerror = () => reject(new Error(`${file.name} is not an image this browser can read. Save it as JPG or PNG and try again.`));
+    i.src = window.URL.createObjectURL(file);
+  });
+  const big = Math.max(img.naturalWidth, img.naturalHeight);
+  const known = /^image\/(jpeg|png|webp)$/.test(file.type);
+  if (known && big <= max && file.size <= 1.5 * 1024 * 1024) { window.URL.revokeObjectURL(img.src); return file; }
+  const scale = Math.min(1, max / big);
+  const c = document.createElement('canvas');
+  c.width = Math.round(img.naturalWidth * scale);
+  c.height = Math.round(img.naturalHeight * scale);
+  c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+  window.URL.revokeObjectURL(img.src);
+  const blob = (type, q) => new Promise((r) => c.toBlob(r, type, q));
+  let out = await blob('image/webp', 0.86);
+  if (!out || out.type !== 'image/webp') out = await blob(file.type === 'image/png' ? 'image/png' : 'image/jpeg', 0.88);
+  if (!out) throw new Error(`Could not process ${file.name}`);
+  const ext = out.type.split('/')[1].replace('jpeg', 'jpg');
+  return new File([out], `${file.name.replace(/\.[^.]+$/, '')}.${ext}`, { type: out.type });
+}
+
 /** A URL field with an "Upload from computer" button beside it. */
 const uploadField = (label, name, value, accept) => `
   <div class="adm-field full"><span>${esc(label)}</span>
@@ -302,8 +333,9 @@ function wireUploads(bucket, folder = '') {
       state.textContent = `Uploading ${file.name}…`;
       drawerSave.disabled = drawerDraft.disabled = true;
       try {
-        const path = `${folder}${Date.now()}-${safeName(file.name)}`;
-        target.value = await uploadTo(bucket, path, file);
+        const ready = await prepImage(file);
+        const path = `${folder}${Date.now()}-${safeName(ready.name)}`;
+        target.value = await uploadTo(bucket, path, ready);
         state.textContent = `Uploaded ${file.name}`;
       } catch (err) {
         state.textContent = '';
@@ -363,55 +395,6 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
   btn.textContent = 'Sign in';
   if (error) msg.innerHTML = `<div class="adm-msg err">${esc(error.message)}</div>`;
 });
-
-/**
- * Google sign-in. The button only exists when the build sets
- * SUPABASE_GOOGLE_AUTH=1, so this is a no-op until Google is enabled in
- * Supabase. Same session storage as the password flow, so "keep me signed in"
- * still applies -- OAuth returns to this page and onAuthStateChange picks it up.
- */
-const btnGoogle = document.getElementById('btnGoogle');
-if (btnGoogle) {
-  const setupMsg = 'Google sign-in is not available yet — use your email and password.';
-
-  btnGoogle.addEventListener('click', async () => {
-    const msg = document.getElementById('loginMsg');
-    msg.innerHTML = '';
-    btnGoogle.disabled = true;
-    window.localStorage.setItem(REMEMBER, '1');
-
-    // Build the authorize URL without navigating, so a disabled provider shows
-    // a message here instead of dumping Supabase's raw 400 JSON in the tab.
-    const { data, error } = await sb.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: window.location.origin + '/aij-admin/',
-        skipBrowserRedirect: true,
-      },
-    });
-    if (error || !data || !data.url) {
-      btnGoogle.disabled = false;
-      msg.innerHTML = `<div class="adm-msg err">${esc((error && error.message) || setupMsg)}</div>`;
-      return;
-    }
-
-    // A disabled provider answers 400 with CORS headers, so it is readable.
-    // Enabled, it answers a redirect, which reads as an opaque redirect
-    // cross-origin — and a blocked probe throws, in which case just go.
-    let disabled = false;
-    try {
-      const probe = await fetch(data.url, { redirect: 'manual' });
-      disabled = probe.status === 400;
-    } catch { /* opaque or blocked — proceed to the real redirect */ }
-
-    if (disabled) {
-      btnGoogle.disabled = false;
-      msg.innerHTML = `<div class="adm-msg err">${setupMsg}</div>`;
-      return;
-    }
-    window.location.assign(data.url);
-  });
-}
 
 document.getElementById('btnOut').addEventListener('click', () => sb.auth.signOut());
 
@@ -572,7 +555,7 @@ document.querySelectorAll('.adm-navitem[data-tab]').forEach((b) =>
   b.addEventListener('click', () => setTab(b.dataset.tab)));
 
 function render() {
-  ({ overview, products, taxonomy, posts, reels, inquiries, about, faqs, contact: social, users, settings }[tab] || overview)();
+  ({ overview, products, taxonomy, posts, reels, inquiries, about, faqs, contact: social, site, users, settings }[tab] || overview)();
   window.scrollTo({ top: 0 });
 }
 
@@ -655,8 +638,10 @@ function products() {
   const from = (prodPage - 1) * PER;
   const rows = all.slice(from, from + PER);
 
-  main.innerHTML = pageHead('Products',
-    '<button class="adm-btn adm-btn-primary" id="newProduct">+ Add product</button>') + `
+  main.innerHTML = pageHead('Products', `
+    <button class="adm-btn adm-btn-soft" id="bulkPhotos">Upload photos</button>
+    <button class="adm-btn adm-btn-soft" id="importXlsx">Import / export Excel</button>
+    <button class="adm-btn adm-btn-primary" id="newProduct">+ Add product</button>`) + `
     <div class="adm-table-card">
       <div class="adm-table-head">
         <h2>Product Stock</h2>
@@ -721,6 +706,8 @@ function products() {
   main.querySelectorAll('[data-edit]').forEach((b) =>
     b.addEventListener('click', () => editProduct(b.dataset.edit)));
   main.querySelector('#newProduct').addEventListener('click', () => editProduct(null));
+  main.querySelector('#importXlsx').addEventListener('click', importProducts);
+  main.querySelector('#bulkPhotos').addEventListener('click', bulkPhotos);
   main.querySelectorAll('[data-del]').forEach((b) =>
     b.addEventListener('click', () => deleteProduct(b.dataset.del)));
 }
@@ -745,7 +732,7 @@ function editProduct(id) {
       ${field('Short description', 'attachment', p.attachment || '', 'text', '')}
       ${select('Category', 'category', db.categories.map((c) => [c.slug, c.name]), p.category, '')}
       ${select('Range', 'family', famOptions(p.category), p.family || '', '')}
-      ${uploadField('Product photo', 'image', p.image || '', 'image/jpeg,image/png,image/webp')}
+      ${uploadField('Product photo', 'image', p.image || '', 'image/*')}
       <div class="adm-field full"><span>Specifications</span>
         <div class="spec-rows" id="specRows">
           ${Object.entries(p.specs || {}).map(([k, v]) => specRow(k, v)).join('') || specRow('Type', '')}
@@ -812,6 +799,269 @@ function deleteProduct(id) {
     const r = await publishSite();
     toast(r.ok ? `${p.sku} deleted. The site updates in a minute or two.`
       : `${p.sku} deleted, but the site did not rebuild: ${r.message}`, !r.ok);
+  });
+}
+
+/* ─────────────────────────── bulk products: Excel ─────────────────────────── */
+
+/*
+ * Import and export go through SheetJS, loaded only when someone opens the
+ * import drawer so the panel itself stays light. One row is one product; the
+ * fixed columns are below and every other column is a specification, in the
+ * order the columns appear. Existing products are matched on code and range
+ * and updated; an empty cell leaves that value as it was.
+ */
+const XLSX_SRC = ['https://cdn.sheetjs.com/xlsx-0.20.3/package/xlsx.mjs',
+  'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/+esm'];
+let xlsxLib = null;
+async function loadXlsx() {
+  if (xlsxLib) return xlsxLib;
+  for (const src of XLSX_SRC) {
+    try { xlsxLib = await import(/* @vite-ignore */ src); return xlsxLib; } catch { /* try the next */ }
+  }
+  throw new Error('Could not load the Excel reader. Check the internet connection and try again.');
+}
+
+const COLS = {
+  sku: ['product code', 'code', 'sku', 'ref. no.', 'ref no', 'reference'],
+  category: ['category'],
+  family: ['range', 'family', 'product range'],
+  attachment: ['short description', 'description'],
+  image: ['photo', 'image', 'photo link', 'image url'],
+};
+const colOf = (h) => Object.keys(COLS).find((k) => COLS[k].includes(String(h).trim().toLowerCase()));
+const byName = (list, v) => {
+  const t = String(v || '').trim().toLowerCase();
+  return t ? list.find((x) => x.slug === t || x.name.toLowerCase() === t || slugify(x.name) === slugify(t)) : null;
+};
+
+function sheetRows(lib, sheet) {
+  const rows = lib.utils.sheet_to_json(sheet, { header: 1, defval: '', raw: false });
+  const head = (rows[0] || []).map((h) => String(h).trim());
+  return { head, body: rows.slice(1).filter((r) => r.some((c) => String(c).trim())) };
+}
+
+/** Work out what each sheet row would do, without writing anything. */
+function planImport(head, body) {
+  const plan = [];
+  const seen = new Set();
+  for (const [n, r] of body.entries()) {
+    const line = n + 2;
+    const rec = { specs: {} };
+    head.forEach((h, i) => {
+      if (!h) return;
+      const v = String(r[i] ?? '').trim();
+      const k = colOf(h);
+      if (k) rec[k] = v;
+      else if (v) rec.specs[h] = v;
+    });
+    const sku = (rec.sku || '').toUpperCase();
+    if (!sku) { plan.push({ line, error: 'No product code' }); continue; }
+    let cat = rec.category ? byName(db.categories, rec.category) : null;
+    if (rec.category && !cat) { plan.push({ line, sku, error: `Unknown category “${rec.category}”` }); continue; }
+    let fam = rec.family ? byName(db.families.filter((f) => !cat || f.category === cat.slug), rec.family) : null;
+    if (rec.family && !fam) { plan.push({ line, sku, error: `Unknown range “${rec.family}”${cat ? ` in ${cat.name}` : ''}` }); continue; }
+    if (!cat && fam) cat = db.categories.find((c) => c.slug === fam.category);
+    // an existing product: same code in that range, or the only one with that code
+    const same = db.products.filter((p) => p.sku.toUpperCase() === sku);
+    const hit = fam ? same.find((p) => p.family === fam.slug)
+      : cat ? same.find((p) => p.category === cat.slug && !p.family) || (same.length === 1 && same[0].category === cat.slug ? same[0] : null)
+      : same.length === 1 ? same[0] : null;
+    if (!hit && !cat) { plan.push({ line, sku, error: same.length > 1 ? 'Several products have this code; add the range' : 'New product needs a category' }); continue; }
+    const key = `${sku}|${fam ? fam.slug : (hit ? hit.family : '')}`;
+    if (seen.has(key)) { plan.push({ line, sku, error: 'Listed twice in the sheet' }); continue; }
+    seen.add(key);
+    if (hit) {
+      const row = { specs: { ...(hit.specs || {}), ...rec.specs } };
+      if (cat) row.category = cat.slug;
+      if (fam) row.family = fam.slug;
+      if (rec.attachment) row.attachment = rec.attachment;
+      if (rec.image) row.image = rec.image;
+      plan.push({ line, sku, update: hit, row, where: fam ? fam.name : (cat || {}).name });
+    } else {
+      plan.push({ line, sku, where: fam ? fam.name : cat.name, row: {
+        sku, category: cat.slug, family: fam ? fam.slug : null, attachment: rec.attachment || null,
+        image: rec.image || null, specs: rec.specs } });
+    }
+  }
+  return plan;
+}
+
+function importProducts() {
+  openDrawer('Import products from Excel', `
+    <div class="adm-import">
+      <p>One row per product. Columns: <b>Product code</b>, <b>Category</b>, <b>Range</b>, <b>Short description</b>,
+        <b>Photo</b>, then any specification columns (Type, Standard, Material…). A product already on the site is
+        updated; an empty cell leaves that value as it is.</p>
+      <div class="adm-import-dl">
+        <button type="button" class="adm-btn adm-btn-soft" id="xTemplate">Download template</button>
+        <button type="button" class="adm-btn adm-btn-soft" id="xExport">Download all products</button>
+      </div>
+      <label class="adm-drop">
+        <input type="file" id="xFile" accept=".xlsx,.xls,.csv" hidden>
+        <b>Choose an Excel file</b><span>.xlsx, .xls or .csv</span>
+      </label>
+      <div id="xPlan"></div>
+    </div>`,
+    async (publish) => {
+      const plan = drawerBody.__plan;
+      const ok = (plan || []).filter((x) => !x.error);
+      if (!ok.length) throw new Error('Choose a file with at least one product to import.');
+      const fresh = ok.filter((x) => !x.update);
+      let order = nextOrder(db.products);
+      if (fresh.length) {
+        const rows = fresh.map((x) => ({ ...x.row, published: publish, sort_order: order++ }));
+        const { error } = await sb.from('products').insert(rows);
+        if (error) throw dupe(error, 'One of those products');
+      }
+      const ups = ok.filter((x) => x.update);
+      for (let i = 0; i < ups.length; i += 8) {
+        const res = await Promise.all(ups.slice(i, i + 8).map((x) =>
+          sb.from('products').update(x.row).eq('id', x.update.id)));
+        const bad = res.find((r) => r.error);
+        if (bad) throw bad.error;
+      }
+      await loadAll();
+      products();
+    }, { draftNote: 'Imported. New products stay hidden until they are published.' });
+
+  drawerBody.querySelector('#xTemplate').addEventListener('click', () => downloadSheet('template'));
+  drawerBody.querySelector('#xExport').addEventListener('click', () => downloadSheet('all'));
+  drawerBody.querySelector('#xFile').addEventListener('change', async (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const out = drawerBody.querySelector('#xPlan');
+    out.innerHTML = '<p class="adm-td-muted">Reading the file…</p>';
+    try {
+      const lib = await loadXlsx();
+      const wb = lib.read(await file.arrayBuffer());
+      const { head, body } = sheetRows(lib, wb.Sheets[wb.SheetNames[0]]);
+      if (!head.some((h) => colOf(h) === 'sku')) throw new Error('The first row needs a “Product code” column.');
+      const plan = planImport(head, body);
+      drawerBody.__plan = plan;
+      const n = (f) => plan.filter(f).length;
+      out.innerHTML = `
+        <div class="adm-import-sum">
+          <span class="adm-pill green">${n((x) => !x.error && !x.update)} new</span>
+          <span class="adm-pill blue">${n((x) => x.update)} to update</span>
+          ${n((x) => x.error) ? `<span class="adm-pill red">${n((x) => x.error)} with problems, skipped</span>` : ''}
+        </div>
+        <div class="adm-table-scroll"><table class="adm-table adm-import-table"><thead><tr>
+          <th>Row</th><th>Code</th><th>Range</th><th>Result</th></tr></thead><tbody>
+          ${plan.map((x) => `<tr><td class="adm-td-muted">${x.line}</td><td><span class="adm-code">${esc(x.sku || '—')}</span></td>
+            <td class="adm-td-muted">${esc(x.where || '')}</td>
+            <td>${x.error ? `<span class="adm-pill red">${esc(x.error)}</span>`
+              : x.update ? '<span class="adm-pill blue">Update</span>' : '<span class="adm-pill green">New</span>'}</td></tr>`).join('')}
+        </tbody></table></div>`;
+    } catch (err) {
+      drawerBody.__plan = null;
+      out.innerHTML = `<div class="adm-msg err">${esc(err.message)}</div>`;
+    } finally {
+      e.target.value = '';
+    }
+  });
+}
+
+async function downloadSheet(kind) {
+  try {
+    const lib = await loadXlsx();
+    const fixed = ['Product code', 'Category', 'Range', 'Short description', 'Photo'];
+    let rows;
+    if (kind === 'template') {
+      const c = db.categories[0] || { name: 'Harnesses', slug: '' };
+      const f = db.families.find((x) => x.category === c.slug) || { name: '' };
+      rows = [[...fixed, 'Type', 'Standard', 'Material', 'Size'],
+        ['SBX001', c.name, f.name, 'Example: full body harness with two-point attachment', '', 'Full Body Harness', 'EN 361', 'Polyester webbing', 'Universal']];
+    } else {
+      const keys = [];
+      db.products.forEach((p) => Object.keys(p.specs || {}).forEach((k) => { if (!keys.includes(k)) keys.push(k); }));
+      const cat = Object.fromEntries(db.categories.map((c) => [c.slug, c.name]));
+      const fam = Object.fromEntries(db.families.map((f) => [f.slug, f.name]));
+      rows = [[...fixed, ...keys], ...db.products.map((p) => [
+        p.sku, cat[p.category] || p.category, fam[p.family] || '', p.attachment || '', p.image || '',
+        ...keys.map((k) => (p.specs || {})[k] || '')])];
+    }
+    const ws = lib.utils.aoa_to_sheet(rows);
+    ws['!cols'] = rows[0].map((h, i) => ({ wch: i === 3 ? 44 : Math.max(12, String(h).length + 2) }));
+    const wb = lib.utils.book_new();
+    lib.utils.book_append_sheet(wb, ws, 'Products');
+    lib.writeFile(wb, kind === 'template' ? 'sb-products-template.xlsx' : `sb-products-${new Date().toISOString().slice(0, 10)}.xlsx`);
+  } catch (err) {
+    toast(err.message, true);
+  }
+}
+
+/* ─────────────────────────── bulk products: photos ─────────────────────────── */
+
+/*
+ * Many photos at once. Each is uploaded as soon as it is chosen, then matched
+ * to a product by its file name (SBH021.jpg, sbh021-front.png, "SBH021 (2).jpg"
+ * all find SBH021). Any match can be changed or cleared before saving.
+ */
+function matchSku(name) {
+  const base = name.replace(/\.[^.]+$/, '').toUpperCase().replace(/[\s_]+/g, '-');
+  const codes = [...new Set(db.products.map((p) => p.sku.toUpperCase()))].sort((a, b) => b.length - a.length);
+  return codes.find((c) => base === c) || codes.find((c) => base.startsWith(c) && !/[A-Z0-9]/.test(base[c.length] || '-')) || '';
+}
+
+function bulkPhotos() {
+  const codes = [...new Set(db.products.map((p) => p.sku))].sort();
+  const items = [];
+  openDrawer('Upload product photos', `
+    <div class="adm-import">
+      <p>Choose several photos at once. A photo named after a product code (for example <b>SBH021.jpg</b>) is matched
+        to that product; check each match, or pick the product yourself.</p>
+      <label class="adm-drop">
+        <input type="file" id="phFiles" accept="image/*" multiple hidden>
+        <b>Choose photos</b><span>JPG, PNG or WebP · large photos are resized automatically</span>
+      </label>
+      <div id="phList" class="adm-ph-list"></div>
+    </div>`,
+    async () => {
+      sync();
+      const todo = items.filter((x) => x.url && x.sku);
+      if (!todo.length) throw new Error('Match at least one uploaded photo to a product.');
+      for (const x of todo) {
+        const { error } = await sb.from('products').update({ image: x.url }).eq('sku', x.sku);
+        if (error) throw error;
+      }
+      await loadAll();
+      products();
+    }, { draftNote: 'Photos saved. They go live the next time anything is published.' });
+
+  const list = drawerBody.querySelector('#phList');
+  const opts = (sel) => `<option value="">— don't use —</option>${codes.map((c) =>
+    `<option value="${esc(c)}" ${c === sel ? 'selected' : ''}>${esc(c)}</option>`).join('')}`;
+  const sync = () => drawerBody.querySelectorAll('[data-ph]').forEach((s) => { items[Number(s.dataset.ph)].sku = s.value; });
+  const paint = () => {
+    sync();
+    list.innerHTML = items.map((x, i) => `<div class="adm-ph-row">
+      <span class="adm-ph-img">${x.preview ? `<img src="${esc(x.preview)}" alt="">` : ''}</span>
+      <span class="adm-ph-name"><b>${esc(x.name)}</b><small>${esc(x.state)}</small></span>
+      <select data-ph="${i}" ${x.url ? '' : 'disabled'}>${opts(x.sku)}</select>
+    </div>`).join('');
+  };
+  drawerBody.querySelector('#phFiles').addEventListener('change', async (e) => {
+    const files = [...(e.target.files || [])];
+    e.target.value = '';
+    sync();
+    const start = items.length;
+    files.forEach((f) => items.push({ name: f.name, sku: matchSku(f.name), state: 'Waiting…', preview: window.URL.createObjectURL(f) }));
+    paint();
+    drawerSave.disabled = drawerDraft.disabled = true;
+    for (const [n, f] of files.entries()) {
+      const x = items[start + n];
+      x.state = 'Uploading…'; paint();
+      try {
+        const ready = await prepImage(f);
+        x.url = await uploadTo('media', `products/${Date.now()}-${safeName(ready.name)}`, ready);
+        x.state = x.sku ? `Matched to ${x.sku}` : 'Uploaded · choose the product';
+      } catch (err) {
+        x.state = `Failed: ${err.message}`;
+      }
+      paint();
+    }
+    drawerSave.disabled = drawerDraft.disabled = false;
   });
 }
 
@@ -883,7 +1133,7 @@ function editCategory(slug) {
       ${field('Name', 'name', c.name)}
       ${field('Card blurb (products page)', 'blurb', c.blurb || '', 'textarea')}
       ${field('Intro (category page)', 'intro', c.intro || '', 'textarea')}
-      ${uploadField('Tile photo (products page)', 'image', c.image || '', 'image/jpeg,image/png,image/webp')}
+      ${uploadField('Tile photo (products page)', 'image', c.image || '', 'image/*')}
     </div>`,
     async () => {
       const row = { name: val('name'), blurb: val('blurb') || null, intro: val('intro') || null,
@@ -1077,7 +1327,7 @@ function editPost(slug) {
       ${field('URL slug', 'slug', p.slug, 'text', '')}
       ${field('Topic', 'topic', p.topic || '', 'text', '')}
       ${field('Excerpt', 'excerpt', p.excerpt || '', 'textarea')}
-      ${uploadField('Cover image', 'image', p.image || '', 'image/jpeg,image/png,image/webp')}
+      ${uploadField('Cover image', 'image', p.image || '', 'image/*')}
       ${field('Image alt text', 'image_alt', p.image_alt || '', 'text', '')}
       ${field('Read time (min)', 'read_mins', p.read_mins, 'number', '')}
       ${field('Author', 'author', p.author || '', 'text', '')}
@@ -1086,7 +1336,7 @@ function editPost(slug) {
       <div class="adm-field full"><span>Body (Markdown)</span>
         <div class="adm-md-bar">
           <label class="adm-btn adm-btn-soft">
-            <input type="file" id="bodyImg" accept="image/jpeg,image/png,image/webp" hidden>
+            <input type="file" id="bodyImg" accept="image/*" hidden>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 17-5-5-9 8"/></svg>
             Insert image
           </label>
@@ -1105,8 +1355,10 @@ function editPost(slug) {
         body: drawerBody.querySelector('[name="body"]').value,
       };
       if (!row.slug || !row.title) throw new Error('Title and slug are both required');
-      const { error } = await sb.from('posts').upsert(row, { onConflict: 'slug' });
-      if (error) throw error;
+      const { error } = slug
+        ? await sb.from('posts').update(row).eq('slug', slug)
+        : await sb.from('posts').insert(row);
+      if (error) throw dupe(error, 'An article with that URL slug');
       await loadAll();
       posts();
     });
@@ -1121,7 +1373,8 @@ function editPost(slug) {
     const state = drawerBody.querySelector('#bodyImgState');
     state.textContent = `Uploading ${file.name}…`;
     try {
-      const url = await uploadTo('media', `blog/${Date.now()}-${safeName(file.name)}`, file);
+      const ready = await prepImage(file);
+      const url = await uploadTo('media', `blog/${Date.now()}-${safeName(ready.name)}`, ready);
       const alt = file.name.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' ');
       const at = body.selectionStart ?? body.value.length;
       const snippet = `\n\n![${alt}](${url})\n\n`;
@@ -1162,6 +1415,7 @@ function inqTable(rows) {
 let inqFrom = '';
 let inqTo = '';
 let inqQuery = '';
+let inqStatus = '';
 
 function inquiries() {
   const q = inqQuery.trim().toLowerCase();
@@ -1171,16 +1425,20 @@ function inquiries() {
     const t = new Date(r.created_at);
     if (from && t < from) return false;
     if (to && t > to) return false;
+    if (inqStatus && r.status !== inqStatus) return false;
     if (!q) return true;
     return ['name', 'company', 'email', 'phone', 'country', 'category', 'sku', 'message']
       .some((k) => String(r[k] || '').toLowerCase().includes(q));
   });
-  const filtered = Boolean(q || from || to);
+  const filtered = Boolean(q || from || to || inqStatus);
 
   main.innerHTML = pageHead('Enquiries') + `
     <div class="adm-table-card">
       <div class="adm-table-head adm-inq-tools">
         <h2>Inbox</h2><span class="spacer"></span>
+        <label class="adm-date"><span>Status</span><select id="iStatus">
+          <option value="">All</option>${STATUS.map((s) => `<option value="${s}" ${s === inqStatus ? 'selected' : ''}>${S_LABEL[s]}</option>`).join('')}
+        </select></label>
         <label class="adm-date"><span>From</span><input type="date" id="iFrom" value="${esc(inqFrom)}"></label>
         <label class="adm-date"><span>To</span><input type="date" id="iTo" value="${esc(inqTo)}"></label>
         <div class="adm-search" style="flex:0 1 260px">
@@ -1202,10 +1460,11 @@ function inquiries() {
     const n = main.querySelector('#iQ');
     n.focus(); n.setSelectionRange(at, at);
   });
+  main.querySelector('#iStatus').addEventListener('change', (e) => { inqStatus = e.target.value; inquiries(); });
   main.querySelector('#iFrom').addEventListener('change', (e) => { inqFrom = e.target.value; inquiries(); });
   main.querySelector('#iTo').addEventListener('change', (e) => { inqTo = e.target.value; inquiries(); });
   const clear = main.querySelector('#iClear');
-  if (clear) clear.addEventListener('click', () => { inqFrom = inqTo = inqQuery = ''; inquiries(); });
+  if (clear) clear.addEventListener('click', () => { inqFrom = inqTo = inqQuery = inqStatus = ''; inquiries(); });
   wireInq();
 }
 
@@ -1316,7 +1575,7 @@ function editReel(id) {
     <div class="adm-fields">
       ${field('Caption', 'caption', r.caption || '')}
       ${uploadField('Video (.mp4)', 'media_url', r.media_url || '', 'video/mp4,video/webm,video/quicktime')}
-      ${uploadField('Poster image', 'thumbnail_url', r.thumbnail_url || '', 'image/jpeg,image/png,image/webp')}
+      ${uploadField('Poster image', 'thumbnail_url', r.thumbnail_url || '', 'image/*')}
       ${field('Instagram link', 'permalink', r.permalink || '', 'url')}
       ${field('Date', 'posted_at', (r.posted_at || '').slice(0, 10), 'date', '')}
       ${select('Type', 'media_type', [['VIDEO', 'Video'], ['IMAGE', 'Image']], r.media_type || 'VIDEO', '')}
@@ -1959,12 +2218,13 @@ function editListItem(cfg, i, rerender) {
         next[k] = val(k);
         if (!next[k] && !(cfg.optional || []).includes(k)) throw new Error(`Add the ${label.split(' (')[0].toLowerCase()}.`);
       }
+      if (cfg.check) cfg.check(next);
       const list = cfg.get().slice();
       if (adding) list.push(next); else list[i] = next;
       await cfg.put(list);
       rerender();
     }, { draftNote: 'Saved. It goes live the next time anything is published.' });
-  wireUploads('media', 'about/');
+  wireUploads('media', cfg.folder || 'about/');
 }
 
 const aboutDoc = () => docs.about || {};
@@ -1989,7 +2249,8 @@ const ABOUT_LISTS = [
 
 const STORY_FIELDS = [
   ['heroLead', 'Intro under the title'], ['quote', 'Highlighted line'], ['paragraphs', 'Company story'],
-  ['years', 'Years of experience badge'], ['photo', 'Main photo'],
+  ['years', 'Years of experience badge'], ['badge', 'Certification badge on the photo'],
+  ['badgeNote', 'Line under the certification badge'], ['photo', 'Main photo'],
 ];
 
 async function about() {
@@ -2019,13 +2280,16 @@ function editStory() {
       ${field('Intro under the title', 'heroLead', a.heroLead || '', 'textarea')}
       ${field('Highlighted line', 'quote', a.quote || '', 'textarea')}
       ${field('Company story (a blank line between paragraphs)', 'paragraphs', (a.paragraphs || []).join('\n\n'), 'textarea')}
-      ${field('Years of experience badge', 'years', a.years || '', 'text')}
+      ${field('Years of experience badge', 'years', a.years || '', 'text', '')}
+      ${field('Certification badge on the photo', 'badge', a.badge || 'ISO 9001:2015 · SEDEX', 'text', '')}
+      ${field('Line under the certification badge', 'badgeNote', a.badgeNote || 'Certified & Audited', 'text')}
       ${uploadField('Main photo', 'photo', a.photo || '', 'image/*')}
     </div>`,
     async () => {
       const paragraphs = drawerBody.querySelector('[name="paragraphs"]').value
         .split(/\n\s*\n/).map((p) => p.replace(/\s+/g, ' ').trim()).filter(Boolean);
-      const next = { ...a, heroLead: val('heroLead'), quote: val('quote'), paragraphs, years: val('years'), photo: val('photo') };
+      const next = { ...a, heroLead: val('heroLead'), quote: val('quote'), paragraphs, years: val('years'),
+        badge: val('badge'), badgeNote: val('badgeNote'), photo: val('photo') };
       if (!next.heroLead || !next.quote || !paragraphs.length) throw new Error('The intro, highlighted line and story are all needed.');
       if (!next.years) throw new Error('Add the years of experience.');
       if (!next.photo) throw new Error('Add the main photo.');
@@ -2050,4 +2314,53 @@ async function faqs() {
     '<a class="adm-btn adm-btn-soft" href="/#faqs" target="_blank" rel="noopener">View on site</a>')
     + listCard(FAQ_LIST, FAQ_LIST.get(), true);
   wireLists([FAQ_LIST], faqs);
+}
+
+/* ─────────────────────────── menu and logo ─────────────────────────── */
+
+const MENU_LIST = {
+  id: 'menu', title: 'Menu bar', item: 'menu link', folder: 'brand/',
+  cols: [['label', '', 'Label'], ['href', 'muted', 'Goes to']],
+  fields: [['label', 'Label', 'text'], ['href', 'Goes to (a page such as /about, or a full https:// link)', 'text']],
+  check(m) {
+    if (/^www\./i.test(m.href)) m.href = `https://${m.href}`;
+    if (!/^(\/|https?:\/\/|#)/i.test(m.href)) throw new Error('The link should start with / for a page on this site, or https:// for another site.');
+  },
+  get: () => (Array.isArray(docs.menu) ? docs.menu : []),
+  put: (list) => saveDoc('menu', list),
+};
+
+async function site() {
+  if (!(await docPage('Menu & Logo', 'menu', []))) return;
+  if (!(await docPage('Menu & Logo', 'brand', {}))) return;
+  const b = docs.brand || {};
+  main.innerHTML = pageHead('Menu & Logo',
+    '<a class="adm-btn adm-btn-soft" href="/" target="_blank" rel="noopener">View site</a>') + `
+    <div class="adm-table-card">
+      <div class="adm-table-head"><h2>Logo and browser icon</h2><span class="spacer"></span>
+        <button class="adm-btn adm-btn-primary" id="editBrand">Change</button></div>
+      <dl class="adm-dl">
+        <div><dt>Logo</dt><dd><img class="adm-brand-img" src="${esc(b.logo || '/assets/sb-logo.png')}" alt=""></dd></div>
+        <div><dt>Browser tab icon (favicon)</dt><dd><img class="adm-brand-img sm" src="${esc(b.favicon || '/assets/sb-logo.png')}" alt=""></dd></div>
+      </dl>
+    </div>
+    ${listCard(MENU_LIST, MENU_LIST.get())}`;
+  main.querySelector('#editBrand').addEventListener('click', editBrand);
+  wireLists([MENU_LIST], site);
+}
+
+function editBrand() {
+  const b = docs.brand || {};
+  openDrawer('Logo and browser icon', `
+    <div class="adm-fields">
+      ${uploadField('Logo (PNG with a transparent background works best)', 'logo', b.logo || '/assets/sb-logo.png', 'image/*')}
+      ${uploadField('Browser tab icon (a square image)', 'favicon', b.favicon || '/assets/sb-logo.png', 'image/*')}
+    </div>`,
+    async () => {
+      const next = { logo: val('logo'), favicon: val('favicon') };
+      if (!next.logo || !next.favicon) throw new Error('Both images are needed.');
+      await saveDoc('brand', next);
+      site();
+    }, { draftNote: 'Saved. It goes live the next time anything is published.' });
+  wireUploads('media', 'brand/');
 }

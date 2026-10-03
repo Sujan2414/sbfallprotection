@@ -26,7 +26,7 @@ const { figures, leadership, certs, recognitions } = ab;
       <div class="about-fig reveal">
         <img class="main" src={ab.photo} alt="SB stitching floor in Kanpur, staff working with orange harness webbing" width="760" height="836">
         <div class="float-card fc-a"><div class="big">{ab.years}</div><small>Years of Experience</small></div>
-        <div class="float-card fc-b"><div class="big">ISO 9001:2015 · SEDEX</div><small>Certified &amp; Audited</small></div>
+        <div class="float-card fc-b"><div class="big">{ab.badge}</div><small>{ab.badgeNote}</small></div>
       </div>
       <div class="reveal">
         <p class="ab-lead">{ab.quote}</p>

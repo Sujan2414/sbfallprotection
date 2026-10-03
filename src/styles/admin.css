@@ -596,7 +596,8 @@ table.adm-table tbody tr:hover { background: #fcfcfd; }
   font-size: 13px; font-weight: 600; color: var(--a-faint); line-height: 1.5;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
-.adm-tile-foot { display: flex; align-items: center; gap: 10px; margin-top: auto; padding-top: 14px; }
+.adm-tile-foot { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: auto; padding-top: 14px; }
+.adm-tile-foot .adm-icon-btn { flex: none; }
 
 /* ─────────────────────────── form card ─────────────────────────── */
 
@@ -858,3 +859,30 @@ table.adm-table tbody tr:hover { background: #fcfcfd; }
 .adm-dl dd p { margin: 0 0 8px; font-weight: 500; }
 .adm-dl-img { width: 160px; height: 110px; object-fit: cover; border-radius: 10px; display: block; }
 .adm-clip { max-width: 420px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.adm-date select { font: inherit; font-size: 13.5px; border: 1px solid var(--a-line); border-radius: 9px; padding: 7px 10px; background: #fff; color: var(--a-ink); }
+.adm-brand-img { height: 64px; width: auto; max-width: 220px; object-fit: contain; display: block; }
+.adm-brand-img.sm { height: 40px; }
+
+/* ─────────────────────────── bulk import and photos ─────────────────────────── */
+.adm-pagehead .adm-btn + .adm-btn { margin-left: 10px; }
+.adm-import > p { font-size: 14.5px; line-height: 1.65; color: var(--a-muted); margin: 0 0 16px; }
+.adm-import-dl { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+.adm-drop {
+  display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 26px 16px; cursor: pointer;
+  border: 2px dashed var(--a-line); border-radius: 14px; text-align: center; transition: border-color .2s, background .2s;
+}
+.adm-drop:hover { border-color: var(--a-accent); background: #fff7f3; }
+.adm-drop b { font-size: 15px; color: var(--a-ink); }
+.adm-drop span { font-size: 13px; color: var(--a-muted); }
+.adm-import-sum { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0 12px; }
+.adm-import-table td, .adm-import-table th { padding-top: 9px; padding-bottom: 9px; }
+.adm-ph-list { display: grid; gap: 10px; margin-top: 18px; }
+.adm-ph-row { display: grid; grid-template-columns: 56px minmax(0, 1fr) 170px; gap: 12px; align-items: center;
+  padding: 8px; border: 1px solid var(--a-line); border-radius: 12px; }
+.adm-ph-img { width: 56px; height: 56px; border-radius: 8px; background: #f4f5f8; overflow: hidden; }
+.adm-ph-img img { width: 100%; height: 100%; object-fit: cover; }
+.adm-ph-name { min-width: 0; }
+.adm-ph-name b { display: block; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.adm-ph-name small { font-size: 12.5px; color: var(--a-muted); }
+.adm-ph-row select { font: inherit; font-size: 13.5px; border: 1px solid var(--a-line); border-radius: 9px; padding: 8px; background: #fff; }

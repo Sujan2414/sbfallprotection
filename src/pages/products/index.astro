@@ -2,10 +2,25 @@
 import Base from '../../layouts/Base.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import CatIcon from '../../components/CatIcon.astro';
-import { getCategories, categoryUrl, allProducts } from '../../lib/catalog';
+import { getCategories, categoryUrl, allProducts, getFamily, productUrl, imageUrl } from '../../lib/catalog';
 
 const categories = getCategories();
 const total = allProducts().length;
+const catName = new Map(categories.map((c) => [c.slug, c.name]));
+
+// everything the search box looks through, small enough to ship with the page
+const index = allProducts().map((p) => {
+  const table = getFamily(p.family)?.layout === 'table';
+  return {
+    s: p.sku,
+    d: p.attachment || p.specs['Type'] || p.specs['Uses'] || p.specs['Usage'] || p.family_name,
+    c: catName.get(p.category) ?? '',
+    f: p.family_name,
+    x: Object.values(p.specs).join(' '),
+    u: table ? `${categoryUrl(p.category)}#fam-${p.family}` : productUrl(p),
+    i: imageUrl(p.image),
+  };
+});
 ---
 <Base
   title="Products — Fall Protection Equipment Catalogue | SB Fall Protection"
@@ -15,7 +30,7 @@ const total = allProducts().length;
     eyebrow="Our Products"
     title="Every Link in the"
     accent="Fall-Arrest Chain"
-    lead={`Anchor, body support, connection and rescue — ${total}+ product codes across ${categories.length} categories, designed, stitched, assembled and tested under one roof in Kanpur, India.`}
+    lead={`Anchor, body support, connection and rescue — ${total}+ products across ${categories.length} categories, designed, stitched, assembled and tested under one roof in Kanpur, India.`}
     crumbs={[{ label: 'Products' }]}
     image="products"
     imageAlt="Site worker in a full body harness on a reinforced concrete deck"
@@ -23,7 +38,12 @@ const total = allProducts().length;
 
   <section class="sec">
     <div class="wrap">
-      <div class="cat-grid">
+      <div class="psearch" id="search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="search" id="pq" placeholder="Search products by code, name, standard or material" autocomplete="off" aria-label="Search products">
+      </div>
+      <div class="psearch-res" id="pres" hidden></div>
+      <div class="cat-grid" id="pcats">
         {categories.map((c) => (
           <a class="cat-card" href={categoryUrl(c.slug)}>
             <span class="cat-media">
@@ -35,7 +55,7 @@ const total = allProducts().length;
               <h3>{c.name}</h3>
               <p>{c.blurb}</p>
             <span class="cat-foot">
-              <span class="cat-count">{c.count} product {c.count === 1 ? 'code' : 'codes'}</span>
+              <span class="cat-count">{c.count} {c.count === 1 ? 'product' : 'products'}</span>
               <span class="cat-go">View range
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>
               </span>
@@ -46,6 +66,38 @@ const total = allProducts().length;
       </div>
     </div>
   </section>
+
+  <script is:inline define:vars={{ index }}>
+    (function () {
+      var q = document.getElementById('pq'), res = document.getElementById('pres'), cats = document.getElementById('pcats');
+      var esc = function (t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+      var hay = index.map(function (p) { return (p.s + ' ' + p.d + ' ' + p.c + ' ' + p.f + ' ' + p.x).toLowerCase(); });
+      var run = function () {
+        var words = q.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
+        if (!words.length) { res.hidden = true; cats.hidden = false; return; }
+        var hits = [];
+        index.forEach(function (p, i) {
+          if (!words.every(function (w) { return hay[i].indexOf(w) >= 0; })) return;
+          // a code match ranks first
+          hits.push({ p: p, r: p.s.toLowerCase().indexOf(words[0]) === 0 ? 0 : 1 });
+        });
+        hits.sort(function (a, b) { return a.r - b.r; });
+        cats.hidden = true;
+        res.hidden = false;
+        res.innerHTML = '<p class="psearch-count">' + (hits.length ? hits.length + (hits.length === 1 ? ' product' : ' products') + ' found'
+          : 'No products match “' + esc(q.value.trim()) + '”. Try a product code such as SBH021, or a word like “rope”.') + '</p>'
+          + '<div class="psearch-grid">' + hits.slice(0, 60).map(function (h) {
+            var p = h.p;
+            return '<a class="psearch-item" href="' + esc(p.u) + '"><span class="psearch-ph"><img src="' + esc(p.i) + '" alt="" loading="lazy"></span>'
+              + '<span><b>' + esc(p.s) + '</b><span>' + esc(p.d) + '</span><em>' + esc(p.c) + ' · ' + esc(p.f) + '</em></span></a>';
+          }).join('') + '</div>';
+      };
+      q.addEventListener('input', run);
+      var start = new URLSearchParams(location.search).get('q');
+      if (start) { q.value = start; run(); }
+      if (location.hash === '#search' || start) q.focus();
+    })();
+  </script>
 
   <section class="sec" style="padding-top:0">
     <div class="wrap">

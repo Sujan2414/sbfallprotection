@@ -65,7 +65,7 @@ const rangeOf = (slug: string) => (split ? split.find((r) => r.has(slug))?.key :
 ---
 <Base
   title={`${cat.name} — SB Fall Protection`}
-  description={`${cat.name} manufactured by SB Fall Protection, Kanpur India. ${cat.blurb} ${products.length} product codes available with full specifications.`}
+  description={`${cat.name} manufactured by SB Fall Protection, Kanpur India. ${cat.blurb} ${products.length} products available with full specifications.`}
 >
   <PageHeader
     eyebrow="Product Range"
@@ -78,6 +78,9 @@ const rangeOf = (slug: string) => (split ? split.find((r) => r.has(slug))?.key :
 
   <section class="sec">
     <div class="wrap">
+      {cat.intro && cat.intro !== cat.blurb && !families.some((f) => f.intro === cat.intro) && (
+        <p class="cat-intro">{cat.intro}</p>
+      )}
       {split && (
         <div class="range-pick" data-range-pick>
           {split.map((r) => (
@@ -85,7 +88,7 @@ const rangeOf = (slug: string) => (split ? split.find((r) => r.has(slug))?.key :
               <span class="range-card-label">{r.label}</span>
               <span class="range-card-blurb">{r.blurb}</span>
               <span class="range-card-count">
-                {products.filter((p) => r.has(p.family)).length} codes
+                {products.filter((p) => r.has(p.family)).length} products
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
               </span>
             </a>
@@ -96,13 +99,13 @@ const rangeOf = (slug: string) => (split ? split.find((r) => r.has(slug))?.key :
         const items = getProducts(category!, f.slug);
         if (items.length === 0) return null;
         return (
-          <div class="family" data-range={rangeOf(f.slug)}>
+          <div class="family" id={`fam-${f.slug}`} data-range={rangeOf(f.slug)}>
             <div class="family-head">
               <div>
                 <h2>{f.name}</h2>
                 {f.intro && <p>{f.intro}</p>}
               </div>
-              <span class="family-tag">{items.length} {items.length === 1 ? 'code' : 'codes'}</span>
+              <span class="family-tag">{items.length} {items.length === 1 ? 'product' : 'products'}</span>
             </div>
 
             {f.bullets.length > 0 && (
@@ -160,8 +163,8 @@ const rangeOf = (slug: string) => (split ? split.find((r) => r.has(slug))?.key :
                   </span>
                   <span class="sku-body">
                     <span class="sku-code">{p.sku}</span>
-                    {(p.specs['Type'] || p.attachment || p.specs['Uses'] || p.specs['Usage']) && (
-                      <span class="sku-desc">{p.specs['Type'] || p.attachment || p.specs['Uses'] || p.specs['Usage']}</span>
+                    {(p.attachment || p.specs['Type'] || p.specs['Uses'] || p.specs['Usage']) && (
+                      <span class="sku-desc">{p.attachment || p.specs['Type'] || p.specs['Uses'] || p.specs['Usage']}</span>
                     )}
                     <span class="sku-foot">
                       {stdOf(p.specs)
@@ -207,7 +210,12 @@ const rangeOf = (slug: string) => (split ? split.find((r) => r.has(slug))?.key :
         var keys = btns.map(function (b) { return b.getAttribute('data-range-btn'); });
         var show = function () {
           var k = location.hash.slice(1);
-          if (keys.indexOf(k) < 0) k = keys[0];
+          if (keys.indexOf(k) < 0) {
+            // a link to one range (#fam-...) opens the side that holds it
+            var el = k && document.getElementById(k);
+            var host = el && el.closest('.family[data-range]');
+            k = host ? host.getAttribute('data-range') : keys[0];
+          }
           fams.forEach(function (f) { f.hidden = f.getAttribute('data-range') !== k; });
           btns.forEach(function (b) {
             var on = b.getAttribute('data-range-btn') === k;

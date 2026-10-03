@@ -2,6 +2,7 @@
 import { getContact, tel, waLink, addressLines, addressOneLine, phones } from '../lib/contact';
 const ct = await getContact();
 import { getCategories } from '../lib/catalog';
+import { getBrand } from '../lib/content';
 const categories = getCategories();
 /** Optional: pre-selects the category and mentions a SKU (product pages). */
 const { sku = '', category = '' } = Astro.props;
@@ -12,12 +13,13 @@ import { SB_BROWSER_PATH } from '../lib/supabase';
 // the browser reaches Supabase through our own domain; see SB_BROWSER_PATH
 const sbUrl = (import.meta.env.SUPABASE_URL ?? process.env.SUPABASE_URL) ? SB_BROWSER_PATH : '';
 const sbKey = import.meta.env.SUPABASE_ANON_KEY ?? process.env.SUPABASE_ANON_KEY ?? '';
+const brand = await getBrand();
 ---
 <div class="flow" id="quoteFlow" data-sku={sku} data-category={category}
      data-sb-url={sbUrl} data-sb-key={sbKey} data-email={ct.email} data-wa={ct.whatsapp.replace(/\D/g, '')}>
   <div class="flow-top">
     <span class="flow-avatar">
-      <img src="/assets/sb-logo.png" alt="" width="30" height="30">
+      <img src={brand.logo} alt="" width="30" height="30" style="object-fit:contain">
     </span>
     <div class="flow-who">
       <b>SB Sales Team</b>

@@ -1,31 +1,33 @@
 ---
+import { getMenu, getBrand } from '../lib/content';
+
 const { home = false } = Astro.props;
+// both edited under Menu & Logo in the admin panel
+const menu = await getMenu();
+const brand = await getBrand();
 ---
 <nav>
   <div class="wrap nav-in">
     <a class="brand" href="/">
-      <img src="/assets/sb-logo.png" alt="SB Fall Protection logo" width="44" height="44">
+      <img src={brand.logo} alt="SB Fall Protection logo" width="44" height="44">
       <b>SB Fall Protection</b>
     </a>
     <div class="nav-links">
-      <a href="/products">Products</a>
-      <a href="/about">About</a>
-      <a href="/blog">Blog</a>
-      <a href="/export-markets">Export Markets</a>
+      {menu.map((m) => <a href={m.href}>{m.label}</a>)}
     </div>
     <div class="nav-right">
+      <a class="nav-search" href="/products#search" aria-label="Search products">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </a>
       <a class="btn btn-orange nav-quote" href="/contact">Contact Now</a>
       <button class="nav-burger" id="navBurger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navPanel">
         <span></span><span></span><span></span>
       </button>
     </div>
   </div>
-  <!-- same four destinations as the desktop bar, same order, plus the CTA -->
+  <!-- the same links as the desktop bar, same order, plus the CTA -->
   <div class="nav-panel" id="navPanel" hidden>
-    <a href="/products">Products</a>
-    <a href="/about">About</a>
-    <a href="/blog">Blog</a>
-    <a href="/export-markets">Export Markets</a>
+    {menu.map((m) => <a href={m.href}>{m.label}</a>)}
     <a class="btn btn-orange" href="/contact">Contact Now</a>
   </div>
 </nav>

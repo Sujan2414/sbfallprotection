@@ -65,6 +65,9 @@ const mailto = `mailto:${ct.email}?subject=${encodeURIComponent(mailSubject)}&bo
 
       <div>
         <h2 class="pd-title">{product.specs['Type'] || product.attachment || product.specs['Uses'] || product.specs['Usage'] || product.family_name}</h2>
+        {product.attachment && product.attachment !== (product.specs['Type'] || product.attachment) && (
+          <p class="pd-desc">{product.attachment}</p>
+        )}
         <p class="pd-fam">
           {product.sku} · <a href={categoryUrl(cat.slug)}>{cat.name}</a> · {product.family_name}
         </p>
@@ -125,8 +128,8 @@ const mailto = `mailto:${ct.email}?subject=${encodeURIComponent(mailSubject)}&bo
               </span>
               <span class="sku-body">
                 <span class="sku-code">{p.sku}</span>
-                {(p.specs['Type'] || p.attachment || p.specs['Uses'] || p.specs['Usage']) && (
-                  <span class="sku-desc">{p.specs['Type'] || p.attachment || p.specs['Uses'] || p.specs['Usage']}</span>
+                {(p.attachment || p.specs['Type'] || p.specs['Uses'] || p.specs['Usage']) && (
+                  <span class="sku-desc">{p.attachment || p.specs['Type'] || p.specs['Uses'] || p.specs['Usage']}</span>
                 )}
                 <span class="sku-foot">
                   <span class="sku-std">View specs</span>

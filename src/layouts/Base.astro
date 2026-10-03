@@ -3,6 +3,9 @@ import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import FloatingActions from '../components/FloatingActions.astro';
+import { getBrand } from '../lib/content';
+
+const brand = await getBrand();
 
 interface Props {
   title: string;
@@ -29,7 +32,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
   <title>{title}</title>
   <meta name="description" content={description}>
   <link rel="canonical" href={canonical}>
-  <link rel="icon" href="/assets/sb-logo.png">
+  <link rel="icon" href={brand.favicon}>
 
   <meta property="og:type" content="website">
   <meta property="og:title" content={title}>

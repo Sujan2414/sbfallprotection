@@ -66,9 +66,13 @@
     transition:background .35s ease,box-shadow .35s ease,padding .35s ease;
   }
   .brand{display:flex;align-items:center;gap:11px}
-  .brand img{width:44px;height:44px}
+  .brand img{width:auto;height:44px;max-width:170px;object-fit:contain}
   .brand b{color:#fff;font-size:16.5px;font-weight:600;letter-spacing:-0.02em;transition:color .35s ease}
   .nav-links{display:flex;gap:34px}
+  .nav-search{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;color:rgba(255,255,255,.92);transition:background .2s,color .2s}
+  .nav-search:hover{background:rgba(255,255,255,.14);color:#fff}
+  nav.scrolled .nav-search{color:var(--ink)}
+  nav.scrolled .nav-search:hover{background:var(--light);color:var(--orange)}
   .nav-links a{color:rgba(255,255,255,.92);font-size:15px;font-weight:500;transition:color .2s}
   .nav-links a:hover{color:#fff;text-shadow:0 0 18px rgba(255,255,255,.4)}
   nav .btn{padding:11px 22px;font-size:14.5px;transition:background .18s ease,padding .35s ease,font-size .35s ease}
@@ -109,7 +113,7 @@
   @media(max-width:560px){
     .nav-quote{display:none}
     .brand b{font-size:15px}
-    .brand img{width:38px;height:38px}
+    .brand img{width:auto;height:38px;max-width:140px}
   }
 
   /* ---- hero ---- */
@@ -677,6 +681,23 @@
 
 /* ================= CATEGORY GRID ================= */
 .cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.cat-grid[hidden]{display:none}
+/* product search */
+.psearch{display:flex;align-items:center;gap:12px;max-width:720px;margin:0 auto 34px;padding:0 20px;height:58px;
+  background:#fff;border:1px solid var(--line);border-radius:999px;color:var(--gray);box-shadow:0 8px 28px rgba(19,19,18,.06)}
+.psearch:focus-within{border-color:var(--orange);color:var(--orange)}
+.psearch input{flex:1;min-width:0;border:0;outline:0;background:none;font:inherit;font-size:16px;color:var(--ink)}
+.psearch-count{color:var(--gray);font-size:15px;margin:0 0 18px}
+.psearch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.psearch-item{display:flex;gap:14px;align-items:center;padding:12px;background:#fff;border:1px solid var(--line);border-radius:14px;transition:border-color .18s,box-shadow .18s}
+.psearch-item:hover{border-color:var(--orange);box-shadow:0 8px 24px rgba(19,19,18,.07)}
+.psearch-ph{flex:none;width:76px;height:76px;border-radius:10px;background:#f7f6f4;display:grid;place-items:center;overflow:hidden}
+.psearch-ph img{width:100%;height:100%;object-fit:contain}
+.psearch-item b{display:block;font-size:15px;color:var(--ink)}
+.psearch-item span span{display:block;font-size:14px;color:var(--ink);line-height:1.4;margin-top:2px}
+.psearch-item em{display:block;font-style:normal;font-size:12.5px;color:var(--gray);margin-top:4px}
+@media(max-width:960px){.psearch-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.psearch-grid{grid-template-columns:1fr}.psearch{height:52px}}
 .cat-card{
   display:flex;flex-direction:column;height:100%;
   background:#fff;border:1px solid var(--line);border-radius:20px;
@@ -1624,3 +1645,7 @@
 
 /* images placed inside an article from the admin panel */
 .prose img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:16px}
+
+/* category intro and a product's short description, both set in the panel */
+.cat-intro{max-width:860px;font-size:16.5px;line-height:1.75;color:var(--gray);margin:0 0 36px}
+.pd-desc{font-size:17px;line-height:1.6;color:var(--ink,#1d1d1f);margin-top:12px;font-weight:500}
