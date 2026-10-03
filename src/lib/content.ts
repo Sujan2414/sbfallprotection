@@ -5,29 +5,7 @@
  * apply whenever the setting is missing or unreadable, so a page can never
  * build empty.
  */
-const URL = import.meta.env.SUPABASE_URL ?? process.env.SUPABASE_URL ?? '';
-const KEY = import.meta.env.SUPABASE_ANON_KEY ?? process.env.SUPABASE_ANON_KEY ?? '';
-
-const cache = new Map<string, Promise<unknown>>();
-
-function setting<T>(key: string): Promise<T | null> {
-  if (!cache.has(key)) {
-    cache.set(key, (async () => {
-      if (!URL || !KEY) return null;
-      try {
-        const res = await fetch(`${URL}/rest/v1/settings?select=value&key=eq.${key}`, {
-          headers: { apikey: KEY, Authorization: `Bearer ${KEY}` },
-        });
-        if (!res.ok) return null;
-        const rows = (await res.json()) as { value: string }[];
-        return rows[0] ? JSON.parse(rows[0].value) : null;
-      } catch {
-        return null;
-      }
-    })());
-  }
-  return cache.get(key) as Promise<T | null>;
-}
+import { setting } from './supabase';
 
 export interface Figure { n: string; l: string }
 export interface Leader { name: string; role: string; photo: string; bio: string }

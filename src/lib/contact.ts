@@ -5,8 +5,7 @@
  * updates the whole site. The defaults are what the site showed before, and
  * apply if the setting cannot be read.
  */
-const URL = import.meta.env.SUPABASE_URL ?? process.env.SUPABASE_URL ?? '';
-const KEY = import.meta.env.SUPABASE_ANON_KEY ?? process.env.SUPABASE_ANON_KEY ?? '';
+import { setting } from './supabase';
 
 export interface Contact {
   phone: string;
@@ -34,14 +33,8 @@ let cache: Promise<Contact> | null = null;
 
 export function getContact(): Promise<Contact> {
   cache ??= (async () => {
-    if (!URL || !KEY) return DEFAULT_CONTACT;
     try {
-      const res = await fetch(`${URL}/rest/v1/settings?select=value&key=eq.contact`, {
-        headers: { apikey: KEY, Authorization: `Bearer ${KEY}` },
-      });
-      if (!res.ok) return DEFAULT_CONTACT;
-      const rows = (await res.json()) as { value: string }[];
-      const saved = rows[0] ? JSON.parse(rows[0].value) : {};
+      const saved = ((await setting<Record<string, unknown>>('contact')) ?? {}) as Record<string, any>;
       // a field left empty in the panel falls back rather than vanishing
       const out = { ...DEFAULT_CONTACT };
       for (const k of Object.keys(out) as (keyof Contact)[]) {

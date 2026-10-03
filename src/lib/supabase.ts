@@ -13,6 +13,28 @@ const KEY = import.meta.env.SUPABASE_ANON_KEY ?? process.env.SUPABASE_ANON_KEY ?
 
 export const supabaseConfigured = Boolean(URL && KEY);
 
+/*
+ * Every setting the site shows (contact details, About, FAQs, menu, logo,
+ * social links) comes back in one request per build. The database is in
+ * Sydney and the build machine usually is not, so six separate round trips
+ * were a few seconds of every publish.
+ */
+const PUBLIC_SETTINGS = ['social_links', 'contact', 'about', 'faqs', 'menu', 'brand'];
+let settingsCache: Promise<Map<string, unknown>> | null = null;
+
+export async function setting<T>(key: string): Promise<T | null> {
+  settingsCache ??= (async () => {
+    const rows = await rest<{ key: string; value: string }>(
+      `settings?select=key,value&key=in.(${PUBLIC_SETTINGS.join(',')})`);
+    const out = new Map<string, unknown>();
+    for (const r of rows ?? []) {
+      try { out.set(r.key, JSON.parse(r.value)); } catch { /* a bad value falls back to the default */ }
+    }
+    return out;
+  })();
+  return ((await settingsCache).get(key) as T | undefined) ?? null;
+}
+
 async function rest<T>(path: string): Promise<T[] | null> {
   if (!supabaseConfigured) return null;
   try {
@@ -48,6 +70,7 @@ export interface DbProduct {
 export async function fetchCatalog() {
   if (!supabaseConfigured) return null;
 
+  setting('contact'); // warm the settings in parallel with the catalogue
   const [categories, families, products] = await Promise.all([
     rest<DbCategory>('categories?select=*&order=sort_order'),
     rest<DbFamily>('families?select=*&order=sort_order'),
@@ -81,9 +104,8 @@ let socialCache: Promise<SocialLink[]> | null = null;
 /** Read once per build, since every page's footer asks for them. */
 export function fetchSocialLinks(): Promise<SocialLink[]> {
   socialCache ??= (async () => {
-    const rows = await rest<{ value: string }>('settings?select=value&key=eq.social_links');
+    const list = await setting<SocialLink[]>('social_links');
     try {
-      const list = rows && rows[0] ? JSON.parse(rows[0].value) : null;
       if (Array.isArray(list)) {
         return list.filter((l) => l && typeof l.url === 'string' && /^https?:\/\//.test(l.url));
       }

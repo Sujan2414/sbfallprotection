@@ -156,11 +156,44 @@ function closeDrawer() {
 drawer.addEventListener('click', (e) => { if (e.target.hasAttribute('data-close')) closeDrawer(); });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDrawer(); });
 
-/** Rebuild the public site so saved changes reach visitors. */
+/*
+ * Rebuild the public site so saved changes reach visitors.
+ *
+ * The host builds one at a time, so five quick saves used to mean five
+ * rebuilds in a row. Now, while a rebuild is running, further saves just mark
+ * that one more is needed; when the current one goes live, a single follow-up
+ * rebuild picks up everything saved in the meantime. A rebuild asked for in
+ * the last few seconds has not read the database yet, so it covers a save
+ * made now without any follow-up.
+ */
+const PUB_NEXT = 'sb-admin-publish-next';
+const PUB_FRESH = 8000;
+let pubAsked = 0; // this computer's clock, only ever compared with itself
+
+const followsNext = () => { try { return localStorage.getItem(PUB_NEXT) === '1'; } catch { return false; } };
+
 async function publishSite() {
+  if (pubTimer) {
+    if (Date.now() - pubAsked > PUB_FRESH) {
+      try { localStorage.setItem(PUB_NEXT, '1'); } catch { /* private mode */ }
+      pubShow('busy', 'Publishing… your latest change follows');
+    }
+    return { ok: true, message: '' };
+  }
+  try { localStorage.removeItem(PUB_NEXT); } catch { /* private mode */ }
+  pubAsked = Date.now();
   const { ok, data } = await api('/api/publish', 'POST');
   if (ok) watchPublish(data.triggeredAt || Date.now());
   return { ok, message: ok ? '' : apiError(data, 'Could not publish just now') };
+}
+
+/** After a rebuild finishes, run the one that saves made during it are waiting for. */
+function publishFollowUp() {
+  let next = false;
+  try { next = localStorage.getItem(PUB_NEXT) === '1'; localStorage.removeItem(PUB_NEXT); } catch { /* private mode */ }
+  if (!next) return false;
+  publishSite().then((r) => { if (!r.ok) toast(`The site did not rebuild: ${r.message}`, true); });
+  return true;
 }
 
 /*
@@ -186,6 +219,7 @@ function watchPublish(at) {
   const started = Date.now();
   const stop = () => {
     clearInterval(pubTimer);
+    pubTimer = null;
     try { localStorage.removeItem(PUB_KEY); } catch { /* private mode */ }
   };
   const tick = async () => {
@@ -194,6 +228,7 @@ function watchPublish(at) {
       const j = await r.json();
       if (j && j.builtAt > at) {
         stop();
+        if (publishFollowUp()) return;
         pubShow('live', 'Live on the site');
         setTimeout(() => { if (pubEl.dataset.state === 'live') pubEl.hidden = true; }, 9000);
         return;
@@ -201,11 +236,12 @@ function watchPublish(at) {
     } catch { /* not built yet, or offline for a moment */ }
     if (Date.now() - at > PUB_LIMIT) {
       stop();
+      if (publishFollowUp()) return;
       pubShow('slow', 'Publishing is taking longer than usual');
       return;
     }
     const secs = Math.max(1, Math.round((Date.now() - Math.min(at, started)) / 1000));
-    pubShow('busy', `Publishing… ${secs}s`);
+    pubShow('busy', `Publishing… ${secs}s${followsNext() ? ' · your latest change follows' : ''}`);
   };
   pubShow('busy', 'Publishing…');
   pubTimer = setInterval(tick, 6000);
