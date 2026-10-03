@@ -1826,7 +1826,7 @@ function profileView(user) {
         <span class="adm-avatar adm-avatar-lg" id="profAvatar">${avatarHtml(md.avatar_url, md.full_name || email)}</span>
         <div class="adm-profile-photo-actions">
           <label class="adm-btn adm-btn-soft">
-            <input type="file" id="profPhoto" accept="image/jpeg,image/png,image/webp" hidden>
+            <input type="file" id="profPhoto" accept="image/*" hidden>
             Upload photo
           </label>
           ${md.avatar_url ? '<button type="button" class="adm-btn adm-btn-ghost" id="profPhotoDel">Remove</button>' : ''}
